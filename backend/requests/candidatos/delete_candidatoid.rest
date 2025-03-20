@@ -1,0 +1,2 @@
+DELETE http://localhost:5000/api/candidatos/67dc0dc8527fa765ba793399
+Content-Type: application/json

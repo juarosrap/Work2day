@@ -19,5 +19,14 @@ const EmpleadorEmpresaSchema = new Schema({
     valoraciones: [{ type: Schema.Types.ObjectId, ref: 'ValoracionEmpleador' }]
 });
 
+EmpleadorEmpresaSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id;
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  }
+});
+
+
 const EmpleadorEmpresa = model('EmpleadorEmpresa', EmpleadorEmpresaSchema);
 module.exports = EmpleadorEmpresa

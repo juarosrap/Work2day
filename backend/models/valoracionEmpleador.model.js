@@ -2,14 +2,31 @@ const mongoose = require('mongoose')
 const { model,Schema } = mongoose;
 
 const ValoracionEmpleadorSchema = new Schema({
-  puntuacion: Number,
-  reseña: String,
-  fecha: Date,
+  puntuacion: {
+    type: Number,
+    required: true,
+  },
+  reseña: {
+    type: String,
+    required: true,
+  },
+  fecha: {
+    type: Date,
+    default: Date.now,
+  },
   candidatoId: { type: Schema.Types.ObjectId, ref: "Candidato" },
   empleadorId: {
     type: Schema.Types.ObjectId,
     ref: "EmpleadorParticular" || "EmpleadorEmpresa",
   },
+});
+
+ValoracionEmpleadorSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id;
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  } 
 });
 
 const ValoracionEmpleador = model(

@@ -1,0 +1,18 @@
+POST http://localhost:5000/api/candidatos
+Content-Type: application/json
+
+{
+  "nombre" : "juan",
+  "correo": "juan@example.com",
+  "telefono": "123456789",
+  "fechaNacimiento": "1990-05-15",
+  "fotoPerfil": "https://example.com/foto.jpg",
+  "contraseña": "secreta123",
+  "curriculum": {
+    "informacionPersonal": "Ingeniero de software con 5 años de experiencia",
+    "ubicacion": "Madrid, España",
+    "formacionAcademica": "Grado en Ingeniería Informática",
+    "experienciaLaboral": "Desarrollador en XYZ Corp por 3 años",
+    "idiomas": ["Español", "Inglés"]
+  }
+}
