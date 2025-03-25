@@ -1,0 +1,1 @@
+GET http://localhost:5000/api/aplicaciones/67dc136b6e53321b7c0d8e32

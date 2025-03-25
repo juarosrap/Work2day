@@ -1,0 +1,20 @@
+PUT http://localhost:5000/api/empleadores-empresa/67e29221a6a2fd86ee2e83f5
+Content-Type: application/json 
+
+{
+    "nombre": "Laura Martínez Gómez",
+    "correo": "laura.martinez@empresa.com",
+    "telefono": "+345512345678",
+    "fotoPerfil": "https://ejemplo.com/fotos/perfil/laura_martinez.jpg",
+    "fechaNacimiento": "1990-07-15T00:00:00.000Z",
+    "contraseña": "claveSegura123*",
+    "nombreEmpresa": "TecnoSoluciones SA",
+    "sector": "Tecnología y Consultoría IT",
+    "ubicacion": "Av. Revolución 456, Madrid",
+    "fotoEmpresa": "https://ejemplo.com/logos/tecnosoluciones.jpg",
+    "correoEmpresa": "contacto@tecnosoluciones.com",
+    "telefonoEmpresa": "+345555678901",
+    "paginaWeb": "https://www.tecnosoluciones.com",
+    "ofertas": [],
+    "valoraciones": []
+  }
