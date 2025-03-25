@@ -1,0 +1,1 @@
+GET http://localhost:5000/api/ofertas/empleador/67e2e28fd8a1b562053331e5

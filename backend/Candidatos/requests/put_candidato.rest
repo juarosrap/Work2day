@@ -1,9 +1,9 @@
-PUT http://localhost:5000/api/candidatos/67dc0dc8527fa765ba793399
+PUT http://localhost:5000/api/candidatos/67e2f84b903202298a9c4678
 Content-Type: application/json 
 
 {
     "curriculum": {
-      "informacionPersonal": "Ingeniero de software con 5 años de experiencia",
+      "informacionPersonal": "puta",
       "ubicacion": "Madrid, España",
       "formacionAcademica": "Grado en Ingeniería Informática",
       "experienciaLaboral": "Desarrollador en XYZ Corp por 3 años",

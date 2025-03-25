@@ -1,4 +1,4 @@
-PUT http://localhost:5000/api/empleadores-empresa/67e29221a6a2fd86ee2e83f5
+PUT http://localhost:5000/api/empleadores-empresa/67e2dcf1d8a1b56205333182
 Content-Type: application/json 
 
 {
@@ -15,6 +15,6 @@ Content-Type: application/json
     "correoEmpresa": "contacto@tecnosoluciones.com",
     "telefonoEmpresa": "+345555678901",
     "paginaWeb": "https://www.tecnosoluciones.com",
-    "ofertas": [],
+    "ofertas": ["67e2db3dd8a1b56205333167"],
     "valoraciones": []
   }

@@ -1,0 +1,13 @@
+POST http://localhost:5000/api/empleadores-particular
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "correo": "juan.perez@example.com",
+  "telefono": "+34 612345678",
+  "fotoPerfil": "https://ejemplo.com/foto.jpg",
+  "fechaNacimiento": "1990-05-15T00:00:00.000Z",
+  "contraseña": "hashedpassword123",
+  "ofertas": [],
+  "valoraciones": []
+}

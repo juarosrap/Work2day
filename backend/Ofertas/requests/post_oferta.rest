@@ -1,0 +1,15 @@
+POST http://localhost:5000/api/ofertas
+Content-Type: application/json
+
+{
+  "titulo": "Desarrollador Web Junior",
+  "descripcion": "Buscamos un desarrollador web junior con conocimientos en JavaScript y React.",
+  "requisitos": ["Conocimientos en JavaScript", "Experiencia con React", "Trabajo en equipo"],
+  "duracion": "Indefinida",
+  "ubicacion": "Remoto",
+  "salario": 2500,
+  "imagen": "https://ejemplo.com/imagen.jpg",
+  "estado": "Pendiente",
+  "aplicaciones": [],
+  "empleadorId": null
+}

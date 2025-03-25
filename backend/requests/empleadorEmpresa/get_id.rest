@@ -1,1 +1,0 @@
-GET http://localhost:5000/api/empleadores-empresa/67e29221a6a2fd86ee2e83f5

@@ -1,0 +1,1 @@
+DELETE http://localhost:5000/api/ofertas/67e2e1d5d8a1b562053331d2
