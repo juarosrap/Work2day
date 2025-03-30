@@ -9,8 +9,14 @@ const AplicacionSchema = new Schema({
     seleccionado: Boolean,
     fechaSeleccion: Date,
     fechaFinalizacion: Date,
-    ofertaId: { type: Schema.Types.ObjectId, ref: 'Oferta' },
-    candidatoId: { type: Schema.Types.ObjectId, ref: 'Candidato' }
+    ofertaId: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'Oferta' 
+    },
+    candidatoId: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'Candidato' 
+    }
 });
 
 AplicacionSchema.set("toJSON", {

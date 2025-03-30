@@ -3,11 +3,11 @@ Content-Type: application/json
 
 {
   "nombre" : "juan",
-  "correo": "juan@example.com",
+  "correo": "hola",
   "telefono": "123456789",
   "fechaNacimiento": "1990-05-15",
   "fotoPerfil": "https://example.com/foto.jpg",
-  "contraseña": "secreta123",
+  "contrasena": "secreta123",
   "curriculum": {
     "informacionPersonal": "Ingeniero de software con 5 años de experiencia",
     "ubicacion": "Madrid, España",

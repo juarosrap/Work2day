@@ -3,6 +3,7 @@ const Oferta = require("../Ofertas/oferta.model");
 const Aplicacion = require("../Aplicaciones/aplicacion.model");
 const Candidato = require("../Candidatos/candidato.model");
 const ValoracionEmpleador = require("../ValoracionesEmpleador/valoracionEmpleador.model");
+const bcrypt = require('bcryptjs');
 
 // Obtener todos los empleadores empresa
 exports.obtenerEmpleadoresEmpresa = async (req, res) => {
@@ -38,8 +39,37 @@ exports.obtenerEmpleadorEmpresaPorId = async (req, res) => {
 // Crear un nuevo empleador empresa
 exports.crearEmpleadorEmpresa = async (req, res) => {
   try {
-    const nuevoEmpleador = new EmpleadorEmpresa(req.body);
-    const empleadorGuardado = await nuevoEmpleador.save();
+    const { contrasena, correo, correoEmpresa, ...otrosDatos } = req.body;
+
+    const correoExistente = await EmpleadorEmpresa.findOne({ correo });
+    const correoEmpresaExistente = await EmpleadorEmpresa.findOne({correoEmpresa});
+
+    if (correoExistente || correoEmpresaExistente) {
+      return res
+        .status(400)
+        .json({ error: "Ya existe un empleador con ese correo electrónico" });
+    }
+
+    // Verificar que se proporciona una contraseña
+    if (!contrasena) {
+      return res.status(400).json({ error: "La contraseña es requerida" });
+    }
+
+    
+    const passwordHash = await bcrypt.hash(contrasena, 10);
+
+    // Crear un nuevo objeto candidato con la contraseña encriptada
+    const nuevoEmpleador = new Candidato({
+      ...otrosDatos,
+      correo,
+      correoEmpresa,
+      contrasena: passwordHash,
+    });
+
+    const empleadorGuardado = await nuevoEmpleador.save({
+      runValidators: true,
+    });
+
     res.status(201).json(empleadorGuardado);
   } catch (error) {
     res

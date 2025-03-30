@@ -7,7 +7,7 @@ Content-Type: application/json
   "telefono": "+345512345678",
   "fotoPerfil": "https://ejemplo.com/fotos/perfil/laura_martinez.jpg",
   "fechaNacimiento": "1990-07-15",
-  "contraseña": "claveSegura123*",
+  "contrasena": "claveSegura123*",
   "nombreEmpresa": "TecnoSoluciones SA",
   "sector": "Tecnología y Consultoría IT",
   "ubicacion": "Av. Revolución 456, Madrid",

@@ -1,2 +1,2 @@
-DELETE http://localhost:5000/api/empleadores-empresa/67e2dcf1d8a1b56205333182
+DELETE http://localhost:5000/api/empleadores-empresa/67e2dea4d8a1b56205333198
 Content-Type: application/json

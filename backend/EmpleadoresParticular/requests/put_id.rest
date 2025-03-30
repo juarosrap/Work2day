@@ -7,7 +7,7 @@ Content-Type: application/json
   "telefono": "+34 612345678",
   "fotoPerfil": "https://ejemplo.com/foto.jpg",
   "fechaNacimiento": "1990-05-15T00:00:00.000Z",
-  "contraseña": "hashedpassword123",
+  "contrasena": "hashedpassword123",
   "ofertas": ["67e2e1d5d8a1b562053331d2"],
   "valoraciones": []
 }

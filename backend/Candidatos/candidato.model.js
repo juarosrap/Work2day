@@ -19,7 +19,7 @@ const CandidatoSchema = new Schema({
     type: String,
     required: true,
   },
-  contraseña: String,
+  contrasena: String,
   curriculum: {
     informacionPersonal: String,
     ubicacion: String,
@@ -27,8 +27,14 @@ const CandidatoSchema = new Schema({
     experienciaLaboral: String,
     idiomas: [String],
   },
-  aplicaciones: [{ type: Schema.Types.ObjectId, ref: "Aplicacion" }],
-  valoraciones: [{ type: Schema.Types.ObjectId, ref: "ValoracionCandidato" }],
+  aplicaciones: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: "Aplicacion" 
+  }],    
+  valoraciones: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: "ValoracionCandidato" 
+  }],
 });
 
 CandidatoSchema.set('toJSON', {
@@ -36,6 +42,7 @@ CandidatoSchema.set('toJSON', {
     returnedObject.id = returnedObject._id
     delete returnedObject._id 
     delete returnedObject.__v
+    delete returnedObject.contrasena;
   }
 })
 

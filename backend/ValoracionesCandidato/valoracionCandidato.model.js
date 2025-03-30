@@ -14,7 +14,10 @@ const ValoracionCandidatoSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  candidatoId: { type: Schema.Types.ObjectId, ref: "Candidato" },
+  candidatoId: { 
+    type: Schema.Types.ObjectId, 
+    ref: "Candidato" 
+  },
   empleadorId: {
     type: Schema.Types.ObjectId,
     ref: "EmpleadorParticular" || "EmpleadorEmpresa",

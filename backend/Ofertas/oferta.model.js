@@ -9,8 +9,13 @@ const OfertaSchema = new Schema({
   ubicacion: String,
   salario: Number,
   imagen: String,
-  estado: { type: String, enum: ["Abierta", "Cerrada", "Pendiente"] },
-  aplicaciones: [{ type: Schema.Types.ObjectId, ref: "Aplicacion" }],
+  estado: { 
+    type: String, enum: ["Abierta", "Cerrada", "Pendiente"] 
+  },
+  aplicaciones: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: "Aplicacion" 
+  }],
   empleadorId: {
     type: Schema.Types.ObjectId,
     ref: "EmpleadorParticular" || "EmpleadorEmpresa",

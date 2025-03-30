@@ -566,7 +566,7 @@ router.get('/api/busqueda/combinada', async (req, res) => {
         ]
       }).limit(20);
     }
-
+e;
     // Buscar empleadores (particulares)
     if (tipo === 'todos' || tipo === 'empleadores' || tipo === 'particulares') {
       resultados.particulares = await EmpleadorParticular.find({

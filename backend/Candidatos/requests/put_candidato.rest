@@ -16,7 +16,7 @@ Content-Type: application/json
     "telefono": "123456789",
     "fotoPerfil": "https://example.com/foto.jpg",
     "fechaNacimiento": "1990-05-15",
-    "contraseña": "secreta123",
+    "contrasena": "secreta123",
     "aplicaciones": [],
     "valoraciones": [],
     "id": "67dc0dc8527fa765ba793399"

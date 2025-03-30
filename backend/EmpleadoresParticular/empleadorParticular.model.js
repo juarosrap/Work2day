@@ -7,9 +7,15 @@ const EmpleadorParticularSchema = new Schema({
   telefono: String,
   fotoPerfil: String,
   fechaNacimiento: Date,
-  contraseña: String,
-  ofertas: [{ type: Schema.Types.ObjectId, ref: "Oferta" }],
-  valoraciones: [{ type: Schema.Types.ObjectId, ref: "ValoracionEmpleador" }],
+  contrasena: String,
+  ofertas: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: "Oferta" 
+  }],
+  valoraciones: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: "ValoracionEmpleador" 
+  }],
 });
 
 EmpleadorParticularSchema.set("toJSON", {
@@ -17,6 +23,7 @@ EmpleadorParticularSchema.set("toJSON", {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
     delete returnedObject.__v;
+    delete returnedObject.contrasena;
   }
 });
 
