@@ -5,7 +5,8 @@ const empleadorEmpresaController = require("./empleadorEmpresa.controller");
 // Rutas para EmpleadorEmpresa
 router.get("/", empleadorEmpresaController.obtenerEmpleadoresEmpresa);
 router.get("/:id", empleadorEmpresaController.obtenerEmpleadorEmpresaPorId);
-router.post("/", empleadorEmpresaController.crearEmpleadorEmpresa);
+router.post("/register", empleadorEmpresaController.crearEmpleadorEmpresa);
+router.post("/login",empleadorEmpresaController.loginEmpleadorEmpresa);
 router.put("/:id", empleadorEmpresaController.actualizarEmpleadorEmpresa);
 router.delete("/:id", empleadorEmpresaController.eliminarEmpleadorEmpresa);
 

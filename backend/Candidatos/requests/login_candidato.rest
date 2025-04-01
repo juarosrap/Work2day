@@ -2,6 +2,6 @@ POST http://localhost:5000/api/candidatos/login
 Content-Type: application/json
 
 {
-  "correo": "javrorap.com",
+  "correo": "javrosrap.com",
   "contrasena": "2345672345"
 }

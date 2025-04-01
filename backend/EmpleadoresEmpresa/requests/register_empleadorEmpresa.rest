@@ -1,9 +1,9 @@
-POST http://localhost:5000/api/empleadores-empresa 
+POST http://localhost:5000/api/empleadores-empresa/register 
 Content-Type: application/json
 
 {
-  "nombre": "Laura Martínez Sánchez",
-  "correo": "laura.martinez@empresa.com",
+  "nombre": "antonio",
+  "correo": "antonio",
   "telefono": "+345512345678",
   "fotoPerfil": "https://ejemplo.com/fotos/perfil/laura_martinez.jpg",
   "fechaNacimiento": "1990-07-15",

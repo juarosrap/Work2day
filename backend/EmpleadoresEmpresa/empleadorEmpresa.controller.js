@@ -4,6 +4,7 @@ const Aplicacion = require("../Aplicaciones/aplicacion.model");
 const Candidato = require("../Candidatos/candidato.model");
 const ValoracionEmpleador = require("../ValoracionesEmpleador/valoracionEmpleador.model");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Obtener todos los empleadores empresa
 exports.obtenerEmpleadoresEmpresa = async (req, res) => {
@@ -69,7 +70,7 @@ exports.crearEmpleadorEmpresa = async (req, res) => {
     const passwordHash = await bcrypt.hash(contrasena, 10);
 
     
-    const nuevoEmpleador = new Candidato({
+    const nuevoEmpleador = new EmpleadorEmpresa({
       ...otrosDatos,
       correo,
       correoEmpresa,
@@ -88,6 +89,65 @@ exports.crearEmpleadorEmpresa = async (req, res) => {
         error: "Error al crear empleador empresa",
         detalle: error.message,
       });
+  }
+};
+
+//Login Empleador empresa
+exports.loginEmpleadorEmpresa = async (req, res) => {
+  try {
+    const { correo, contrasena } = req.body;
+
+    if (!correo || !contrasena) {
+      return res
+        .status(400)
+        .json({ error: "Correo y contraseña son requeridos" });
+    }
+
+    const empleadorExistente = await EmpleadorEmpresa.findOne({ correo });
+
+    if (!empleadorExistente) {
+      return res.status(401).json({ error: "Credenciales inválidas" });
+    }
+
+    const contrasenaValida = await bcrypt.compare(
+      contrasena,
+      empleadorExistente.contrasena
+    );
+
+    if (!contrasenaValida) {
+      return res.status(401).json({ error: "Credenciales inválidas" });
+    }
+
+    const token = jwt.sign(
+      {
+        id: empleadorExistente._id,
+        correo: empleadorExistente.correo,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        sameSite: "strict",
+        maxAge: 1000 * 60 * 60,
+      })
+      .status(200)
+      .json({
+        mensaje: "Login exitoso",
+        candidato: {
+          id: empleadorExistente._id,
+          nombre: empleadorExistente.nombre,
+          correo: empleadorExistente.correo,
+        },
+        token,
+      });
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al iniciar sesión",
+      detalle: error.message,
+    });
   }
 };
 

@@ -1,0 +1,7 @@
+POST http://localhost:5000/api/empleadores-particular/login
+Content-Type: application/json
+
+{
+  "correo": "juan.p@example.com",
+  "contrasena": "hashedpassword123"
+}

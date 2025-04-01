@@ -108,11 +108,16 @@ exports.loginCandidato = async (req, res) => {
         correo: candidatoExistente.correo 
       }, 
       process.env.JWT_SECRET, 
-      { expiresIn: '24h' }
+      { expiresIn: '1h' }
     );
 
     
-    res.status(200).json({
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60
+    }).
+    status(200).json({
       mensaje: "Login exitoso",
       candidato: {
         id: candidatoExistente._id,

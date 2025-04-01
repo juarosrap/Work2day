@@ -5,7 +5,8 @@ const empleadorParticularController = require("./empleadorParticular.controller"
 // Rutas para EmpleadorParticular
 router.get("/", empleadorParticularController.obtenerEmpleadoresParticular);
 router.get("/:id",empleadorParticularController.obtenerEmpleadorParticularPorId);
-router.post("/", empleadorParticularController.crearEmpleadorParticular);
+router.post("/register", empleadorParticularController.crearEmpleadorParticular);
+router.post("/login",empleadorParticularController.loginEmpleadorParticular);
 router.put("/:id", empleadorParticularController.actualizarEmpleadorParticular);
 router.delete("/:id",empleadorParticularController.eliminarEmpleadorParticular);
 
