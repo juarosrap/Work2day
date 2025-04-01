@@ -16,10 +16,13 @@ const CandidatoSchema = new Schema({
   },
   fotoPerfil: String,
   fechaNacimiento: {
-    type: String,
+    type: Date,
     required: true,
   },
-  contrasena: String,
+  contrasena: {
+    type: String,
+    required: true
+  },
   curriculum: {
     informacionPersonal: String,
     ubicacion: String,

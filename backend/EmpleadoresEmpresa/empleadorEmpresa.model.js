@@ -2,27 +2,58 @@ const mongoose = require('mongoose')
 const { model,Schema } = mongoose;
 
 const EmpleadorEmpresaSchema = new Schema({
-    nombre: String,
-    correo: String,
-    telefono: String,
-    fotoPerfil: String,
-    fechaNacimiento: Date,
-    contrasena: String,
-    nombreEmpresa: String,
-    sector: String,
-    ubicacion: String,
-    fotoEmpresa: String,
-    correoEmpresa: String,
-    telefonoEmpresa: String,
-    paginaWeb: String,
-    ofertas: [{ 
-      type: Schema.Types.ObjectId, 
-      ref: 'Oferta' 
-    }],
-    valoraciones: [{ 
-      type: Schema.Types.ObjectId, 
-      ref: 'ValoracionEmpleador' 
-    }]
+  nombre: {
+    type: String,
+    required: true,
+  },
+  correo: {
+    type: String,
+    required: true,
+  },
+  telefono: {
+    type: String,
+    required: true,
+  },
+  fotoPerfil: String,
+  fechaNacimiento: {
+    type: Date,
+    required: true,
+  },
+  contrasena: {
+    type: String,
+    required: true,
+  },
+  nombreEmpresa: {
+    type: String,
+    required: true,
+  },
+  sector: {
+    type: String,
+    required: true,
+  },
+  ubicacion: String,
+  fotoEmpresa: String,
+  correoEmpresa: {
+    type: String,
+    required: true,
+  },
+  telefonoEmpresa: {
+    type: String,
+    required: true,
+  },
+  paginaWeb: String,
+  ofertas: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Oferta",
+    },
+  ],
+  valoraciones: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "ValoracionEmpleador",
+    },
+  ],
 });
 
 EmpleadorEmpresaSchema.set("toJSON", {

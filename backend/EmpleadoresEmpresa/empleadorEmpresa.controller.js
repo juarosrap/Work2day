@@ -50,15 +50,25 @@ exports.crearEmpleadorEmpresa = async (req, res) => {
         .json({ error: "Ya existe un empleador con ese correo electrónico" });
     }
 
-    // Verificar que se proporciona una contraseña
     if (!contrasena) {
       return res.status(400).json({ error: "La contraseña es requerida" });
     }
 
+    if (typeof contrasena !== "string") {
+      return res
+        .status(400)
+        .json({ error: "La contraseña debe ser un string" });
+    }
+
+    if (contrasena.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "La contraseña debe tener al menos 6 caracteres" });
+    }
     
     const passwordHash = await bcrypt.hash(contrasena, 10);
 
-    // Crear un nuevo objeto candidato con la contraseña encriptada
+    
     const nuevoEmpleador = new Candidato({
       ...otrosDatos,
       correo,
@@ -110,32 +120,28 @@ exports.eliminarEmpleadorEmpresa = async (req, res) => {
     if (!empleador) {
       return res.status(404).json({ error: "Empleador empresa no encontrado" });
     }
-
-    // Obtener todos los IDs de ofertas asociadas
     const ofertaIds = empleador.ofertas;
 
-    // Eliminar valoraciones del empleador
     await ValoracionEmpleador.deleteMany({ empleadorId: req.params.id });
 
-    // Eliminar aplicaciones relacionadas con las ofertas
+    
     for (const ofertaId of ofertaIds) {
       const aplicaciones = await Aplicacion.find({ ofertaId });
 
-      // Actualizar candidatos para quitar referencias a las aplicaciones
+      
       for (const aplicacion of aplicaciones) {
         await Candidato.findByIdAndUpdate(aplicacion.candidatoId, {
           $pull: { aplicaciones: aplicacion._id },
         });
       }
 
-      // Eliminar aplicaciones
+      
       await Aplicacion.deleteMany({ ofertaId });
     }
 
-    // Eliminar ofertas
+    
     await Oferta.deleteMany({ _id: { $in: ofertaIds } });
 
-    // Finalmente eliminar el empleador
     await EmpleadorEmpresa.findByIdAndDelete(req.params.id);
 
     res.json({

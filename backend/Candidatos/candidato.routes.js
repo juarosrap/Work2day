@@ -5,7 +5,8 @@ const candidatoController = require("./candidato.controller");
 // Rutas para Candidatos
 router.get("/", candidatoController.obtenerCandidatos);
 router.get("/:id", candidatoController.obtenerCandidatoPorId);
-router.post("/", candidatoController.crearCandidato);
+router.post("/register", candidatoController.crearCandidato);
+router.post("/login", candidatoController.loginCandidato);
 router.put("/:id", candidatoController.actualizarCandidato);
 router.delete("/:id", candidatoController.eliminarCandidato);
 

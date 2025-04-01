@@ -38,14 +38,14 @@ mongoose
     socketTimeoutMS: 45000, 
   })
   .then(() => {
-    console.log("🟢 Conectado a MongoDB");
+    console.log("Conectado a MongoDB");
     
     app.listen(PORT, () => {
       console.log("Servidor escuchando en puerto 5000");
     });
   })
   .catch((err) => {
-    console.error("🔴 Error conectando a MongoDB:", err);
+    console.error("Error conectando a MongoDB:", err);
     process.exit(1); 
   });
 

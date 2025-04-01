@@ -1,13 +1,13 @@
-POST http://localhost:5000/api/candidatos
+POST http://localhost:5000/api/candidatos/register
 Content-Type: application/json
 
 {
   "nombre" : "juan",
-  "correo": "hola",
+  "correo": "javrosrap.com",
   "telefono": "123456789",
   "fechaNacimiento": "1990-05-15",
   "fotoPerfil": "https://example.com/foto.jpg",
-  "contrasena": "secreta123",
+  "contrasena": "2345672345",
   "curriculum": {
     "informacionPersonal": "Ingeniero de software con 5 años de experiencia",
     "ubicacion": "Madrid, España",
