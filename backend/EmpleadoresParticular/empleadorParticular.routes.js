@@ -7,6 +7,7 @@ router.get("/", empleadorParticularController.obtenerEmpleadoresParticular);
 router.get("/:id",empleadorParticularController.obtenerEmpleadorParticularPorId);
 router.post("/register", empleadorParticularController.crearEmpleadorParticular);
 router.post("/login",empleadorParticularController.loginEmpleadorParticular);
+router.post("/logout", empleadorParticularController.logoutEmpleadorParticular);
 router.put("/:id", empleadorParticularController.actualizarEmpleadorParticular);
 router.delete("/:id",empleadorParticularController.eliminarEmpleadorParticular);
 

@@ -135,7 +135,7 @@ exports.loginEmpleadorParticular = async (req, res) => {
       .status(200)
       .json({
         mensaje: "Login exitoso",
-        candidato: {
+        Empleador: {
           id: empleadorExistente._id,
           nombre: empleadorExistente.nombre,
           correo: empleadorExistente.correo,
@@ -149,6 +149,20 @@ exports.loginEmpleadorParticular = async (req, res) => {
     });
   }
 };
+
+//Logout de un empleador
+exports.logoutEmpleadorParticular = async (req,res) => {
+  try {
+    res.clearCookie('access_token')
+    .json({message: 'Logout succesful' })
+    
+  } catch(error) {
+    res.status(500).json({
+      error: "Error al cerrar sesión",
+      detalle: error.message,
+    });
+  }
+}
 
 // Actualizar un empleador particular
 exports.actualizarEmpleadorParticular = async (req, res) => {

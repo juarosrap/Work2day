@@ -7,6 +7,7 @@ router.get("/", candidatoController.obtenerCandidatos);
 router.get("/:id", candidatoController.obtenerCandidatoPorId);
 router.post("/register", candidatoController.crearCandidato);
 router.post("/login", candidatoController.loginCandidato);
+router.post("/logout", candidatoController.logoutCandidato);
 router.put("/:id", candidatoController.actualizarCandidato);
 router.delete("/:id", candidatoController.eliminarCandidato);
 

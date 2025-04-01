@@ -7,6 +7,7 @@ router.get("/", empleadorEmpresaController.obtenerEmpleadoresEmpresa);
 router.get("/:id", empleadorEmpresaController.obtenerEmpleadorEmpresaPorId);
 router.post("/register", empleadorEmpresaController.crearEmpleadorEmpresa);
 router.post("/login",empleadorEmpresaController.loginEmpleadorEmpresa);
+router.post("/logout", empleadorEmpresaController.logoutEmpleadorEmpresa);
 router.put("/:id", empleadorEmpresaController.actualizarEmpleadorEmpresa);
 router.delete("/:id", empleadorEmpresaController.eliminarEmpleadorEmpresa);
 

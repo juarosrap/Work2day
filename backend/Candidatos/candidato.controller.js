@@ -135,6 +135,20 @@ exports.loginCandidato = async (req, res) => {
   }
 };
 
+//Logout de un candidato
+exports.logoutCandidato = async (req,res) => {
+  try {
+    res.clearCookie('access_token')
+    .json({message: 'Logout succesful' })
+    
+  } catch(error) {
+    res.status(500).json({
+      error: "Error al cerrar sesión",
+      detalle: error.message,
+    });
+  }
+}
+
 
 // Actualizar un candidato
 exports.actualizarCandidato = async (req, res) => {
