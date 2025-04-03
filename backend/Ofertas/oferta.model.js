@@ -10,7 +10,7 @@ const OfertaSchema = new Schema({
   salario: Number,
   imagen: String,
   estado: { 
-    type: String, enum: ["Abierta", "Cerrada", "Pendiente"] 
+    type: String, enum: ["Activa", "Pausada", "Expirada", "Retirada"] 
   },
   aplicaciones: [{ 
     type: Schema.Types.ObjectId, 

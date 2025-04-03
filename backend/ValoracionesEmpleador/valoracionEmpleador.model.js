@@ -6,7 +6,7 @@ const ValoracionEmpleadorSchema = new Schema({
     type: Number,
     required: true,
   },
-  reseña: {
+  comentario: {
     type: String,
     required: true,
   },
