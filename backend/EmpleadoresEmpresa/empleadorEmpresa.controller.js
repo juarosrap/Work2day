@@ -109,16 +109,13 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
-    const contrasenaValida = await bcrypt.compare(
-      contrasena,
-      empleadorExistente.contrasena
-    );
+    const contrasenaValida = await bcrypt.compare(contrasena,empleadorExistente.contrasena);
 
     if (!contrasenaValida) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       {
         id: empleadorExistente._id,
         correo: empleadorExistente.correo,
@@ -127,11 +124,26 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
       { expiresIn: "1h" }
     );
 
+    const refreshToken = jwt.sign(
+      {
+        id: empleadorExistente._id,
+        tokenVersion: empleadorExistente.tokenVersion || 0,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+
     res
-      .cookie("access_token", token, {
+      .cookie("access_token", accessToken, {
         httpOnly: true,
         sameSite: "strict",
         maxAge: 1000 * 60 * 60,
+      })
+      .cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        sameSite: "strict",
+        path: "/api/empleadores-empresa/refresh",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json({
@@ -141,7 +153,7 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
           nombre: empleadorExistente.nombre,
           correo: empleadorExistente.correo,
         },
-        token,
+        accessToken,
       });
   } catch (error) {
     res.status(500).json({
@@ -151,11 +163,70 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
   }
 };
 
+exports.refreshToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refresh_token;
+
+    if (!refreshToken) {
+      return res.status(401).json({ error: "Refresh token no proporcionado" });
+    }
+
+    try {
+      const payload = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET
+      );
+
+      const empleador = await EmpleadorEmpresa.findById(payload.id);
+
+      if (!empleador) {
+        return res.status(403).json({ error: "empleador no encontrado" });
+      }
+
+      if (payload.tokenVersion !== empleador.tokenVersion) {
+        return res.status(403).json({ error: "Token ya no es válido" });
+      }
+
+      
+      const newAccessToken = jwt.sign(
+        {
+          id: empleador._id,
+          correo: empleador.correo,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "15m" }
+      );
+
+      
+      res
+        .cookie("access_token", newAccessToken, {
+          httpOnly: true,
+          sameSite: "strict",
+          maxAge: 15 * 60 * 1000,
+        })
+        .json({
+          mensaje: "Token renovado exitosamente",
+          accessToken: newAccessToken,
+        });
+    } catch (error) {
+      return res
+        .status(403)
+        .json({ error: "Refresh token inválido o expirado" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al renovar token",
+      detalle: error.message,
+    });
+  }
+};
+
 //Logout de un enmpleador
 exports.logoutEmpleadorEmpresa = async (req,res) => {
   try {
     res.clearCookie('access_token')
-    .json({message: 'Logout succesful' })
+       .clearCookie('refresh_token')
+       .json({message: 'Logout succesful' })
     
   } catch(error) {
     res.status(500).json({

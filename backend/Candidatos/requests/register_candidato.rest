@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "nombre" : "juan",
-  "correo": "javrosrap.com",
+  "correo": "juanana.com",
   "telefono": "123456789",
   "fechaNacimiento": "1990-05-15",
   "fotoPerfil": "https://example.com/foto.jpg",
