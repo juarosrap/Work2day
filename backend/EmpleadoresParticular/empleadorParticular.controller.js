@@ -127,13 +127,13 @@ exports.loginEmpleadorParticular = async (req, res) => {
     );
 
     const refreshToken = jwt.sign(
-          {
-            id: candidatoExistente._id,
-            tokenVersion: candidatoExistente.tokenVersion || 0,
-          },
-          process.env.REFRESH_TOKEN_SECRET,
-          { expiresIn: "7d" } 
-        );
+      {
+        id: empleadorExistente._id,
+        tokenVersion: empleadorExistente.tokenVersion || 0,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res
       .cookie("access_token", accessToken, {
