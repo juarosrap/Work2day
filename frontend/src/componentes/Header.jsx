@@ -1,24 +1,39 @@
-import "../Header.css";
+import { useState } from "react";
+import "../styles/Header.css";
+import logo from "../assets/logoWork2Day.png";
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <header className="header">
-      
-      <div className="logo"><img src="./logoWork2Day.png"></img></div>
+      <div className="logo">
+        <img src={logo} alt="Work2Day Logo" />
+      </div>
 
-      
-      <nav className="nav">
-        <a href="#" className="active">
-          Home
-        </a>
-        <a href="#">About us</a>
-        <a href="#">Jobs</a>
-        <a href="#">Contact</a>
-      </nav>
+      <div className="menu-icon" onClick={toggleMenu}>
+        <div className={`menu-line ${menuOpen ? "open" : ""}`}></div>
+        <div className={`menu-line ${menuOpen ? "open" : ""}`}></div>
+        <div className={`menu-line ${menuOpen ? "open" : ""}`}></div>
+      </div>
 
-      <div className="buttons">
-        <button className="btn-outline">Sign up</button>
-        <button className="btn-primary">Sign in</button>
+      <div className={`right-section ${menuOpen ? "open" : ""}`}>
+        <nav className="nav">
+          <a href="#" className="active">
+            Home
+          </a>
+          <a href="#">About us</a>
+          <a href="#">Jobs</a>
+          <a href="#">Contact</a>
+          <div className="nav-buttons">
+            <button className="btn-outline">Sign up</button>
+            <button className="btn-primary">Sign in</button>
+          </div>
+        </nav>
       </div>
     </header>
   );

@@ -1,0 +1,166 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.logo {
+  height: 40px;
+}
+
+.logo img {
+  height: 100%;
+  width: auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #6B7280;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav a.active {
+  color: #3B82F6;
+}
+
+.nav a:hover {
+  color: #3B82F6;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-outline {
+  padding: 8px 20px;
+  border: 1px solid #3B82F6;
+  border-radius: 6px;
+  background: transparent;
+  color: #3B82F6;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.btn-primary {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #3B82F6;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #2563EB;
+}
+
+.menu-icon {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+}
+
+.menu-line {
+  height: 3px;
+  width: 100%;
+  background-color: #3B82F6;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para el menú hamburguesa activo */
+.menu-line.open:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu-line.open:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-line.open:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Media query para pantallas móviles */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: flex;
+    z-index: 1001;
+  }
+
+  .right-section {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    padding: 80px 20px 20px;
+  }
+
+  .right-section.open {
+    right: 0;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .nav a {
+    font-size: 18px;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .nav-buttons {
+    margin-top: 20px;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .btn-outline, .btn-primary {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
+}
+
+/* Media query para pantallas medianas */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .nav {
+    gap: 20px;
+  }
+}
+
