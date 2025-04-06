@@ -1,12 +1,12 @@
 .main {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Asegúrate que el contenedor principal tenga altura */
+    height: 100%; 
 }
 
 .main > div {
-    height: 50%; /* Cada div hijo ocupará el 50% del contenedor */
-    box-sizing: border-box; /* Para que el padding no afecte las dimensiones */
+    height: 50%; 
+    box-sizing: border-box; 
     
 }
 
@@ -17,11 +17,21 @@
     align-items: center;
 }
 
-/* Para distinguir visualmente las dos filas (opcional) */
 .main > div:first-child {
-    background-color: #8f3636;
+    background-color: #ffffff;
 }
 
 .main > div:last-child {
     background-color: #4c1717;
+}
+
+@media (max-width: 768px) {
+  .section-top {
+    flex-direction: column; /* stack vertical en móvil */
+    padding: 20px;
+  }
+
+  .main > div {
+    height: auto; /* Altura automática para scroll */
+  }
 }

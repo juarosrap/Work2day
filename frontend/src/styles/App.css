@@ -22,3 +22,15 @@ html, body, #root {
   overflow-y: auto; /* Para permitir scroll solo si el contenido es muy grande */
   background-color: #5a2727;
 }
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 80px; /* altura del header fijo */
+  padding-bottom: 250px; /* altura del footer fijo */
+}
+
+.main-content {
+  flex: 1;
+}
