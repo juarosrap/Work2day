@@ -17,28 +17,30 @@ export default function HeroSection() {
         </div>
 
         <div className="hero-right-section">
-          <form class="contact-form">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" placeholder="Name" />
+          <form className="contact-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Name" />
+              </div>
+
+              <div className="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" placeholder="Phone Number" />
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="phone">Phone</label>
-              <input type="tel" id="phone" placeholder="Phone Number" />
-            </div>
-
-            <div class="form-group">
+            <div className="form-group">
               <label for="email">Email</label>
               <input type="email" id="email" placeholder="Email" />
             </div>
 
-            <div class="form-group">
+            <div className="form-group">
               <label for="message">Message</label>
               <textarea id="message" placeholder="Your Message"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary submit-btn">
+            <button type="submit" className="btn btn-primary">
               Submit
             </button>
           </form>
