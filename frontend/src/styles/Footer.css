@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
+  background-color: #fff;
   width: 100%;
   height: 250px;
   box-sizing: border-box;
@@ -39,11 +39,26 @@ a {
   filter: brightness(0.8);
 }
 
+.logos {
+  margin-top: auto;
+}
+
 .conditions {
   display: flex;
   flex-direction: row;
-  background-color: #bec2c9;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f1f5fc  ;
   width: 100%;
   margin-top: auto; 
   height: 50px; 
+}
+
+.copyright {
+  color:  #a9b0c2;
+}
+
+.terms{
+  color: #a9b0c2;
+  text-decoration: underline ;
 }

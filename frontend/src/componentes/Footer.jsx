@@ -34,10 +34,10 @@ export default function Footer() {
         </a>
       </div>
       <div className="conditions">
-        <div className="terms">
-          Hola
+        <div className="copyright">
+          Copyright ©.2025 <strong>Website</strong>. All rights reserved
         </div>
-        
+        <div className="terms">Terms & Conditions | Privay Policy</div>
       </div>
     </footer>
   );
