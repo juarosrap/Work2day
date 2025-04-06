@@ -19,8 +19,6 @@ html, body, #root {
   bottom: 250px; /* Altura exacta de tu footer */
   left: 0;
   right: 0;
-  overflow-y: auto; /* Para permitir scroll solo si el contenido es muy grande */
-  background-color: #5a2727;
 }
 
 .app {

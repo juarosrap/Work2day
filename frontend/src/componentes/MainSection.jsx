@@ -1,14 +1,16 @@
 import "../styles/MainSection.css";
 import HeroSection from "./HeroSection.jsx";
+import FeaturesSection from "./FeaturesSection.jsx";
 
 export default function MainSection(){
     return (
       <div className="main">
         <div className="section-top">
-            <HeroSection/>
+          <HeroSection />
         </div>
+        <hr />
         <div className="section-bottom">
-            Fila 2
+          <FeaturesSection />
         </div>
       </div>
     );

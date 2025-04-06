@@ -17,12 +17,19 @@
     align-items: center;
 }
 
+.section-bottom{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50% 50%;
+}
+
 .main > div:first-child {
     background-color: #ffffff;
 }
 
 .main > div:last-child {
-    background-color: #4c1717;
+    background-color: #ffffff;
+    color: #1c2555 ;
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,5 @@
 .hero-left-section {
-    color: #6c748d;
+    color: #1c2555;
 }
 
 .hero-right-section {
@@ -69,6 +69,7 @@ input,label {
     height: 40px;
     width: 100px;
     align-self: center;
+    margin-bottom: 10px;
 }
 
 

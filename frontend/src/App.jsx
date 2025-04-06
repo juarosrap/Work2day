@@ -6,11 +6,12 @@ import MainSection from "./componentes/MainSection.jsx";
 export default function App() {
   return (
     <div className="app">
-      <Header/>
+      <Header />
       <div className="main-content">
-        <MainSection/>
+        <MainSection />
       </div>
-      <Footer/>
+      <hr />
+      <Footer />
     </div>
   );
 }
