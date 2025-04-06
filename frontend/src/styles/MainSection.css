@@ -1,0 +1,27 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Asegúrate que el contenedor principal tenga altura */
+}
+
+.main > div {
+    height: 50%; /* Cada div hijo ocupará el 50% del contenedor */
+    box-sizing: border-box; /* Para que el padding no afecte las dimensiones */
+    
+}
+
+.section-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* Para distinguir visualmente las dos filas (opcional) */
+.main > div:first-child {
+    background-color: #8f3636;
+}
+
+.main > div:last-child {
+    background-color: #4c1717;
+}

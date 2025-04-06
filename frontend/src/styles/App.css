@@ -1,3 +1,24 @@
-.content {
-  margin-top: 70px; 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 70px; /* Altura exacta de tu header */
+  bottom: 250px; /* Altura exacta de tu footer */
+  left: 0;
+  right: 0;
+  overflow-y: auto; /* Para permitir scroll solo si el contenido es muy grande */
+  background-color: #5a2727;
 }
