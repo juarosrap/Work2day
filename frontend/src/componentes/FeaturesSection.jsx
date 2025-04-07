@@ -32,7 +32,7 @@ export default function FeaturesSection() {
             <div class="icon">
               <img src={chart} alt="Icon" />
             </div>
-            <h3>Search a job</h3>
+            <h3>Apply for a job</h3>
             <p>
               Lorem ipsum dolor sit amet nulla adipiscing elit. Nunc maximus,
               nec ut commodo
@@ -45,7 +45,7 @@ export default function FeaturesSection() {
             <div class="icon">
               <img src={job} alt="Icon" />
             </div>
-            <h3>Search a job</h3>
+            <h3>Work!</h3>
             <p>
               Lorem ipsum dolor sit amet nulla adipiscing elit. Nunc maximus,
               nec ut commodo

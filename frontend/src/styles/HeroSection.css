@@ -26,19 +26,29 @@
     grid-column-start: span 2;
 }
 
-
-input,textarea {
-    background-color: white;
-    border-radius: 6px;
-    border-color: #8b92a6;
-}
-
 input {
     margin: 5px;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid #D1D5DB;
 }
 
 input,label {
     color: #6c748d;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  color: #6B7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+textarea {
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid #D1D5DB;
 }
 
 .btn-get {
