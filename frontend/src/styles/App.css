@@ -5,10 +5,9 @@ html, body, #root {
 }
 
 .app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative;
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
 }
 
 .main-content {

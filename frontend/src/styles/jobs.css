@@ -1,0 +1,47 @@
+h1 {
+    color: black;
+    margin-left: 60px;
+}
+.jobs {
+    display: flex;
+    flex-direction: column;
+}
+
+.jobs-top-section {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.filters {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.title{
+  display: grid;
+  place-items: center start;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.search-bar input{
+    border-radius: 60px;
+}
+
+.search-button{
+    background-color: #3B82F6;
+    height: 35px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: 1 fr;
+    place-items: center;
+    gap: 2rem;
+}
