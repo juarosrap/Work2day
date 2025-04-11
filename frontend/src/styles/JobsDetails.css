@@ -1,0 +1,26 @@
+.main-detail {
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr 1fr 1fr 1fr 2fr;
+    color: black;
+}
+
+.enterprise-section, .contact-section, .about-section {
+    background-color: #f1f5fc;
+}
+
+.left-side {
+    margin-left: 5%;
+}
+
+.enterprise-section, .contact-section,
+ .about-section, .application-section, 
+ .salary-section, .attachments-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+.apply-button {
+    background-color: #3B82F6;
+    margin-left: auto;
+}

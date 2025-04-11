@@ -4,6 +4,7 @@ import Footer from "./componentes/Footer.jsx";
 import MainSection from "./componentes/MainSection.jsx";
 import { Route } from "react-router-dom";
 import Jobs from "./componentes/Jobs.jsx";
+import JobsDetail from "./componentes/JobsDetail.jsx";
 
 export default function App() {
   return (
@@ -12,9 +13,12 @@ export default function App() {
       {/* <div className="main-content">
         <MainSection />
       </div> */}
-      <Jobs/>
+      {/* <JobsDetail/> */}
+      
+      <JobsDetail />
+      
       <hr />
-      <Footer /> 
+      <Footer />
     </div>
   );
 }
