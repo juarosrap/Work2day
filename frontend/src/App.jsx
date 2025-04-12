@@ -5,6 +5,7 @@ import MainSection from "./componentes/MainSection.jsx";
 import { Route } from "react-router-dom";
 import Jobs from "./componentes/Jobs.jsx";
 import JobsDetail from "./componentes/JobsDetail.jsx";
+import DashBoard from "./componentes/DashBoard.jsx";
 
 export default function App() {
   return (
@@ -14,9 +15,9 @@ export default function App() {
         <MainSection />
       </div> */}
       {/* <JobsDetail/> */}
-      
-      <JobsDetail />
-      
+
+      <DashBoard />
+
       <hr />
       <Footer />
     </div>

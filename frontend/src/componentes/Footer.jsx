@@ -12,7 +12,7 @@ export default function Footer() {
         <img src={logo} alt="Work2Day Logo" />
       </div>
       <div className="links">
-        <a href="#" className="active">
+        <a href="#" >
           Home
         </a>
         <a href="#">About us</a>
