@@ -1,0 +1,233 @@
+.header-profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.banner {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(90deg, #4e00c2, #b100c9);
+  border-radius: 10px 10px 0 0;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-40px);
+  margin: 0 2rem;
+}
+
+.profile-photo img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px #e5e5e5;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-role {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.profile-tags {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+}
+
+.main-profile {
+    display: grid;
+    grid-template-rows: 0.4fr 1fr;
+}
+
+.bottom-profile {
+    color: black;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 2fr;
+}
+
+.exp-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: auto;
+  margin-right: 10px;
+}
+
+.past-job {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer; 
+}
+
+.past-job:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background-color: #f9f9f9; 
+}
+
+.box {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+
+img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.job-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-title {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.job-dates {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.job-description {
+  color: #333;
+}
+
+
+.opinions-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.review:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.review img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-name {
+  font-weight: bold;
+  margin: 0;
+}
+
+.review-role {
+  color: #777;
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.stars {
+  color: #f4c150;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.review-text {
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .main-profile {
+    grid-template-rows: auto auto;
+  }
+
+  .bottom-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .exp-profile {
+    margin: 0;
+  }
+
+  .past-job {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .review {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .review img {
+    margin-bottom: 0.5rem;
+  }
+
+  .box {
+    margin: 0.5rem 0;
+    padding: 1rem;
+  }
+
+  img {
+    height: 45px;
+    width: 45px;
+  }
+}

@@ -6,6 +6,7 @@ import { Route } from "react-router-dom";
 import Jobs from "./componentes/Jobs.jsx";
 import JobsDetail from "./componentes/JobsDetail.jsx";
 import DashBoard from "./componentes/DashBoard.jsx";
+import Profile from "./componentes/Profile.jsx";
 
 export default function App() {
   return (
@@ -16,8 +17,8 @@ export default function App() {
       </div> */}
       {/* <JobsDetail/> */}
 
-      <DashBoard />
-
+      {/* <DashBoard /> */}
+        <Profile/>
       <hr />
       <Footer />
     </div>
