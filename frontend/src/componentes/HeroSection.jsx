@@ -1,4 +1,5 @@
 import "../styles/HeroSection.css"
+import {Link} from "react-router-dom";
 
 export default function HeroSection() {
     return (
@@ -11,7 +12,8 @@ export default function HeroSection() {
             rgesdgsdafasdfsahgfd sadgargrg
           </p>
           <button className="btn-get">
-            Get started <span class="arrow">→</span>
+            <Link to="form" className="link">Get started</Link>
+            <span className="arrow">→</span>
           </button>
           <button className="btn-learn">Learn more</button>
         </div>
@@ -39,7 +41,7 @@ export default function HeroSection() {
           </div>
           <div className="form-group">
             <button type="submit" className="btn-submit">
-              Submit
+              <Link to="form" className="link">Submit</Link>
             </button>
           </div>
         </div>

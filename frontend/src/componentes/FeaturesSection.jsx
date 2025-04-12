@@ -16,7 +16,7 @@ export default function FeaturesSection() {
         </div>
         <div className="feature-bottom-section">
           <div className="card">
-            <div class="icon">
+            <div className="icon">
               <img src={work} alt="Icon" />
             </div>
             <h3>Search a job</h3>
@@ -24,12 +24,12 @@ export default function FeaturesSection() {
               Lorem ipsum dolor sit amet nulla adipiscing elit. Nunc maximus,
               nec ut commodo
             </p>
-            <a href="#" class="learn-more">
-              Learn more <span class="arrow">→</span>
+            <a href="#" className="learn-more">
+              Learn more <span className="arrow">→</span>
             </a>
           </div>
           <div className="card">
-            <div class="icon">
+            <div className="icon">
               <img src={chart} alt="Icon" />
             </div>
             <h3>Apply for a job</h3>
@@ -37,12 +37,12 @@ export default function FeaturesSection() {
               Lorem ipsum dolor sit amet nulla adipiscing elit. Nunc maximus,
               nec ut commodo
             </p>
-            <a href="#" class="learn-more">
-              Learn more <span class="arrow">→</span>
+            <a href="#" className="learn-more">
+              Learn more <span className="arrow">→</span>
             </a>
           </div>
           <div className="card">
-            <div class="icon">
+            <div className="icon">
               <img src={job} alt="Icon" />
             </div>
             <h3>Work!</h3>
@@ -50,8 +50,8 @@ export default function FeaturesSection() {
               Lorem ipsum dolor sit amet nulla adipiscing elit. Nunc maximus,
               nec ut commodo
             </p>
-            <a href="#" class="learn-more">
-              Learn more <span class="arrow">→</span>
+            <a href="#" className="learn-more">
+              Learn more <span className="arrow">→</span>
             </a>
           </div>
         </div>

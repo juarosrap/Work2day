@@ -1,4 +1,5 @@
-import "../styles/JobsDetails.css"
+import "../styles/JobsDetails.css";
+import { Link } from "react-router-dom";
 
 export default function JobsDetail() {
     return (
@@ -31,7 +32,7 @@ export default function JobsDetail() {
         <div className="attachments-section">
           <div className="left-side">Attachments</div>
           <div className="right-side">
-            <button className="apply-button">Apply</button>
+            <button className="apply-button"><Link to="apply" className="link">Apply</Link></button>
           </div>
         </div>
       </div>

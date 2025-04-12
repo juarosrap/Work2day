@@ -91,6 +91,10 @@
   cursor: pointer;
 }
 
+.link {
+  color: white !important;
+}
+
 .menu-line {
   height: 3px;
   width: 100%;

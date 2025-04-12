@@ -45,6 +45,10 @@ label {
   font-weight: 500;
 }
 
+.link {
+    color: white;
+}
+
 textarea {
     background-color: white;
     border-radius: 6px;

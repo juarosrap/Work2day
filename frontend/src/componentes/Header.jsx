@@ -29,8 +29,12 @@ export default function Header() {
           <Link to="/jobs">Jobs</Link>
           <Link to="/contact">Contact</Link>
           <div className="nav-buttons">
-            <button className="btn-outline">Sign up</button>
-            <button className="btn-primary">Sign in</button>
+            <button className="btn-outline">
+              <Link to="form">Sign up</Link>
+            </button>
+            <button className="btn-primary">
+              <Link to="loginForm" className="link">Sign in</Link>
+            </button>
           </div>
         </nav>
       </div>

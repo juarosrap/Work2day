@@ -7,6 +7,9 @@ import Jobs from "./componentes/Jobs.jsx";
 import JobsDetail from "./componentes/JobsDetail.jsx";
 import DashBoard from "./componentes/DashBoard.jsx";
 import Profile from "./componentes/Profile.jsx";
+import ModalForm from "./componentes/ModalForm.jsx";
+import LoginModal from "./componentes/loginModal.jsx";
+import ApplyForm from "./componentes/ApplyForm.jsx";
 
 export default function App() {
   return (
@@ -14,8 +17,12 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/form" element={<ModalForm />} />
+        <Route path="/loginForm" element={<LoginModal />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/jobsDetail" element={<JobsDetail />} />
+        <Route path="/jobs/jobsDetail/apply" element={<ApplyForm />} />
+        <Route path="/jobs/apply" element={<ApplyForm />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

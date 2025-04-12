@@ -11,15 +11,15 @@ export default function JobCard(){
         <div className="job-content">
           <div className="job-meta">
             <span className="job-date">
-              <img className="icon" src={calendar} alt="calendario" />
+              <img className="icon-job" src={calendar} alt="calendario" />
               10/03/2025
             </span>
             <span className="job-city">
-              <img className="icon" src={location} alt="calendario" />
+              <img className="icon-job" src={location} alt="calendario" />
               Sevilla
             </span>
             <span className="job-company">
-              <img className="icon" src={office} alt="calendario" />
+              <img className="icon-job" src={office} alt="calendario" />
               US
             </span>
           </div>
@@ -31,7 +31,7 @@ export default function JobCard(){
             <Link to="jobsDetail" className="read-more">
               Read more
             </Link>
-            <button className="apply-btn">Apply</button>
+            <button className="apply-btn"><Link to="apply" className="link">Apply</Link></button>
           </div>
         </div>
       </div>
