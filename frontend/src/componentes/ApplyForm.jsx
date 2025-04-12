@@ -19,13 +19,13 @@ export default function ApplyForm({ onClose }) {
     e.preventDefault();
     console.log("CV enviado:", formData);
     // Aquí podrías hacer una llamada a la API si deseas enviarlo
-    onClose(); // cerrar modal después de enviar
+    onClose(); 
   };
 
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <h2 style={{ textAlign: "center" }}>Enviar Currículum</h2>
+        <h2 style={{ textAlign: "center" }}>Aplicar a Oferta</h2>
         <form onSubmit={handleSubmit} className="registro-form">
           <label>Correo</label>
           <input
@@ -36,14 +36,17 @@ export default function ApplyForm({ onClose }) {
             required
           />
 
-          <label>CV (URL o enlace de Drive, PDF, etc.)</label>
-          <input
-            type="text"
-            name="cvUrl"
-            value={formData.cvUrl}
-            onChange={handleChange}
-            required
-          />
+          <h3 style={{ textAlign: "center" }}>Currículum</h3>
+          <label>Información Personal</label>
+          <input name="informacionPersonal" onChange={handleChange} />
+          <label>Ubicación</label>
+          <input name="ubicacionCurriculum" onChange={handleChange} />
+          <label>Formación Académica</label>
+          <input name="formacionAcademica" onChange={handleChange} />
+          <label>Experiencia Laboral</label>
+          <input name="experienciaLaboral" onChange={handleChange} />
+          <label>Idiomas (separados por coma)</label>
+          <input name="idiomas" onChange={handleChange} />
 
           <button type="submit">Enviar</button>
         </form>
