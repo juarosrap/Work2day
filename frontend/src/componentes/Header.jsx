@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/Header.css";
 import logo from "../assets/logoWork2Day.png";
+import {Link} from "react-router-dom";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,12 +24,10 @@ export default function Header() {
 
       <div className={`right-section ${menuOpen ? "open" : ""}`}>
         <nav className="nav">
-          <a href="#" className="active">
-            Home
-          </a>
-          <a href="#">About us</a>
-          <a href="#">Jobs</a>
-          <a href="#">Contact</a>
+          <Link to="/">Home</Link>
+          <Link to="/">About us</Link>
+          <Link to="/jobs">Jobs</Link>
+          <Link to="/contact">Contact</Link>
           <div className="nav-buttons">
             <button className="btn-outline">Sign up</button>
             <button className="btn-primary">Sign in</button>

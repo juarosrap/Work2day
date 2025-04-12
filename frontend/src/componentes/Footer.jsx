@@ -4,6 +4,7 @@ import faceLogo from "../assets/icons8-facebook.svg"
 import insLogo from "../assets/icons8-instagram.svg"
 import linkLogo from "../assets/icons8-linkedin-circled.svg";
 import youtubeLogo from "../assets/icons8-youtube.svg";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -12,12 +13,10 @@ export default function Footer() {
         <img src={logo} alt="Work2Day Logo" />
       </div>
       <div className="links">
-        <a href="#" >
-          Home
-        </a>
-        <a href="#">About us</a>
-        <a href="#">Jobs</a>
-        <a href="#">Contact</a>
+        <Link to="/">Home</Link>
+        <Link to="/">About us</Link>
+        <Link to="/jobs">Jobs</Link>
+        <Link to="/contact">Contact</Link>
       </div>
       <div className="logos">
         <a>

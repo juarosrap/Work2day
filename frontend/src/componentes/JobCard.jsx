@@ -2,6 +2,7 @@ import "../styles/JobCard.css";
 import calendar from "../assets/calendar-icon.svg";
 import location from "../assets/location-icon.svg";
 import office from "../assets/office-icon.svg";
+import { Link } from "react-router-dom";
 
 export default function JobCard(){
     return (
@@ -27,9 +28,9 @@ export default function JobCard(){
             Se busca camarero a media jornada en el restaurante el parlanchin.
           </p>
           <div className="job-actions">
-            <a href="#" className="read-more">
+            <Link to="jobsDetail" className="read-more">
               Read more
-            </a>
+            </Link>
             <button className="apply-btn">Apply</button>
           </div>
         </div>
