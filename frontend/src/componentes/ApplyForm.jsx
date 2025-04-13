@@ -18,7 +18,7 @@ export default function ApplyForm({ onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("CV enviado:", formData);
-    // Aquí podrías hacer una llamada a la API si deseas enviarlo
+    // Llamada a API
     onClose(); 
   };
 

@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
 
 export default function Jobs() {
-  
   const [salario, setSalario] = useState(500);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  let API = "http://localhost:5000/api/ofertas";
+
+  async function getJobs(setJobs, setLoading) {
+    try {
+      const response = await fetch(API);
+      const data = await response.json();
+      setJobs(data);
+    } catch (error) {
+      console.error("Error al obtener trabajos:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getJobs(setJobs, setLoading);
+    console.log(jobs)
+  }, []);
   
+
+
   const handleSalarioChange = (e) => {
     setSalario(e.target.value);
   };
@@ -51,12 +72,15 @@ export default function Jobs() {
         <button className="search-button">Search</button>
       </div>
       <div className="cards">
-        <JobCard />
-        <JobCard />
+        {loading ? (
+          <p>Cargando trabajos...</p>
+        ) : jobs.length === 0 ? (
+          <p>No se encontraron trabajos.</p>
+        ) : (
+          jobs.map((job) => <JobCard key={job.id} job={job} />)
+        )}
       </div>
-      <div className="pagination">
-        
-      </div>
+      <div className="pagination"></div>
     </div>
   );
 }
