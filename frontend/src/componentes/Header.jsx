@@ -68,30 +68,35 @@ export default function Header() {
             Contact
           </NavLink>
           {isAuthenticated ? (
-            
             <div className="nav-buttons">
               <div className="user-info">
-                <span className="welcome">Hola, {currentUser.nombre}</span>
+                {(currentUser.userType === "empleadorParticular" ||
+                  currentUser.userType === "empleadorEmpresa") && (
+                  <NavLink
+                    to={`dashboard/${currentUser.id}`}
+                    className={({ isActive }) => {
+                      return isActive ? "is-active" : undefined;
+                    }}
+                  >
+                    Dashboard
+                  </NavLink>
+                )}
+                <span className="welcome"> Hola, {currentUser.nombre}</span>
               </div>
               {currentUser.userType === "candidato" && (
-                <NavLink to={`profile/${currentUser.id}`} className="btn-outline">
+                <NavLink
+                  to={`profile/${currentUser.id}`}
+                  className="btn-outline"
+                >
                   Mi Perfil
                 </NavLink>
               )}
 
-              {(currentUser.userType === "empleadorParticular" || currentUser.userType === "empleadorEmpresa") && (
-                <NavLink to={`dashboard/${currentUser.id}`} className={({ isActive }) => {
-              return isActive ? "is-active" : undefined;
-            }}>
-                  Dashboard
-                </NavLink>
-              )}
               <button onClick={handleLogout} className="btn-primary">
                 Cerrar Sesión
               </button>
             </div>
           ) : (
-            
             <div className="nav-buttons">
               <button className="btn-outline">
                 <Link to="form">Sign up</Link>
@@ -101,7 +106,7 @@ export default function Header() {
                   Sign in
                 </Link>
               </button>
-          </div>
+            </div>
           )}
         </nav>
       </div>

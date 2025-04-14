@@ -111,6 +111,13 @@
   transition: all 0.3s ease;
 }
 
+.user-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
 /* Estilos para el menú hamburguesa activo */
 .menu-line.open:nth-child(1) {
   transform: translateY(9px) rotate(45deg);
