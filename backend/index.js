@@ -5,11 +5,18 @@ const cors = require("cors");
 require("dotenv").config();
 const mongoose = require("mongoose");
 app.use(express.json());
-app.use(cors());
 app.use(router);
 
 
 const PORT = process.env.PORT || 5000;
+
+
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true,               
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'Authorization'] 
+}));
 
 // Importar rutas de componentes
 const candidatoRoutes = require("./Candidatos/candidato.routes");
@@ -22,10 +29,10 @@ const valoracionEmpleadorRoutes = require("./ValoracionesEmpleador/valoracionEmp
 
 
 //Rutas
-app.use("/api/candidatos", candidatoRoutes);
+app.use("/api/candidato", candidatoRoutes);
 app.use("/api/aplicaciones", aplicacionRoutes);
-app.use("/api/empleadores-empresa", empleadorEmpresaRoutes);
-app.use("/api/empleadores-particular", empleadorParticularRoutes);
+app.use("/api/empleadorEmpresa", empleadorEmpresaRoutes);
+app.use("/api/empleadorParticular", empleadorParticularRoutes);
 app.use("/api/ofertas", ofertaRoutes);
 app.use("/api/valoraciones-candidato", valoracionCandidatoRoutes);
 app.use("/api/valoraciones-empleador", valoracionEmpleadorRoutes);

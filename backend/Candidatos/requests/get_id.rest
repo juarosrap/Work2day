@@ -1,1 +1,1 @@
-GET http://localhost:5000/api/candidatos/67e2f84b903202298a9c4678
+GET http://localhost:5000/api/candidato/67e2f84b903202298a9c4678

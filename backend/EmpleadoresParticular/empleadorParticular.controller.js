@@ -165,7 +165,7 @@ exports.loginEmpleadorParticular = async (req, res) => {
   }
 };
 
-exports.getCurrentEmpleadorParticular = async (req, res) => {
+exports.getCurrentUser= async (req, res) => {
   try {
     // req.userId debería estar disponible gracias al middleware de autenticación
     const empleadorId = req.userId;

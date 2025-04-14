@@ -155,7 +155,7 @@ exports.loginCandidato = async (req, res) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    // req.userId debería estar disponible gracias al middleware de autenticación
+    
     const candidatoId = req.userId;
 
     if (!candidatoId) {
@@ -164,7 +164,7 @@ exports.getCurrentUser = async (req, res) => {
 
     const candidato = await Candidato.findById(candidatoId).select(
       "-contrasena"
-    ); // Excluimos la contraseña
+    ); 
 
     if (!candidato) {
       return res.status(404).json({ error: "Usuario no encontrado" });
@@ -174,7 +174,6 @@ exports.getCurrentUser = async (req, res) => {
       id: candidato._id,
       nombre: candidato.nombre,
       correo: candidato.correo,
-      // Añadir cualquier otra información necesaria
     });
   } catch (error) {
     res.status(500).json({
