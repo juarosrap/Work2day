@@ -222,7 +222,7 @@ export default function ModalForm() {
 
   const onSubmit = async (data) => {
     if (data.tipo === "candidato") {
-      API = "http://localhost:5000/api/candidatos/register";
+      API = "http://localhost:5000/api/candidato/register";
 
       
       if (data.idiomasRaw) {
