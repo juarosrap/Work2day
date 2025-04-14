@@ -237,9 +237,9 @@ export default function ModalForm() {
       
       delete data.idiomasRaw;
     } else if (data.tipo === "empleadorParticular") {
-      API = "http://localhost:5000/api/empleadores-particular/register";
+      API = "http://localhost:5000/api/empleadorParticular/register";
     } else {
-      API = "http://localhost:5000/api/empleadores-empresa/register";
+      API = "http://localhost:5000/api/empleadorEmpresa/register";
     }
 
     try {

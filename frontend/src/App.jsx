@@ -7,7 +7,7 @@ import Jobs from "./componentes/Jobs.jsx";
 import JobsDetail from "./componentes/JobsDetail.jsx";
 import DashBoard from "./componentes/DashBoard.jsx";
 import Profile from "./componentes/Profile.jsx";
-import ModalForm from "./componentes/ModalForm.jsx";
+import ModalForm from "./componentes/registerModal.jsx";
 import LoginModal from "./componentes/loginModal.jsx";
 import ApplyForm from "./componentes/ApplyForm.jsx";
 

@@ -5,12 +5,8 @@ const { verifyToken } = require("../middleware/auth");
 
 // Rutas para EmpleadorEmpresa
 router.get("/", empleadorEmpresaController.obtenerEmpleadoresEmpresa);
+router.get("/me", verifyToken, empleadorEmpresaController.getCurrentUser);
 router.get("/:id", empleadorEmpresaController.obtenerEmpleadorEmpresaPorId);
-router.get(
-  "/me",
-  verifyToken,
-  empleadorEmpresaController.getCurrentUser
-);
 router.post("/register", empleadorEmpresaController.crearEmpleadorEmpresa);
 router.post("/login",empleadorEmpresaController.loginEmpleadorEmpresa);
 router.post("/refresh", empleadorEmpresaController.refreshToken);

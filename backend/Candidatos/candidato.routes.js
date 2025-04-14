@@ -5,8 +5,8 @@ const { verifyToken } = require("../middleware/auth");
 
 // Rutas para Candidatos
 router.get("/", candidatoController.obtenerCandidatos);
-router.get("/:id", candidatoController.obtenerCandidatoPorId);
 router.get("/me", verifyToken, candidatoController.getCurrentUser);
+router.get("/:id", candidatoController.obtenerCandidatoPorId);
 router.post("/register", candidatoController.crearCandidato);
 router.post("/login", candidatoController.loginCandidato);
 router.post("/refresh", candidatoController.refreshToken);

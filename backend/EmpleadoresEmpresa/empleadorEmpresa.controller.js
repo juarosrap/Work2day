@@ -136,19 +136,17 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
     res
       .cookie("access_token", accessToken, {
         httpOnly: true,
-        sameSite: "strict",
         maxAge: 1000 * 60 * 60,
       })
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
-        sameSite: "strict",
-        path: "/api/empleadores-empresa/refresh",
+        path: "/api/empleadorEmpresa/refresh",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json({
         mensaje: "Login exitoso",
-        empleador: {
+        empleadorEmpresa: {
           id: empleadorExistente._id,
           nombre: empleadorExistente.nombre,
           correo: empleadorExistente.correo,
@@ -163,37 +161,23 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
   }
 };
 
-// For EmpleadorEmpresa
-exports.getCurrentUser= async (req, res) => {
+
+exports.getCurrentUser = async (req, res) => {
   try {
-    // req.userId debería estar disponible gracias al middleware de autenticación
-    const empleadorId = req.userId;
+    console.log("Obteniendo información del empleador con ID:", req.userId);
 
-    if (!empleadorId) {
-      return res.status(401).json({ error: "No autenticado" });
-    }
-
-    const empleador = await EmpleadorEmpresa.findById(empleadorId).select(
-      "-contrasena"
-    ); // Excluimos la contraseña
+    const empleador = await EmpleadorEmpresa.findById(req.userId).select("-contrasena");
 
     if (!empleador) {
-      return res.status(404).json({ error: "Empleador no encontrado" });
+      console.log("No se encontró el empleador con ID:", req.userId);
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    res.json({
-      id: empleador._id,
-      nombre: empleador.nombre,
-      correo: empleador.correo,
-      nombreEmpresa: empleador.nombreEmpresa,
-      correoEmpresa: empleador.correoEmpresa,
-      // Añadir cualquier otra información necesaria
-    });
+    console.log("Empleador encontrado:", empleador);
+    return res.json(empleador);
   } catch (error) {
-    res.status(500).json({
-      error: "Error al obtener información del empleador",
-      detalle: error.message,
-    });
+    console.error("Error en getCurrentUser:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -235,8 +219,8 @@ exports.refreshToken = async (req, res) => {
       res
         .cookie("access_token", newAccessToken, {
           httpOnly: true,
-          sameSite: "strict",
           maxAge: 15 * 60 * 1000,
+          path: '/'
         })
         .json({
           mensaje: "Token renovado exitosamente",

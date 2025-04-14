@@ -125,13 +125,11 @@ exports.loginCandidato = async (req, res) => {
     res
       .cookie("access_token", accessToken, {
         httpOnly: true,
-        sameSite: "strict",
         maxAge: 1000 * 60 * 60,
       })
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
-        sameSite: "strict",
-        path: "/api/candidatos/refresh", 
+        path: "/api/candidato/refresh", 
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -155,31 +153,20 @@ exports.loginCandidato = async (req, res) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    
-    const candidatoId = req.userId;
+    console.log("Obteniendo información del usuario con ID:", req.userId);
 
-    if (!candidatoId) {
-      return res.status(401).json({ error: "No autenticado" });
-    }
-
-    const candidato = await Candidato.findById(candidatoId).select(
-      "-contrasena"
-    ); 
+    const candidato = await Candidato.findById(req.userId);
 
     if (!candidato) {
+      console.log("No se encontró el candidato con ID:", req.userId);
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    res.json({
-      id: candidato._id,
-      nombre: candidato.nombre,
-      correo: candidato.correo,
-    });
+    console.log("Candidato encontrado:", candidato);
+    return res.json(candidato);
   } catch (error) {
-    res.status(500).json({
-      error: "Error al obtener información del usuario",
-      detalle: error.message,
-    });
+    console.error("Error en getCurrentUser:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -221,8 +208,8 @@ exports.refreshToken = async (req, res) => {
       res
         .cookie("access_token", newAccessToken, {
           httpOnly: true,
-          sameSite: "strict",
           maxAge: 15 * 60 * 1000,
+          path: '/'
         })
         .json({
           mensaje: "Token renovado exitosamente",

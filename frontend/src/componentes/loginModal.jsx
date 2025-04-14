@@ -26,14 +26,15 @@ export default function LoginModal() {
   };
 
   const onSubmit = async (data) => {
-    
-    const { tipo, ...credentials } = data;
+    const tipo = data.tipo;
+    const { tipo: _, ...credentials } = data;
 
     const success = await login(credentials, tipo);
 
     if (success) {
       setSuccessMessage("Login exitoso. ¡Bienvenido!");
 
+      console.log(data)
       setTimeout(() => {
         navigate("/");
       }, 2000);
