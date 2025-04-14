@@ -230,11 +230,11 @@ export default function ModalForm() {
           .split(",")
           .map((idioma) => idioma.trim())
           .filter((idioma) => idioma !== "");
-          
+
         data.curriculum.idiomas = idiomasArray;
       }
 
-      // Eliminar el campo idiomasRaw ya que ahora está en curriculum.idiomas
+      
       delete data.idiomasRaw;
     } else if (data.tipo === "empleadorParticular") {
       API = "http://localhost:5000/api/empleadores-particular/register";

@@ -2,13 +2,24 @@ import { useState } from "react";
 import "../styles/Header.css";
 import logo from "../assets/logoWork2Day.png";
 import {Link, NavLink} from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext"; 
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const { currentUser, isAuthenticated, logout } = useAuth();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const navigate = useNavigate();
+
+  
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  }
 
   return (
     <header className="header">
@@ -56,16 +67,42 @@ export default function Header() {
           >
             Contact
           </NavLink>
-          <div className="nav-buttons">
-            <button className="btn-outline">
-              <Link to="form">Sign up</Link>
-            </button>
-            <button className="btn-primary">
-              <Link to="loginForm" className="link">
-                Sign in
-              </Link>
-            </button>
+          {isAuthenticated ? (
+            
+            <div className="nav-buttons">
+              <div className="user-info">
+                <span className="welcome">Hola, {currentUser.nombre}</span>
+              </div>
+              {currentUser.userType === "candidato" && (
+                <NavLink to={`profile/${currentUser.id}`} className="btn-outline">
+                  Mi Perfil
+                </NavLink>
+              )}
+
+              {(currentUser.userType === "empleadorParticular" || currentUser.userType === "empleadorEmpresa") && (
+                <NavLink to={`dashboard/${currentUser.id}`} className={({ isActive }) => {
+              return isActive ? "is-active" : undefined;
+            }}>
+                  Dashboard
+                </NavLink>
+              )}
+              <button onClick={handleLogout} className="btn-primary">
+                Cerrar Sesión
+              </button>
+            </div>
+          ) : (
+            
+            <div className="nav-buttons">
+              <button className="btn-outline">
+                <Link to="form">Sign up</Link>
+              </button>
+              <button className="btn-primary">
+                <Link to="loginForm" className="link">
+                  Sign in
+                </Link>
+              </button>
           </div>
+          )}
         </nav>
       </div>
     </header>

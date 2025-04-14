@@ -3,7 +3,7 @@ import "../styles/ModalForm.css";
 import "../styles/Modal.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; // Importa el hook de autenticación
+import { useAuth } from "../contexts/AuthContext"; 
 
 export default function LoginModal() {
   const {
@@ -16,7 +16,7 @@ export default function LoginModal() {
   const [successMessage, setSuccessMessage] = useState("");
 
   const navigate = useNavigate();
-  const { login, error: authError } = useAuth(); // Usa el contexto de autenticación
+  const { login, error: authError } = useAuth(); 
 
   const errorStyle = {
     color: "red",
@@ -26,7 +26,7 @@ export default function LoginModal() {
   };
 
   const onSubmit = async (data) => {
-    // Extrae tipo del objeto data y pasa el resto como credenciales
+    
     const { tipo, ...credentials } = data;
 
     const success = await login(credentials, tipo);

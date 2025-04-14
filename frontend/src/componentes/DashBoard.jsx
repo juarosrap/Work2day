@@ -1,6 +1,55 @@
 import "../styles/DashBoard.css";
+import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import DashBoardRow from "./DashboardRow";
 
 export default function DashBoard() {
+    const { id } = useParams();
+    const [jobs, setJobs] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const API = `http://localhost:5000/api/ofertas/empleador/${id}`;
+
+        async function getData() {
+            try {
+              const response = await fetch(API);
+
+              if (response.status === 404) {
+                setError("El empleador no fue encontrado.");
+                return;
+              }
+
+              if (!response.ok) {
+                throw new Error("Error inesperado en el servidor.");
+              }
+
+              const data = await response.json();
+              setJobs(data);
+            } catch (e) {
+              console.error("Error al obtener trabajos:", e);
+              setError("Error al cargar los detalles del trabajo.");
+            } finally {
+              setLoading(false);
+            }
+        }
+
+        getData();
+    }, [id]);
+
+
+    if (loading) return <div>Cargando...</div>;
+
+    if (error) {
+      return (
+        <div className="main-detail">
+          <h2 style={{ color: "red" }}>{error}</h2>
+          <Link to="/jobs">Volver a la lista de trabajos</Link>
+        </div>
+      );
+    }
+
   return (
     <div className="main-dash">
       <div className="title-dash">
@@ -38,7 +87,13 @@ export default function DashBoard() {
                     <div className="header-cell">ACCIONES</div>
                 </div>
 
-                <div className="table-row">
+
+                {jobs.map((job) => {
+                    <DashBoardRow key={job.id} job={job} />;
+                })}
+                
+
+                {/* <div className="table-row">
                     <div className="cell" data-label="TÍTULO">
                         <p>Camarero para eventos</p>
                         <span className="subtitle">Madrid, España</span>
@@ -76,7 +131,7 @@ export default function DashBoard() {
                         <span className="edit">Editar</span>
                         <span className="delete">Eliminar</span>
                     </div>
-                </div>
+                </div> */}
                 
             </div>
         </div>

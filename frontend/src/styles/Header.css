@@ -37,6 +37,14 @@
   white-space: nowrap;
 }
 
+.welcome {
+  text-decoration: none;
+  color: #6B7280;
+  font-weight: 500;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
 .nav a.is-active {
   color: #3B82F6;
   pointer-events: none;

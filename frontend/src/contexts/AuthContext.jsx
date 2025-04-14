@@ -33,13 +33,13 @@ export const AuthProvider = ({ children }) => {
         let endpoint;
         switch (userType) {
           case "candidato":
-            endpoint = "http://localhost:5000/api/candidatos/me";
+            endpoint = "http://localhost:5000/api/candidato/me";
             break;
           case "empleadorParticular":
-            endpoint = "http://localhost:5000/api/empleadores-particular/me";
+            endpoint = "http://localhost:5000/api/empleadorParticular/me";
             break;
           case "empleadorEmpresa":
-            endpoint = "http://localhost:5000/api/empleadores-empresa/me";
+            endpoint = "http://localhost:5000/api/empleadorEmpresa/me";
             break;
           default:
             throw new Error("Tipo de usuario no válido");
@@ -82,15 +82,15 @@ export const AuthProvider = ({ children }) => {
       let refreshEndpoint;
       switch (userType) {
         case "candidato":
-          refreshEndpoint = "http://localhost:5000/api/candidatos/refresh";
+          refreshEndpoint = "http://localhost:5000/api/candidato/refresh";
           break;
         case "empleadorParticular":
           refreshEndpoint =
-            "http://localhost:5000/api/empleadores-particular/refresh";
+            "http://localhost:5000/api/empleadorParticular/refresh";
           break;
         case "empleadorEmpresa":
           refreshEndpoint =
-            "http://localhost:5000/api/empleadores-empresa/refresh";
+            "http://localhost:5000/api/empleadorEmpresa/refresh";
           break;
         default:
           throw new Error("Tipo de usuario no válido");
@@ -133,14 +133,13 @@ export const AuthProvider = ({ children }) => {
 
       switch (userType) {
         case "candidato":
-          apiEndpoint = "http://localhost:5000/api/candidatos/login";
+          apiEndpoint = "http://localhost:5000/api/candidato/login";
           break;
         case "empleadorParticular":
-          apiEndpoint =
-            "http://localhost:5000/api/empleadores-particular/login";
+          apiEndpoint = "http://localhost:5000/api/empleadorParticular/login";
           break;
         case "empleadorEmpresa":
-          apiEndpoint = "http://localhost:5000/api/empleadores-empresa/login";
+          apiEndpoint = "http://localhost:5000/api/empleadorEmpresa/login";
           break;
         default:
           throw new Error("Tipo de usuario no válido");
@@ -197,13 +196,12 @@ export const AuthProvider = ({ children }) => {
     try {
       // Obtener el endpoint correcto según el tipo de usuario
       const userType = localStorage.getItem("userType");
-      let logoutEndpoint = "http://localhost:5000/api/candidatos/logout";
+      let logoutEndpoint = "http://localhost:5000/api/candidato/logout";
 
       if (userType === "empleadorParticular") {
-        logoutEndpoint =
-          "http://localhost:5000/api/empleadores-particular/logout";
+        logoutEndpoint = "http://localhost:5000/api/empleadorParticular/logout";
       } else if (userType === "empleadorEmpresa") {
-        logoutEndpoint = "http://localhost:5000/api/empleadores-empresa/logout";
+        logoutEndpoint = "http://localhost:5000/api/empleadorEmpresa/logout";
       }
 
       const response = await fetch(logoutEndpoint, {

@@ -1,6 +1,55 @@
 import "../styles/Profile.css"
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext"; 
 
 export default function Profile() {
+  const { id } = useParams();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    const API = `http://localhost:5000/api/${currentUser.userType}/${id}`;
+
+    async function getData() {
+      try {
+        const response = await fetch(API);
+
+        if (response.status === 404) {
+          setError("La persona no existe");
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error("Error inesperado en el servidor.");
+        }
+
+        const data = await response.json();
+        setProfile(data);
+      } catch (e) {
+        console.error("Error al obtener la persona:", err);
+        setError("Error al cargar los detalles del perfil.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getData();
+  }, [id]);
+
+  if (loading) return <div>Cargando...</div>;
+
+
+  if (error) {
+    return (
+      <div className="main-detail">
+        <h2 style={{ color: "red" }}>{error}</h2>
+        <Link to="/">Volver al inicio</Link>
+      </div>
+    );
+  }
     return (
       <div className="main-profile">
         <div className="header-profile">
@@ -10,10 +59,10 @@ export default function Profile() {
               <img src="ruta-a-tu-foto-perfil.png" alt="Foto de perfil" />
             </div>
             <div className="profile-text">
-              <h2 className="profile-name">Ana María Rodríguez</h2>
+              <h2 className="profile-name">{profile.nombre}</h2>
               <p className="profile-role">Desarrolladora Full Stack</p>
               <div className="profile-tags">
-                <span className="tag">📍 Madrid, España</span>
+                <span className="tag">📍 {profile.curriculum.ubicacion}, España</span>
                 <span className="tag">✅ Disponible para trabajar</span>
               </div>
             </div>
@@ -24,12 +73,7 @@ export default function Profile() {
           <div className="resume-profile box">
             <h3>Resumen Profesional</h3>
             <p>
-              Soy desarrollador de software y mi trabajo consiste principalmente
-              en crear aplicaciones que resuelvan problemas reales. En el día a
-              día, escribo código (mayormente en JavaScript y Python), colaboro
-              con diseñadores y otros developers, reviso código de mis
-              compañeros y participo en reuniones para definir qué vamos a
-              construir y cómo.
+              {profile.curriculum.informacionPersonal}
             </p>
           </div>
 
