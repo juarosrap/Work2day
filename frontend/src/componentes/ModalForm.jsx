@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "../styles/ModalForm.css";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalForm() {
   const {
     register,
     handleSubmit,
-    watch, 
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -14,40 +15,11 @@ export default function ModalForm() {
 
   const [apiError, setApiError] = useState("");
   const [tipo, setTipo] = useState("candidato");
-  const [formData, setFormData] = useState({
-    curriculum: {},
-  });
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const password = watch("contrasena"); 
+  const navigate = useNavigate();
+  const password = watch("contrasena");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (
-      [
-        "informacionPersonal",
-        "ubicacionCurriculum",
-        "formacionAcademica",
-        "experienciaLaboral",
-        "idiomas",
-      ].includes(name)
-    ) {
-      setFormData((prev) => ({
-        ...prev,
-        curriculum: {
-          ...prev.curriculum,
-          [name]: name === "idiomas" ? value.split(",") : value,
-        },
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
-  
   const errorStyle = {
     color: "red",
     fontSize: "12px",
@@ -198,55 +170,72 @@ export default function ModalForm() {
       <h3 style={{ textAlign: "center" }}>Currículum</h3>
       <label>Información Personal</label>
       <input
-        {...register("informacionPersonal", {
+        {...register("curriculum.informacionPersonal", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.informacionPersonal && (
-        <p style={errorStyle}>{errors.informacionPersonal.message}</p>
+      {errors.curriculum?.informacionPersonal && (
+        <p style={errorStyle}>
+          {errors.curriculum.informacionPersonal.message}
+        </p>
       )}
 
       <label>Ubicación</label>
       <input
-        {...register("ubicacionCurriculum", {
+        {...register("curriculum.ubicacion", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.ubicacionCurriculum && (
-        <p style={errorStyle}>{errors.ubicacionCurriculum.message}</p>
+      {errors.curriculum?.ubicacion && (
+        <p style={errorStyle}>{errors.curriculum.ubicacion.message}</p>
       )}
 
       <label>Formación Académica</label>
       <input
-        {...register("formacionAcademica", {
+        {...register("curriculum.formacionAcademica", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.formacionAcademica && (
-        <p style={errorStyle}>{errors.formacionAcademica.message}</p>
+      {errors.curriculum?.formacionAcademica && (
+        <p style={errorStyle}>{errors.curriculum.formacionAcademica.message}</p>
       )}
 
       <label>Experiencia Laboral</label>
       <input
-        {...register("experienciaLaboral", {
+        {...register("curriculum.experienciaLaboral", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.experienciaLaboral && (
-        <p style={errorStyle}>{errors.experienciaLaboral.message}</p>
+      {errors.curriculum?.experienciaLaboral && (
+        <p style={errorStyle}>{errors.curriculum.experienciaLaboral.message}</p>
       )}
 
       <label>Idiomas (separados por coma)</label>
       <input
-        {...register("idiomas", { required: "Este campo es obligatorio" })}
+        {...register("idiomasRaw", { required: "Este campo es obligatorio" })}
       />
-      {errors.idiomas && <p style={errorStyle}>{errors.idiomas.message}</p>}
+      {errors.idiomasRaw && (
+        <p style={errorStyle}>{errors.idiomasRaw.message}</p>
+      )}
     </>
   );
 
   const onSubmit = async (data) => {
     if (data.tipo === "candidato") {
       API = "http://localhost:5000/api/candidatos/register";
+
+      
+      if (data.idiomasRaw) {
+        const idiomasArray = data.idiomasRaw
+          .split(",")
+          .map((idioma) => idioma.trim())
+          .filter((idioma) => idioma !== "");
+          
+        data.curriculum.idiomas = idiomasArray;
+      }
+
+      // Eliminar el campo idiomasRaw ya que ahora está en curriculum.idiomas
+      delete data.idiomasRaw;
     } else if (data.tipo === "empleadorParticular") {
       API = "http://localhost:5000/api/empleadores-particular/register";
     } else {
@@ -265,9 +254,6 @@ export default function ModalForm() {
       if (!response.ok) {
         if (response.status === 400) {
           const errorData = await response.json();
-          // console.log("Error de API:", errorData);
-
-          // console.log(errorData.error);
           if (errorData.error) {
             setApiError(errorData.error);
           }
@@ -277,9 +263,12 @@ export default function ModalForm() {
         return;
       }
 
-      const responseData = await response.json();
-      console.log("Registro exitoso:", responseData);
-      setApiError(""); 
+      setApiError("");
+      setSuccessMessage("Registro exitoso. ¡Bienvenido!");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (e) {
       console.error("Error:", e);
       setApiError(
@@ -287,7 +276,6 @@ export default function ModalForm() {
       );
     }
   };
-
 
   return (
     <form className="registro-form" onSubmit={handleSubmit(onSubmit)}>
@@ -307,17 +295,19 @@ export default function ModalForm() {
       {camposEmpresa}
       {camposCurriculum}
 
-      {apiError && (
+      {(apiError || successMessage) && (
         <div
           style={{
             color: "white",
-            backgroundColor: "red",
+            backgroundColor: apiError ? "red" : "green",
             padding: "10px",
             borderRadius: "4px",
             marginBottom: "15px",
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         >
-          {apiError}
+          {apiError || successMessage}
         </div>
       )}
 
