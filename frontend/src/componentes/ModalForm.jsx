@@ -252,39 +252,42 @@ export default function ModalForm() {
     } else {
       API = "http://localhost:5000/api/empleadores-empresa/register";
     }
-    console.log(data);
-    console.log(data.contrasena);
-    console.log(API);
+
     try {
       const response = await fetch(API, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
+
       if (!response.ok) {
         if (response.status === 400) {
           const errorData = await response.json();
-          
-          if (errorData.message) {
-            setApiError(errorData.message);
-          } else if (errorData.errors) {
-              const errorMessages = Object.values(errorData.errors).join(", ");
-              setApiError(`Datos inválidos: ${errorMessages}`);
-          } else {
-            setApiError("Los datos enviados son incorrectos. Por favor revisa el formulario.");
+          // console.log("Error de API:", errorData);
+
+          // console.log(errorData.error);
+          if (errorData.error) {
+            setApiError(errorData.error);
           }
+        } else {
+          setApiError(`Error del servidor (${response.status})`);
         }
+        return;
       }
+
       const responseData = await response.json();
       console.log("Registro exitoso:", responseData);
+      setApiError(""); 
     } catch (e) {
-        console.error("Error:", error);
-        setApiError("Error de conexión. Por favor verifica tu conexión a internet.");
-        return false;
+      console.error("Error:", e);
+      setApiError(
+        "Error de conexión. Por favor verifica tu conexión a internet."
+      );
     }
   };
+
 
   return (
     <form className="registro-form" onSubmit={handleSubmit(onSubmit)}>
