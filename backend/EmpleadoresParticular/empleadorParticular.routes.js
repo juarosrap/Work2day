@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const empleadorParticularController = require("./empleadorParticular.controller");
+const { verifyToken } = require("../middleware/auth");
 
 // Rutas para EmpleadorParticular
 router.get("/", empleadorParticularController.obtenerEmpleadoresParticular);
 router.get("/:id",empleadorParticularController.obtenerEmpleadorParticularPorId);
+router.get("/me", verifyToken, empleadorParticularController.getCurrentUser);
 router.post("/register", empleadorParticularController.crearEmpleadorParticular);
 router.post("/login",empleadorParticularController.loginEmpleadorParticular);
 router.post("/refresh", empleadorParticularController.refreshToken);

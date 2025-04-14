@@ -165,6 +165,37 @@ exports.loginEmpleadorParticular = async (req, res) => {
   }
 };
 
+exports.getCurrentEmpleadorParticular = async (req, res) => {
+  try {
+    // req.userId debería estar disponible gracias al middleware de autenticación
+    const empleadorId = req.userId;
+
+    if (!empleadorId) {
+      return res.status(401).json({ error: "No autenticado" });
+    }
+
+    const empleador = await EmpleadorParticular.findById(empleadorId).select(
+      "-contrasena"
+    ); // Excluimos la contraseña
+
+    if (!empleador) {
+      return res.status(404).json({ error: "Empleador no encontrado" });
+    }
+
+    res.json({
+      id: empleador._id,
+      nombre: empleador.nombre,
+      correo: empleador.correo,
+      // Añadir cualquier otra información necesaria
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al obtener información del empleador",
+      detalle: error.message,
+    });
+  }
+};
+
 exports.refreshToken = async (req, res) => {
   try {
     const refreshToken = req.cookies.refresh_token;

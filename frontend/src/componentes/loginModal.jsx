@@ -1,24 +1,22 @@
 import { useState } from "react";
-import "../styles/ModalForm.css"; 
-import "../styles/Modal.css"; 
+import "../styles/ModalForm.css";
+import "../styles/Modal.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext"; // Importa el hook de autenticación
 
 export default function LoginModal() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  let API = "http://localhost:5000/api/";
-
   const [tipo, setTipo] = useState("candidato");
-  const [apiError, setApiError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  
 
   const navigate = useNavigate();
+  const { login, error: authError } = useAuth(); // Usa el contexto de autenticación
 
   const errorStyle = {
     color: "red",
@@ -27,52 +25,20 @@ export default function LoginModal() {
     marginBottom: "8px",
   };
 
-  const onSubmit = async  (data) => {
-    if (data.tipo === "candidato") {
-      API = "http://localhost:5000/api/candidatos/login";
-    } else if (data.tipo === "empleadorParticular") {
-      API = "http://localhost:5000/api/empleadores-particular/login";
-    } else {
-      API = "http://localhost:5000/api/empleadores-empresa/login";
-    }
+  const onSubmit = async (data) => {
+    // Extrae tipo del objeto data y pasa el resto como credenciales
+    const { tipo, ...credentials } = data;
 
-    try {
-      const response = await fetch(API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(data)
-      if (!response.ok){
-        if (response.status === 401){
-          const errorData = await response.json();
+    const success = await login(credentials, tipo);
 
-          if(errorData.error) {
-            setApiError(errorData.error);
-          }
-        } else {
-          setApiError(`Error del servidor (${response.status})`);
-        }
-        return;
-      }
-      const responseData = await response.json();
-      console.log(responseData);
-      setApiError("");
-      setSuccessMessage("Login exitoso. ¡Bienvenido!")
+    if (success) {
+      setSuccessMessage("Login exitoso. ¡Bienvenido!");
 
       setTimeout(() => {
         navigate("/");
-      }, 3000);
-    } catch (e) {
-      setApiError(
-        "Error de conexión. Por favor verifica tu conexión a internet."
-      );
+      }, 2000);
     }
-  }
-
-  
+  };
 
   return (
     <div className="modal-overlay">
@@ -113,11 +79,11 @@ export default function LoginModal() {
           )}
           {errors.tipo && <p style={errorStyle}>{errors.tipo.message}</p>}
 
-          {(apiError || successMessage) && (
+          {(authError || successMessage) && (
             <div
               style={{
                 color: "white",
-                backgroundColor: apiError ? "red" : "green",
+                backgroundColor: authError ? "red" : "green",
                 padding: "10px",
                 borderRadius: "4px",
                 marginBottom: "15px",
@@ -125,7 +91,7 @@ export default function LoginModal() {
                 textAlign: "center",
               }}
             >
-              {apiError || successMessage}
+              {authError || successMessage}
             </div>
           )}
           <button type="submit" disabled={isSubmitting}>

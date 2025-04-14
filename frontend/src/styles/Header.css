@@ -37,8 +37,9 @@
   white-space: nowrap;
 }
 
-.nav a.active {
+.nav a.is-active {
   color: #3B82F6;
+  pointer-events: none;
 }
 
 .nav a:hover {

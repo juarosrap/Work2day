@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles/Header.css";
 import logo from "../assets/logoWork2Day.png";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,16 +24,46 @@ export default function Header() {
 
       <div className={`right-section ${menuOpen ? "open" : ""}`}>
         <nav className="nav">
-          <Link to="/">Home</Link>
-          <Link to="/">About us</Link>
-          <Link to="/jobs">Jobs</Link>
-          <Link to="/contact">Contact</Link>
+          <NavLink
+            className={({ isActive }) => {
+              return isActive ? "is-active" : undefined;
+            }}
+            to="/"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            // className={({ isActive }) => {
+            //   return isActive ? "is-active" : undefined;
+            // }}
+            to="/"
+          >
+            About us
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => {
+              return isActive ? "is-active" : undefined;
+            }}
+            to="/jobs"
+          >
+            Jobs
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => {
+              return isActive ? "is-active" : undefined;
+            }}
+            to="/contact"
+          >
+            Contact
+          </NavLink>
           <div className="nav-buttons">
             <button className="btn-outline">
               <Link to="form">Sign up</Link>
             </button>
             <button className="btn-primary">
-              <Link to="loginForm" className="link">Sign in</Link>
+              <Link to="loginForm" className="link">
+                Sign in
+              </Link>
             </button>
           </div>
         </nav>

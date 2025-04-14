@@ -4,6 +4,7 @@ const ValoracionCandidato = require("../ValoracionesCandidato/valoracionCandidat
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 // Obtener todos los candidatos
 exports.obtenerCandidatos = async (req, res) => {
   try {
@@ -148,6 +149,37 @@ exports.loginCandidato = async (req, res) => {
     res.status(500).json({ 
       error: "Error al iniciar sesión", 
       detalle: error.message 
+    });
+  }
+};
+
+exports.getCurrentUser = async (req, res) => {
+  try {
+    // req.userId debería estar disponible gracias al middleware de autenticación
+    const candidatoId = req.userId;
+
+    if (!candidatoId) {
+      return res.status(401).json({ error: "No autenticado" });
+    }
+
+    const candidato = await Candidato.findById(candidatoId).select(
+      "-contrasena"
+    ); // Excluimos la contraseña
+
+    if (!candidato) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json({
+      id: candidato._id,
+      nombre: candidato.nombre,
+      correo: candidato.correo,
+      // Añadir cualquier otra información necesaria
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al obtener información del usuario",
+      detalle: error.message,
     });
   }
 };
