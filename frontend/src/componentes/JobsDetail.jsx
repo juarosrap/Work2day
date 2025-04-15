@@ -80,7 +80,7 @@ export default function JobsDetail() {
         <div className="left-side">Attachments</div>
         <div className="right-side">
           <button className="apply-button">
-            <Link to="apply" className="link">
+            <Link to="../jobs/apply" className="link">
               Apply
             </Link>
           </button>

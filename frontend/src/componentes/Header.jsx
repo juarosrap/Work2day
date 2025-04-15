@@ -72,14 +72,22 @@ export default function Header() {
               <div className="user-info">
                 {(currentUser.userType === "empleadorParticular" ||
                   currentUser.userType === "empleadorEmpresa") && (
-                  <NavLink
-                    to={`dashboard/${currentUser.id}`}
-                    className={({ isActive }) => {
-                      return isActive ? "is-active" : undefined;
-                    }}
-                  >
-                    Dashboard
-                  </NavLink>
+                  <>
+                    <NavLink
+                      to={`dashboard/${currentUser.id}`}
+                      className={({ isActive }) => {
+                        return isActive ? "is-active" : undefined;
+                      }}
+                    >
+                      Dashboard
+                    </NavLink>
+                    <NavLink
+                      to={`profile/${currentUser.id}`}
+                      className="btn-outline"
+                    >
+                      Mi Perfil
+                    </NavLink>
+                  </>
                 )}
                 <span className="welcome"> Hola, {currentUser.nombre}</span>
               </div>
