@@ -57,7 +57,7 @@ export default function JobsDetail() {
         <h2>Job details</h2>
       </div>
       <div className="enterprise-section">
-        <div className="left-side">Enterprise</div>
+        <div className="left-side">Enterprise/Employer</div>
         <div className="right-side">Universidad de Sevilla</div>
       </div>
       <div className="application-section">
