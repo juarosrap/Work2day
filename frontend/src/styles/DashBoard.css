@@ -143,6 +143,9 @@ h2 {
     text-decoration: underline; 
 }
 
+.link-addjob {
+    color: white;
+}
 
 .stat-card p{
     margin-left: 2%;

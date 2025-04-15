@@ -56,7 +56,7 @@ export default function DashBoard() {
       <div className="title-dash">
         <h2>Dashboard</h2>
         <button className="add-job">
-          <Link to={`/dashboard/${id}/jobForm`}>+ Nueva oferta de trabajo</Link>
+          <Link  className="link-addjob" to={`/dashboard/${id}/jobForm`}>+ Nueva oferta de trabajo</Link>
         </button>
       </div>
 
