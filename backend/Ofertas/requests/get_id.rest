@@ -1,1 +1,1 @@
-GET http://localhost:5000/api/ofertas/67e2db3dd8a1b56205333167
+GET http://localhost:5000/api/ofertas/67fb9bb8e9d0142bddb71c1c

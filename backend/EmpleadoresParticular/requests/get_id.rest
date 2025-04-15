@@ -1,1 +1,1 @@
-GET http://localhost:5000/api/empleadores-particular/67e2dfb3d8a1b562053331a5
+GET http://localhost:5000/api/empleadorParticular/67fcfb89dd2155fe86155d7e

@@ -152,10 +152,10 @@ exports.deleteOferta = async (req, res) => {
       });
     }
 
-    // Eliminar aplicaciones
+    
     await Aplicacion.deleteMany({ ofertaId: req.params.id });
 
-    // Actualizar el empleador para quitar la referencia a esta oferta
+    
     const esEmpresa = await EmpleadorEmpresa.findOne({
       ofertas: req.params.id,
     });
@@ -170,7 +170,6 @@ exports.deleteOferta = async (req, res) => {
       });
     }
 
-    // Eliminar la oferta
     await Oferta.findByIdAndDelete(req.params.id);
 
     res.json({ mensaje: "Oferta y sus aplicaciones eliminadas correctamente" });
