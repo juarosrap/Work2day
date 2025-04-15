@@ -11,6 +11,7 @@ import ModalForm from "./componentes/registerModal.jsx";
 import LoginModal from "./componentes/loginModal.jsx";
 import ApplyForm from "./componentes/ApplyForm.jsx";
 import JobForm from "./componentes/JobForm.jsx";
+import DeleteJob from "./componentes/DeleteJob.jsx";
 
 
 export default function App() {
@@ -27,6 +28,8 @@ export default function App() {
         <Route path="/jobs/apply" element={<ApplyForm />} />
         <Route path="/dashboard/:id" element={<DashBoard />} />
         <Route path="/dashboard/:id/jobForm" element={<JobForm />} />
+        <Route path="/dashboard/:id/edit/:ofertaId" element={<JobForm />} />
+        <Route path="/dashboard/:id/delete/:ofertaId" element={<DeleteJob />} />
         <Route path="/profile/:id" element={<Profile />} />
       </Routes>
       <hr />

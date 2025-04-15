@@ -93,46 +93,7 @@ export default function DashBoard() {
           {jobs.map((job) => (
             <DashBoardRow key={job.id} job={job} />
           ))}
-
-          {/* <div className="table-row">
-                    <div className="cell" data-label="TÍTULO">
-                        <p>Camarero para eventos</p>
-                        <span className="subtitle">Madrid, España</span>
-                    </div>
-                    <div className="cell" data-label="ESTADO">
-                        <span className="status active">Activa</span>
-                    </div>
-                    <div className="cell" data-label="CANDIDATOS">
-                        8   
-                    </div>
-                    <div className="cell" data-label="FECHA">
-                        20/03/2025
-                    </div>
-                    <div className="cell actions" data-label="ACCIONES">
-                        <span className="edit">Editar</span>
-                        <span className="delete">Eliminar</span>
-                    </div>
-                </div>
-
-                <div className="table-row">
-                    <div className="cell" data-label="TÍTULO">
-                        <p>Vigilante y organizador</p>
-                        <span className="subtitle">Sevilla, España</span>
-                    </div>
-                    <div className="cell" data-label="ESTADO">
-                        <span className="status paused">Pausada</span>
-                    </div>
-                    <div className="cell" data-label="CANDIDATOS">
-                        12
-                    </div>
-                    <div className="cell" data-label="FECHA">
-                        15/01/2025
-                    </div>
-                    <div className="cell actions" data-label="ACCIONES">
-                        <span className="edit">Editar</span>
-                        <span className="delete">Eliminar</span>
-                    </div>
-                </div> */}
+          
         </div>
       </div>
     </div>

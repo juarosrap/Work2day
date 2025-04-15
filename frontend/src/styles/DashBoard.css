@@ -128,16 +128,20 @@ h2 {
     gap: 0.5rem;
 }
 
-.actions .edit {
-    color: blue;
-    cursor: pointer;
+
+.actions .edit a {
+    color: blue; 
+    text-decoration: none; 
 }
 
-.actions .delete {
-    color: red;
-    cursor: pointer;
+.actions .delete a {
+    color: red; 
+    text-decoration: none; 
 }
 
+.actions a:hover {
+    text-decoration: underline; 
+}
 
 
 .stat-card p{

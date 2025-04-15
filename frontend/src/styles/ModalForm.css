@@ -9,6 +9,21 @@
   font-family: inherit;
 }
 
+.delete-btn{
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: red;
+  margin-bottom: 3%;
+}
+
+.cancel-btn {
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
 .registro-form .row {
   display: flex;
   gap: 1rem;
