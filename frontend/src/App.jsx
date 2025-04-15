@@ -10,6 +10,7 @@ import Profile from "./componentes/Profile.jsx";
 import ModalForm from "./componentes/registerModal.jsx";
 import LoginModal from "./componentes/loginModal.jsx";
 import ApplyForm from "./componentes/ApplyForm.jsx";
+import JobForm from "./componentes/JobForm.jsx";
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/jobs/jobsDetail/apply" element={<ApplyForm />} />
         <Route path="/jobs/apply" element={<ApplyForm />} />
         <Route path="/dashboard/:id" element={<DashBoard />} />
+        <Route path="/dashboard/:id/jobForm" element={<JobForm />} />
         <Route path="/profile/:id" element={<Profile />} />
       </Routes>
       <hr />

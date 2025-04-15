@@ -12,10 +12,9 @@ export default function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Si authLoading es true, esperamos a que termine antes de continuar
     if (authLoading) return;
 
-    // Si no hay usuario autenticado después de cargar, redirigimos al login
+
     if (!currentUser) {
       setError("Debes iniciar sesión para ver los perfiles");
       setLoading(false);

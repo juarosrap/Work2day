@@ -26,6 +26,7 @@ export default function DashBoard() {
               }
 
               const data = await response.json();
+              console.log(data);
               setJobs(data);
             } catch (e) {
               console.error("Error al obtener trabajos:", e);
@@ -54,7 +55,9 @@ export default function DashBoard() {
     <div className="main-dash">
       <div className="title-dash">
         <h2>Dashboard</h2>
-        <button className="add-job">+ Nueva oferta de trabajo</button>
+        <button className="add-job">
+          <Link to={`/dashboard/${id}/jobForm`}>+ Nueva oferta de trabajo</Link>
+        </button>
       </div>
 
       <div className="statistics-dash">
@@ -72,28 +75,26 @@ export default function DashBoard() {
         </div>
       </div>
 
-        <div className="data-dash">
-            <h2>Mis ofertas publicadas</h2>
-            <div className="search-dash">
-                <input placeholder="Buscar ofertas..." />
-            </div>
+      <div className="data-dash">
+        <h2>Mis ofertas publicadas</h2>
+        <div className="search-dash">
+          <input placeholder="Buscar ofertas..." />
+        </div>
 
-            <div className="job-table">
-                <div className="table-header">
-                    <div className="header-cell">TÍTULO</div>
-                    <div className="header-cell">ESTADO</div>
-                    <div className="header-cell">CANDIDATOS</div>
-                    <div className="header-cell">FECHA</div>
-                    <div className="header-cell">ACCIONES</div>
-                </div>
+        <div className="job-table">
+          <div className="table-header">
+            <div className="header-cell">TÍTULO</div>
+            <div className="header-cell">ESTADO</div>
+            <div className="header-cell">CANDIDATOS</div>
+            <div className="header-cell">FECHA</div>
+            <div className="header-cell">ACCIONES</div>
+          </div>
 
+          {jobs.map((job) => (
+            <DashBoardRow key={job.id} job={job} />
+          ))}
 
-                {jobs.map((job) => {
-                    <DashBoardRow key={job.id} job={job} />;
-                })}
-                
-
-                {/* <div className="table-row">
+          {/* <div className="table-row">
                     <div className="cell" data-label="TÍTULO">
                         <p>Camarero para eventos</p>
                         <span className="subtitle">Madrid, España</span>
@@ -132,9 +133,8 @@ export default function DashBoard() {
                         <span className="delete">Eliminar</span>
                     </div>
                 </div> */}
-                
-            </div>
         </div>
+      </div>
     </div>
   );
 }
