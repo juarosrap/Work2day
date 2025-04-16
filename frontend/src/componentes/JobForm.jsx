@@ -28,9 +28,9 @@ export default function JobForm() {
 
     const fetchOferta = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:5000/api/ofertas/${ofertaId}`
-        );
+        let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
+        const res = await fetch(API);
+        
         if (!res.ok) throw new Error("No se pudo obtener la oferta");
         const data = await res.json();
 

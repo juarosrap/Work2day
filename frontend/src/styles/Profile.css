@@ -38,6 +38,23 @@
   flex-direction: column;
 }
 
+.profile-edit {
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.profile-edit button {
+  background-color: #3B82F6;
+}
+
+.profile-edit a {
+  color: white ;
+}
+
+textarea {
+  color: #6c748d;
+}
+
 .profile-name {
   font-size: 1.5rem;
   font-weight: bold;

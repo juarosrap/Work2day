@@ -108,3 +108,59 @@
   }
 }
 
+/* Añade estos estilos a tu archivo ModalForm.css */
+
+.modal-container.with-scroll {
+  max-height: 90vh;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-buttons button {
+  flex: 1;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  display: block;
+}
+
+/* Estilos para los encabezados de sección */
+.registro-form h3 {
+  margin-top: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Mejorar los espacios entre filas */
+.registro-form .row {
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para la barra de desplazamiento */
+.modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

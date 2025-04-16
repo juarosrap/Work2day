@@ -97,6 +97,12 @@ export default function Profile() {
               <span className="tag">✅ Disponible para trabajar</span>
             </div>
           </div>
+
+          <div className="profile-edit">
+            <button>
+              <Link to="/profile/edit">Editar perfil</Link>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -198,6 +204,12 @@ export default function Profile() {
               <span className="tag">✉️ {profile.correo}</span>
             </div>
           </div>
+
+          <div className="profile-edit">
+            <button>
+              <Link to="/profile/edit">Editar perfil</Link>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -254,6 +266,7 @@ export default function Profile() {
     <>
       <div className="header-profile">
         <div className="banner" />
+
         <div className="profile-info">
           <div className="profile-photo">
             <img src="ruta-a-tu-foto-perfil.png" alt="Logo de empresa" />
@@ -268,9 +281,15 @@ export default function Profile() {
                 <span className="tag">📍 {profile.ubicacion}</span>
               )}
               <span className="tag">
-                🌐 {profile.sitioWeb || "Sin sitio web"}
+                🌐 {profile.paginaWeb || "Sin sitio web"}
               </span>
             </div>
+          </div>
+
+          <div className="profile-edit">
+            <button>
+              <Link to="/profile/edit">Editar perfil</Link>
+            </button>
           </div>
         </div>
       </div>

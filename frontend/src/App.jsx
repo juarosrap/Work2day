@@ -12,6 +12,7 @@ import LoginModal from "./componentes/loginModal.jsx";
 import ApplyForm from "./componentes/ApplyForm.jsx";
 import JobForm from "./componentes/JobForm.jsx";
 import DeleteJob from "./componentes/DeleteJob.jsx";
+import EditProfile from "./componentes/EditProfile.jsx";
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/dashboard/:id/edit/:ofertaId" element={<JobForm />} />
         <Route path="/dashboard/:id/delete/:ofertaId" element={<DeleteJob />} />
         <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/profile/edit" element={<EditProfile />} />
       </Routes>
       <hr />
       <Footer />
