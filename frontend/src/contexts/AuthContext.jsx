@@ -21,13 +21,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        // Intenta recuperar el tipo de usuario del localStorage
+        
         const userType = localStorage.getItem("userType");
 
         if (!userType) {
           console.log("No hay userType en localStorage");
           setLoading(false);
-          return; // No hay información de usuario guardada
+          return; 
         }
 
         let endpoint;
@@ -55,13 +55,12 @@ export const AuthProvider = ({ children }) => {
         if (response.ok) {
           const userData = await response.json();
 
-          // Importante: Combinamos los datos del usuario con el userType que teníamos guardado
           setCurrentUser({
             ...userData,
             userType, 
           });
         } else {
-          // Manejar errores...
+          console.error("Error al verificar el estado del usuario")
         }
       } catch (err) {
         console.error("Error al verificar estado de autenticación", err);
@@ -77,13 +76,13 @@ export const AuthProvider = ({ children }) => {
     if (currentUser) {
       const interval = setInterval(() => {
         checkTokenExpiration();
-      }, 5 * 60 * 1000); // Verificar cada 5 minutos
+      }, 5 * 60 * 1000); 
 
       return () => clearInterval(interval);
     }
   }, [currentUser]);
 
-  // Función para refresh token basada en el tipo de usuario
+  
   const refreshToken = async (userType) => {
     try {
       if (!userType) {
@@ -124,7 +123,6 @@ export const AuthProvider = ({ children }) => {
       console.log("Respuesta de refresh:", response.status);
 
       if (response.ok) {
-        // El token se ha refrescado, ahora obtenemos los datos del usuario
         const meEndpoint = refreshEndpoint.replace("/refresh", "/me");
         console.log("Obteniendo datos de usuario tras refresh:", meEndpoint);
 
@@ -156,7 +154,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Función para iniciar sesión
   const login = async (credentials, userType) => {
     setError(null);
     try {
@@ -176,12 +173,12 @@ export const AuthProvider = ({ children }) => {
           throw new Error("Tipo de usuario no válido");
       }
 
-      console.log(
-        "Intentando login en:",
-        apiEndpoint,
-        "con credenciales:",
-        credentials
-      );
+      // console.log(
+      //   "Intentando login en:",
+      //   apiEndpoint,
+      //   "con credenciales:",
+      //   credentials
+      // );
 
       const response = await fetch(apiEndpoint, {
         method: "POST",
@@ -234,7 +231,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Función para cerrar sesión
+  
   const logout = async () => {
     try {
       
@@ -296,7 +293,7 @@ export const AuthProvider = ({ children }) => {
     return currentUser.userType === role;
   };
 
-  // Valor del contexto
+  
   const value = {
     currentUser,
     loading,

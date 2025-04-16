@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import "../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
 import { FiltersContext } from "../contexts/FiltersContext.jsx";
-
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
