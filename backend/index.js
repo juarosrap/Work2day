@@ -2,6 +2,14 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 require("dotenv").config();
 const mongoose = require("mongoose");
 app.use(express.json());
@@ -11,13 +19,8 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
 
+const Oferta = require("./Ofertas/oferta.model.js");
 
-app.use(cors({
-  origin: 'http://localhost:5173', 
-  credentials: true,               
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-  allowedHeaders: ['Content-Type', 'Authorization'] 
-}));
 
 // Importar rutas de componentes
 const candidatoRoutes = require("./Candidatos/candidato.routes");
@@ -62,7 +65,7 @@ mongoose
 //------------------- Rutas de búsqueda avanzada -------------------
 
 // Búsqueda avanzada de ofertas
-router.get('/api/busqueda/ofertas', async (req, res) => {
+app.get('/api/busqueda/ofertas', async (req, res) => {
   try {
     const {
       titulo,
@@ -78,7 +81,7 @@ router.get('/api/busqueda/ofertas', async (req, res) => {
 
     let filtro = {};
 
-    // Aplicar filtros si están presentes
+    console.log(req.query)
     if (titulo) {
       filtro.titulo = { $regex: titulo, $options: 'i' };
     }
@@ -87,34 +90,23 @@ router.get('/api/busqueda/ofertas', async (req, res) => {
       filtro.ubicacion = { $regex: ubicacion, $options: 'i' };
     }
 
-    if (salarioMin) {
-      filtro.salario = { ...filtro.salario, $gte: Number(salarioMin) };
-    }
+    // if (salarioMin) {
+    //   filtro.salario = { ...filtro.salario, $gte: Number(salarioMin) };
+    // }
 
-    if (salarioMax) {
-      filtro.salario = { ...filtro.salario, $lte: Number(salarioMax) };
-    }
+    // if (salarioMax) {
+    //   filtro.salario = { ...filtro.salario, $lte: Number(salarioMax) };
+    // }
 
-    if (tipoContrato) {
-      filtro.tipoContrato = tipoContrato;
-    }
-
-    if (jornada) {
-      filtro.jornada = jornada;
-    }
 
     if (categoria) {
       filtro.categoria = { $regex: categoria, $options: 'i' };
     }
 
-    if (experienciaMinima) {
-      filtro.experienciaMinima = { $gte: Number(experienciaMinima) };
-    }
-
     if (estado) {
       filtro.estado = estado;
     }
-
+     console.log(filtro)
     const ofertas = await Oferta.find(filtro)
       .populate('empleadorId');
 

@@ -1,35 +1,72 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
+import { FiltersContext } from "../contexts/FiltersContext.jsx";
 
 export default function Jobs() {
-  const [salario, setSalario] = useState(500);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { filters, setFilters } = useContext(FiltersContext);
 
-  let API = "http://localhost:5000/api/ofertas";
-
-  async function getJobs(setJobs, setLoading) {
-    try {
-      const response = await fetch(API);
-      const data = await response.json();
-      setJobs(data);
-    } catch (error) {
-      console.error("Error al obtener trabajos:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  let API = "http://localhost:5000/api/busqueda/ofertas";
 
   useEffect(() => {
-    getJobs(setJobs, setLoading);
-    console.log(jobs)
-  }, []);
-  
+    const fetchJobsWithFilters = async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
 
+        if (filters.titulo) params.append("titulo", filters.titulo);
+        if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
+        // if (filters.salario) params.append("salarioMax", filters.salario);
+        // params.append("salarioMin", 0); // opcional, default
+
+        const response = await fetch(`${API}?${params.toString()}`,
+              {
+                credentials: "include"
+              });
+        const data = await response.json();
+        setJobs(data);
+        console.log(jobs)
+        console.log(data)
+      } catch (error) {
+        console.error("Error al obtener trabajos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobsWithFilters();
+  }, [filters]);
 
   const handleSalarioChange = (e) => {
-    setSalario(e.target.value);
+    const value = Number(e.target.value);
+    setFilters((prev) => ({ ...prev, salario: value }));
+  };
+
+  
+  const handleTituloChange = (e) => {
+    const value = e.target.value;
+    setFilters((prev) => ({ ...prev, titulo: value }));
+  };
+
+  
+  const handleUbicacionChange = (e) => {
+    const value = e.target.value;
+    setFilters((prev) => ({ ...prev, ubicacion: value }));
+  };
+
+  
+  const handleSectorChange = (e) => {
+    const value = e.target.value;
+    setFilters((prev) => ({ ...prev, sector: value }));
+  };
+
+  // Función para manejar la búsqueda explícita con el botón
+  const handleSearch = () => {
+    // Puedes implementar una lógica adicional si es necesario
+    // Por ahora, el useEffect ya se encarga de actualizar los trabajos
+    // cuando cambian los filtros
   };
 
   return (
@@ -39,14 +76,14 @@ export default function Jobs() {
           <div className="salary-filter">
             <div className="salary-header">
               <label htmlFor="salario">Salario</label>
-              <span className="salary-value">{salario}€</span>
+              <span className="salary-value">{filters.salario}€</span>
             </div>
             <input
               type="range"
               min="0"
               max="4000"
               step="50"
-              value={salario}
+              value={filters.salario}
               onChange={handleSalarioChange}
               id="salario"
               className="salary-slider"
@@ -54,10 +91,16 @@ export default function Jobs() {
           </div>
 
           <label htmlFor="sector">Sector profesional</label>
-          <select id="sector" name="sector">
-            <option value="tecnologia">Hostelería</option>
-            <option value="salud">Doméstico</option>
-            <option value="educacion">Otro</option>
+          <select
+            id="sector"
+            name="sector"
+            value={filters.sector || ""}
+            onChange={handleSectorChange}
+          >
+            <option value="">Todos los sectores</option>
+            <option value="hosteleria">Hostelería</option>
+            <option value="domestico">Doméstico</option>
+            <option value="otro">Otro</option>
           </select>
         </div>
 
@@ -67,9 +110,21 @@ export default function Jobs() {
       </div>
 
       <div className="search-bar">
-        <input type="text" placeholder="Search a job" />
-        <input type="text" placeholder="Where" />
-        <button className="search-button">Search</button>
+        <input
+          type="text"
+          value={filters.titulo}
+          onChange={handleTituloChange}
+          placeholder="Search a job"
+        />
+        <input
+          type="text"
+          value={filters.ubicacion}
+          onChange={handleUbicacionChange}
+          placeholder="Where"
+        />
+        <button className="search-button" onClick={handleSearch}>
+          Search
+        </button>
       </div>
       <div className="cards">
         {loading ? (
