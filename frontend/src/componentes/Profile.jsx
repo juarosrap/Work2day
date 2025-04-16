@@ -39,7 +39,9 @@ export default function Profile() {
         }
 
         const data = await response.json();
-        setProfile(data);
+        setProfile(data); 
+
+        console.log(data)
       } catch (err) {
         console.error("Error al obtener la persona:", err);
         setError("Error al cargar los detalles del perfil.");
@@ -50,6 +52,23 @@ export default function Profile() {
 
     fetchProfile();
   }, [id, currentUser, authLoading]);
+
+  const calcularMedia = () => {
+    if (
+      !profile ||
+      !profile.valoraciones ||
+      profile.valoraciones.length === 0
+    ) {
+      return 0;
+    }
+
+    let sum = 0;
+    for (let valoracion of profile.valoraciones) {
+      sum += valoracion.puntuacion;
+    }
+
+    return (sum / profile.valoraciones.length).toFixed(1);
+  };
 
   if (authLoading || loading) return <div>Cargando...</div>;
 
@@ -119,7 +138,8 @@ export default function Profile() {
         <div className="grades-profile box">
           <h3>Calificaciones</h3>
           <h5>Valoración general</h5>
-          <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+          <p>Basado en {profile.valoraciones?.length || 0} evaluaciones</p>
+          <p>{calcularMedia()}</p>
         </div>
 
         <div className="exp-profile box">
@@ -223,6 +243,7 @@ export default function Profile() {
           <h3>Calificaciones como Empleador</h3>
           <h5>Valoración general</h5>
           <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+          <p>{calcularMedia()}</p>
         </div>
 
         <div className="exp-profile box">
@@ -307,6 +328,7 @@ export default function Profile() {
           <h3>Calificaciones como Empleador</h3>
           <h5>Valoración general</h5>
           <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+          <p>{calcularMedia()}</p>
         </div>
 
         <div className="exp-profile box">

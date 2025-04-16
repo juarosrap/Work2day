@@ -17,8 +17,7 @@ export default function Jobs() {
 
         if (filters.titulo) params.append("titulo", filters.titulo);
         if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
-        // if (filters.salario) params.append("salarioMax", filters.salario);
-        // params.append("salarioMin", 0); // opcional, default
+        
 
         const response = await fetch(`${API}?${params.toString()}`,
               {
@@ -26,8 +25,7 @@ export default function Jobs() {
               });
         const data = await response.json();
         setJobs(data);
-        console.log(jobs)
-        console.log(data)
+        
       } catch (error) {
         console.error("Error al obtener trabajos:", error);
       } finally {

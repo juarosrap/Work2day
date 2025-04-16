@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/valoraciones-candidato/67fccd200368a0a55e2cbf04
+Content-Type: application/json
+
+{
+    "puntuacion": 7,
+    "comentario": "Muy profesional en todo lo que hace",
+    "fecha": ""    
+}

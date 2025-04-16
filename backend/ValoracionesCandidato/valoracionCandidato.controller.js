@@ -58,6 +58,7 @@ exports.crearValoracion = async (req, res) => {
   try {
     const nuevaValoracion = new ValoracionCandidato({
       ...req.body,
+      candidatoId: req.params.id,
       fecha: req.body.fecha || new Date(),
     });
 

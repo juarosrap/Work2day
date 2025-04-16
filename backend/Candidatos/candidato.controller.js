@@ -22,7 +22,11 @@ exports.obtenerCandidatoPorId = async (req, res) => {
   try {
     const candidato = await Candidato.findById(req.params.id)
       .populate("aplicaciones")
-      .populate("valoraciones");
+      .populate({
+        path: "valoraciones",
+        select: "-__v", 
+      });
+    console.log("valoraciones:", candidato.valoraciones)
 
     if (!candidato) {
       return res.status(404).json({ error: "Candidato no encontrado" });
