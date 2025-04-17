@@ -54,11 +54,26 @@ exports.getOfertaById = async (req, res) => {
       populate: { path: "candidatoId" },
     });
 
+    let empleador = await EmpleadorEmpresa.findById(oferta.empleadorId);
+
+    if(!empleador) {
+      empleador = await EmpleadorParticular.findById(oferta.empleadorId);
+    }
+
+    if(!empleador) {
+      return res.status(404).json({ error: "Empleador no encontrado"});
+    }
+
+
+
     if (!oferta) {
       return res.status(404).json({ error: "Oferta no encontrada" });
     }
 
-    res.json(oferta);
+    res.json({
+      ...oferta.toObject(),
+      empleador
+    });
   } catch (error) {
     res.status(500).json({
       error: "Error al obtener la oferta",

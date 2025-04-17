@@ -30,6 +30,8 @@ const empleadorParticularRoutes = require("./EmpleadoresParticular/empleadorPart
 const ofertaRoutes = require("./Ofertas/ofertas.routes");
 const valoracionCandidatoRoutes = require("./ValoracionesCandidato/valoracionCandidato.routes");
 const valoracionEmpleadorRoutes = require("./ValoracionesEmpleador/valoracionEmpleador.routes");
+const EmpleadorEmpresa = require('./EmpleadoresEmpresa/empleadorEmpresa.model.js');
+const EmpleadorParticular = require('./EmpleadoresParticular/empleadorParticular.model.js');
 
 
 //Rutas
@@ -115,6 +117,25 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
     res.status(500).json({ error: 'Error en la búsqueda de ofertas', detalle: error.message });
   }
 });
+
+app.get('/api/empleadores', async (req,res) => {
+  try {
+    let empleadorId = req.params.id;
+    let empleador = await EmpleadorEmpresa.findById(empleadorId);
+    if(!empleador){
+      empleador = await EmpleadorParticular.findById(empleadorId);
+    }
+
+    if(!empleador){
+      return res.status(404).json({ error: "Empleador no encontrado"});
+    }
+
+    res.json(empleador)
+
+  } catch(e) {
+    res.status(500).json({ error: 'Error en la búsqueda de ofertas', detalle: e.message });
+  }
+})
 
 // Búsqueda avanzada de candidatos
 router.get('/api/busqueda/candidatos', async (req, res) => {
