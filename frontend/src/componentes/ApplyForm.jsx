@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import "../styles/ModalForm.css";
 import { useAuth } from "../contexts/AuthContext";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ApplyForm() {
+  const { id } = useParams();
   const { currentUser } = useAuth();
   const [apiError, setApiError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -76,13 +77,34 @@ export default function ApplyForm() {
 
   const onSubmit = async (data) => {
     try {
-      // Aquí puedes enviar los datos a tu API
+      const API = `http://localhost:5000/api/aplicaciones`;
+      const response = await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fecha: "", 
+        seleccionado: false,
+        fechaSeleccion: "",
+        fechaFinalizacion: "",
+        candidatoId: currentUser.id,
+        ofertaId: id,
+      }),
+    });
+
+      if(!response.ok) {
+        setApiError(response.json());
+        console.error(response.json());
+      }
+
+      const data = response.json()
       console.log("CV enviado:", data);
 
-      // Simular éxito (reemplazar con llamada real a API)
+      
       setSuccessMessage("Aplicación enviada con éxito");
       setTimeout(() => {
-        onClose();
+        navigate("/jobs")
       }, 2000);
     } catch (error) {
       setApiError("Error al enviar la aplicación");

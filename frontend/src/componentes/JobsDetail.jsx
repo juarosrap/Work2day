@@ -26,6 +26,7 @@ export default function JobsDetail() {
 
         const data = await response.json();
         setJob(data);
+        const empleador = data.empleadorId;
       } catch (err) {
         console.error("Error al obtener trabajos:", err);
         setError("Error al cargar los detalles del trabajo.");
@@ -33,6 +34,17 @@ export default function JobsDetail() {
         setLoading(false);
       }
     }
+
+    //async function getEmployer() {
+      //try {
+        //let API2 = `http://localhost:5000/api/empleadorEmpresa/${id}`;
+        //const response = fetch(API2);
+        //if (response.status === 404)
+      //} catch (e) {
+
+      //}
+    //}
+
 
     getJobs();
   }, [id]);
@@ -80,7 +92,7 @@ export default function JobsDetail() {
         <div className="left-side">Attachments</div>
         <div className="right-side">
           <button className="apply-button">
-            <Link to="../jobs/apply" className="link">
+            <Link to={`/jobs/jobsDetail/${id}/apply`} className="link">
               Apply
             </Link>
           </button>

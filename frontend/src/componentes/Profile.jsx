@@ -100,7 +100,7 @@ export default function Profile() {
         <div className="banner" />
         <div className="profile-info">
           <div className="profile-photo">
-            <img src="ruta-a-tu-foto-perfil.png" alt="Foto de perfil" />
+            <img src={profile.fotoPerfil} alt="Foto de perfil" />
           </div>
           <div className="profile-text">
             <h2 className="profile-name">{profile.nombre}</h2>
@@ -210,7 +210,7 @@ export default function Profile() {
         <div className="banner" />
         <div className="profile-info">
           <div className="profile-photo">
-            <img src="ruta-a-tu-foto-perfil.png" alt="Foto de perfil" />
+            <img src={profile.fotoPerfil} alt="Foto de perfil" />
           </div>
           <div className="profile-text">
             <h2 className="profile-name">
@@ -290,7 +290,7 @@ export default function Profile() {
 
         <div className="profile-info">
           <div className="profile-photo">
-            <img src="ruta-a-tu-foto-perfil.png" alt="Logo de empresa" />
+            <img src={profile.fotoPerfil} alt="Logo de empresa" />
           </div>
           <div className="profile-text">
             <h2 className="profile-name">

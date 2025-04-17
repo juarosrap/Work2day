@@ -28,7 +28,7 @@ export default function JobCard({ job }){
           <h3 className="job-title">{job.titulo}</h3>
           <p className="job-description">{job.descripcion}</p>
           <div className="job-actions">
-            <Link to={`jobsDetail/${job.id}`} className="read-more">
+            <Link to={`/jobs/jobsDetail/${job.id}`} className="read-more">
               Read more
             </Link>
             <button className="apply-btn">
