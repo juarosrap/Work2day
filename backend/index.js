@@ -32,6 +32,7 @@ const valoracionCandidatoRoutes = require("./ValoracionesCandidato/valoracionCan
 const valoracionEmpleadorRoutes = require("./ValoracionesEmpleador/valoracionEmpleador.routes");
 const EmpleadorEmpresa = require('./EmpleadoresEmpresa/empleadorEmpresa.model.js');
 const EmpleadorParticular = require('./EmpleadoresParticular/empleadorParticular.model.js');
+const Candidato = require('./Candidatos/candidato.model.js');
 
 
 //Rutas
@@ -118,22 +119,28 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
   }
 });
 
-app.get('/api/empleadores', async (req,res) => {
+app.get('/api/usuarios/:id', async (req,res) => {
   try {
-    let empleadorId = req.params.id;
-    let empleador = await EmpleadorEmpresa.findById(empleadorId);
-    if(!empleador){
-      empleador = await EmpleadorParticular.findById(empleadorId);
+    let usuarioId = req.params.id;
+    let usuario = await EmpleadorEmpresa.findById(usuarioId).populate("ofertas")
+    .populate("valoraciones");;
+    if(!usuario){
+      usuario = await EmpleadorParticular.findById(usuarioId).populate("ofertas")
+      .populate("valoraciones");;
     }
 
-    if(!empleador){
-      return res.status(404).json({ error: "Empleador no encontrado"});
+    if(!usuario){
+      usuario = await Candidato.findById(usuarioId).populate("valoraciones");;
     }
 
-    res.json(empleador)
+    if(!usuario){
+      return res.status(404).json({ error: "Usuario no encontrado"});
+    }
+
+    res.json(usuario)
 
   } catch(e) {
-    res.status(500).json({ error: 'Error en la búsqueda de ofertas', detalle: e.message });
+    res.status(500).json({ error: 'Error en la búsqueda de usuario', detalle: e.message });
   }
 })
 

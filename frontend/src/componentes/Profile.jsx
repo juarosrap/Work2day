@@ -22,8 +22,9 @@ export default function Profile() {
 
     const fetchProfile = async () => {
       try {
-        const API = `http://localhost:5000/api/${currentUser.userType}/${id}`;
-        console.log("Obteniendo perfil de:", API);
+        //const API = `http://localhost:5000/api/${currentUser.userType}/${id}`;
+        
+        const API = `http://localhost:5000/api/usuarios/${id}`;
 
         const response = await fetch(API, {
           credentials: "include",
@@ -41,7 +42,7 @@ export default function Profile() {
         const data = await response.json();
         setProfile(data); 
 
-        console.log(data)
+        console.log(data);
       } catch (err) {
         console.error("Error al obtener la persona:", err);
         setError("Error al cargar los detalles del perfil.");
@@ -372,11 +373,10 @@ export default function Profile() {
 
   return (
     <div className="main-profile">
-      {currentUser.userType === "candidato" && renderCandidatoProfile()}
-      {currentUser.userType === "empleadorParticular" &&
-        renderEmpleadorParticularProfile()}
-      {currentUser.userType === "empleadorEmpresa" &&
+      { profile.curriculum && renderCandidatoProfile()}
+      { profile.nombreEmpresa &&
         renderEmpleadorEmpresaProfile()}
+        {renderEmpleadorParticularProfile()}
     </div>
   );
 }
