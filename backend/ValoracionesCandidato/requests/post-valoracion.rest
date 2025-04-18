@@ -1,8 +1,10 @@
-POST http://localhost:5000/api/valoraciones-candidato/67fccd200368a0a55e2cbf04
+POST http://localhost:5000/api/valoraciones-candidato/6801383d8d60a495da5ed9bd
 Content-Type: application/json
 
 {
-    "puntuacion": 7,
-    "comentario": "Muy profesional en todo lo que hace",
-    "fecha": ""    
+    "puntuacion": 9,
+    "comentario": "Profesional, amable y atento",
+    "fecha": "",
+    "candidatoId": "6801383d8d60a495da5ed9bd",
+    "empleadorId": "6801395d8d60a495da5ed9cf"      
 }

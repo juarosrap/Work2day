@@ -2,6 +2,7 @@ import "../styles/Profile.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Review from "./Review.jsx";
 
 export default function Profile() {
   const { id } = useParams();
@@ -41,6 +42,7 @@ export default function Profile() {
 
         const data = await response.json();
         setProfile(data); 
+        console.log(data.valoraciones)
       } catch (err) {
         console.error("Error al obtener la persona:", err);
         setError("Error al cargar los detalles del perfil.");
@@ -108,7 +110,7 @@ export default function Profile() {
           <div className="profile-text">
             <h2 className="profile-name">{profile.nombre}</h2>
             <p className="profile-role">
-              {profile.curriculum?.puesto || "Desarrollador"}
+              {profile.curriculum?.experienciaLaboral || "No se ha especificado"}
             </p>
             <div className="profile-tags">
               {profile.curriculum && profile.curriculum.ubicacion && (
@@ -182,27 +184,13 @@ export default function Profile() {
 
         <div className="opinions-profile box">
           <h3>Reseñas Recientes</h3>
-
-          <div className="review">
-            <img src="ruta-a-imagen-carlos.png" alt="Carlos Mendoza" />
-            <div className="review-content">
-              <p className="review-name">Carlos Mendoza</p>
-              <p className="review-role">Director de Tecnología,</p>
-              <div className="stars">⭐⭐⭐⭐⭐</div>
-              <p className="review-text">
-                Ana es una profesional excepcional. Su conocimiento técnico y
-                capacidad para resolver
-              </p>
-            </div>
-          </div>
-
-          <div className="review">
-            <img src="ruta-a-imagen-laura.png" alt="Laura Sánchez" />
-            <div className="review-content">
-              <p className="review-name">Laura Sánchez</p>
-              <p className="review-role">Project Manager,</p>
-            </div>
-          </div>
+          {profile.valoraciones && profile.valoraciones.length > 0 ? (
+            profile.valoraciones.map((review) => (
+              <Review key={review.id} review={review} />
+            ))
+          ) : (
+            <p>No hay reseñas disponibles</p>
+          )}
         </div>
       </div>
     </>
@@ -275,18 +263,13 @@ export default function Profile() {
 
         <div className="opinions-profile box">
           <h3>Reseñas de Candidatos</h3>
-          <div className="review">
-            <img src="ruta-a-imagen-carlos.png" alt="Candidato" />
-            <div className="review-content">
-              <p className="review-name">Juan Pérez</p>
-              <p className="review-role">Candidato</p>
-              <div className="stars">⭐⭐⭐⭐⭐</div>
-              <p className="review-text">
-                Excelente empleador, muy profesional y claro con sus
-                requerimientos.
-              </p>
-            </div>
-          </div>
+          {profile.valoraciones && profile.valoraciones.length > 0 ? (
+            profile.valoraciones.map((review) => (
+              <Review key={review.id} review={review} />
+            ))
+          ) : (
+            <p>No hay reseñas disponibles</p>
+          )}
         </div>
       </div>
     </>
@@ -368,19 +351,15 @@ export default function Profile() {
 
         <div className="opinions-profile box">
           <h3>Opiniones de Empleados y Candidatos</h3>
-          <div className="review">
-            <img src="ruta-a-imagen-carlos.png" alt="Empleado" />
-            <div className="review-content">
-              <p className="review-name">María López</p>
-              <p className="review-role">Candidato</p>
-              <div className="stars">⭐⭐⭐⭐</div>
-              <p className="review-text">
-                Gran empresa para trabajar, ambiente profesional y buenas
-                oportunidades.
-              </p>
-            </div>
-          </div>
+          {profile.valoraciones && profile.valoraciones.length > 0 ? (
+            profile.valoraciones.map((review) => (
+              <Review key={review.id} review={review} />
+            ))
+          ) : (
+            <p>No hay reseñas disponibles</p>
+          )}
         </div>
+
       </div>
     </>
   );
