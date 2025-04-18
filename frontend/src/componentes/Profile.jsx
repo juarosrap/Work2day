@@ -41,8 +41,6 @@ export default function Profile() {
 
         const data = await response.json();
         setProfile(data); 
-
-        console.log(data);
       } catch (err) {
         console.error("Error al obtener la persona:", err);
         setError("Error al cargar los detalles del perfil.");
@@ -101,7 +99,11 @@ export default function Profile() {
         <div className="banner" />
         <div className="profile-info">
           <div className="profile-photo">
-            <img src={profile.fotoPerfil} alt="Foto de perfil" />
+          {profile.fotoPerfil ? (
+              <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ) : (
+              <img src="/ruta/a/imagen-por-defecto.png" alt="Logo por defecto" />
+              )}
           </div>
           <div className="profile-text">
             <h2 className="profile-name">{profile.nombre}</h2>
@@ -118,11 +120,12 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="profile-edit">
+          {currentUser.id === profile.id ?
+            <div className="profile-edit">
             <button>
               <Link to="/profile/edit">Editar perfil</Link>
             </button>
-          </div>
+          </div> : <div></div>}
         </div>
       </div>
 
@@ -211,7 +214,11 @@ export default function Profile() {
         <div className="banner" />
         <div className="profile-info">
           <div className="profile-photo">
-            <img src={profile.fotoPerfil} alt="Foto de perfil" />
+          {profile.fotoPerfil ? (
+              <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ) : (
+              <img src="/ruta/a/imagen-por-defecto.png" alt="Logo por defecto" />
+              )}
           </div>
           <div className="profile-text">
             <h2 className="profile-name">
@@ -226,11 +233,12 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="profile-edit">
+          {currentUser.id === profile.id ?
+            <div className="profile-edit">
             <button>
               <Link to="/profile/edit">Editar perfil</Link>
             </button>
-          </div>
+          </div> : <div></div>}
         </div>
       </div>
 
@@ -291,7 +299,11 @@ export default function Profile() {
 
         <div className="profile-info">
           <div className="profile-photo">
-            <img src={profile.fotoPerfil} alt="Logo de empresa" />
+            {profile.fotoPerfil ? (
+              <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ) : (
+              <img src="/ruta/a/imagen-por-defecto.png" alt="Logo por defecto" />
+              )}
           </div>
           <div className="profile-text">
             <h2 className="profile-name">
@@ -308,11 +320,13 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="profile-edit">
+          {currentUser.id === profile.id ?
+            <div className="profile-edit">
             <button>
               <Link to="/profile/edit">Editar perfil</Link>
             </button>
-          </div>
+          </div> : <div></div>}
+
         </div>
       </div>
 
@@ -373,10 +387,12 @@ export default function Profile() {
 
   return (
     <div className="main-profile">
-      { profile.curriculum && renderCandidatoProfile()}
-      { profile.nombreEmpresa &&
-        renderEmpleadorEmpresaProfile()}
-        {renderEmpleadorParticularProfile()}
+      {profile.curriculum
+        ? renderCandidatoProfile()
+        : profile.nombreEmpresa
+        ? renderEmpleadorEmpresaProfile()
+        : renderEmpleadorParticularProfile()}
     </div>
   );
+  
 }
