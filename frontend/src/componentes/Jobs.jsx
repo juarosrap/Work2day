@@ -2,50 +2,37 @@ import { useContext, useEffect, useState } from "react";
 import "../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
 import { FiltersContext } from "../contexts/FiltersContext.jsx";
+
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { filters, setFilters } = useContext(FiltersContext);
+  
+  
+  const hasActiveFilters = 
+    filters.titulo || 
+    filters.ubicacion || 
+    filters.sector || 
+    (filters.salario && filters.salario > 0);
 
   let API = "http://localhost:5000/api/busqueda/ofertas";
 
-   useEffect(() => {
-     const fetchJobs = async () => {
-      setLoading(true);
-       try {
-         const response = await fetch(API,
-               {
-                 credentials: "include"
-               });
-         const data = await response.json();
-         setJobs(data);
-        
-       } catch (error) {
-         console.error("Error al obtener trabajos:", error);
-       } finally {
-         setLoading(false);
-       }
-     };
-     fetchJobs();
-   }, []);
-
-
-  const fetchJobsWithFilters = async () => {
+  const fetchJobsWithFilters = async (filterParams = filters) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
 
-      if (filters.titulo) params.append("titulo", filters.titulo);
-      if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
-      
+      if (filterParams.titulo) params.append("titulo", filterParams.titulo);
+      if (filterParams.ubicacion) params.append("ubicacion", filterParams.ubicacion);
+      if (filterParams.sector) params.append("sector", filterParams.sector);
+      if (filterParams.salario && filterParams.salario > 0) 
+        params.append("salario", filterParams.salario);
 
-      const response = await fetch(`${API}?${params.toString()}`,
-            {
-              credentials: "include"
-            });
+      const response = await fetch(`${API}?${params.toString()}`, {
+        credentials: "include"
+      });
       const data = await response.json();
       setJobs(data);
-      
     } catch (error) {
       console.error("Error al obtener trabajos:", error);
     } finally {
@@ -53,32 +40,50 @@ export default function Jobs() {
     }
   };
 
+  useEffect(() => {
+    if (hasActiveFilters) {
+      fetchJobsWithFilters();
+    } else {
+      const fetchJobs = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch(API, {
+            credentials: "include"
+          });
+          const data = await response.json();
+          setJobs(data);
+        } catch (error) {
+          console.error("Error al obtener trabajos:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchJobs();
+    }
+  }, []); 
+
   const handleSalarioChange = (e) => {
     const value = Number(e.target.value);
     setFilters((prev) => ({ ...prev, salario: value }));
   };
-
   
   const handleTituloChange = (e) => {
     const value = e.target.value;
     setFilters((prev) => ({ ...prev, titulo: value }));
   };
-
   
   const handleUbicacionChange = (e) => {
     const value = e.target.value;
     setFilters((prev) => ({ ...prev, ubicacion: value }));
   };
-
   
   const handleSectorChange = (e) => {
     const value = e.target.value;
     setFilters((prev) => ({ ...prev, sector: value }));
   };
-
   
   const handleSearch = () => {
-    fetchJobsWithFilters()
+    fetchJobsWithFilters();
   };
 
   return (
@@ -95,7 +100,7 @@ export default function Jobs() {
               min="0"
               max="4000"
               step="50"
-              value={filters.salario}
+              value={filters.salario || 0}
               onChange={handleSalarioChange}
               id="salario"
               className="salary-slider"
@@ -124,13 +129,13 @@ export default function Jobs() {
       <div className="search-bar">
         <input
           type="text"
-          value={filters.titulo}
+          value={filters.titulo || ""}
           onChange={handleTituloChange}
           placeholder="Search a job"
         />
         <input
           type="text"
-          value={filters.ubicacion}
+          value={filters.ubicacion || ""}
           onChange={handleUbicacionChange}
           placeholder="Where"
         />
