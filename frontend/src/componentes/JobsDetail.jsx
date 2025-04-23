@@ -1,9 +1,11 @@
 import "../styles/JobsDetails.css";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function JobsDetail() {
   const { id } = useParams();
+  const { currentUser } = useAuth();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -79,11 +81,11 @@ export default function JobsDetail() {
       <div className="attachments-section">
         <div className="left-side">Attachments</div>
         <div className="right-side">
-          <button className="apply-button">
+          { currentUser.userType === "candidato" ? <button className="apply-button">
             <Link to={`/jobs/jobsDetail/${id}/apply`} className="link">
               Apply
             </Link>
-          </button>
+          </button> : <></>}
         </div>
       </div>
     </div>

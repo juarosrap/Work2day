@@ -9,32 +9,56 @@ export default function Jobs() {
 
   let API = "http://localhost:5000/api/busqueda/ofertas";
 
-  useEffect(() => {
-    const fetchJobsWithFilters = async () => {
-      setLoading(true);
-      try {
-        const params = new URLSearchParams();
+  // useEffect(() => {
+  //   const fetchJobsWithFilters = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const params = new URLSearchParams();
 
-        if (filters.titulo) params.append("titulo", filters.titulo);
-        if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
+  //       if (filters.titulo) params.append("titulo", filters.titulo);
+  //       if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
         
 
-        const response = await fetch(`${API}?${params.toString()}`,
-              {
-                credentials: "include"
-              });
-        const data = await response.json();
-        setJobs(data);
+  //       const response = await fetch(`${API}?${params.toString()}`,
+  //             {
+  //               credentials: "include"
+  //             });
+  //       const data = await response.json();
+  //       setJobs(data);
         
-      } catch (error) {
-        console.error("Error al obtener trabajos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //     } catch (error) {
+  //       console.error("Error al obtener trabajos:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchJobsWithFilters();
-  }, [filters]);
+  //   fetchJobsWithFilters();
+  // }, [filters]);
+
+
+  const fetchJobsWithFilters = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+
+      if (filters.titulo) params.append("titulo", filters.titulo);
+      if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
+      
+
+      const response = await fetch(`${API}?${params.toString()}`,
+            {
+              credentials: "include"
+            });
+      const data = await response.json();
+      setJobs(data);
+      
+    } catch (error) {
+      console.error("Error al obtener trabajos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSalarioChange = (e) => {
     const value = Number(e.target.value);
@@ -59,11 +83,9 @@ export default function Jobs() {
     setFilters((prev) => ({ ...prev, sector: value }));
   };
 
-  // Función para manejar la búsqueda explícita con el botón
+  
   const handleSearch = () => {
-    // Puedes implementar una lógica adicional si es necesario
-    // Por ahora, el useEffect ya se encarga de actualizar los trabajos
-    // cuando cambian los filtros
+    fetchJobsWithFilters();
   };
 
   return (

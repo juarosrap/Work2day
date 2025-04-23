@@ -3,9 +3,10 @@ import calendar from "../assets/calendar-icon.svg";
 import location from "../assets/location-icon.svg";
 import office from "../assets/office-icon.svg";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function JobCard({ job }){
-  
+export default function JobCard({ job }) {
+  const { currentUser } = useAuth();
 
     return (
       <div className="job-card">
@@ -31,11 +32,13 @@ export default function JobCard({ job }){
             <Link to={`/jobs/jobsDetail/${job.id}`} className="read-more">
               Read more
             </Link>
-            <button className="apply-btn">
+            { currentUser.userType === "candidato" ?
+             <button className="apply-btn">
               <Link to="apply" className="link">
                 Apply
               </Link>
             </button>
+            : <></>}
           </div>
         </div>
       </div>
