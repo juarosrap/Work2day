@@ -9,32 +9,25 @@ export default function Jobs() {
 
   let API = "http://localhost:5000/api/busqueda/ofertas";
 
-  // useEffect(() => {
-  //   const fetchJobsWithFilters = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const params = new URLSearchParams();
-
-  //       if (filters.titulo) params.append("titulo", filters.titulo);
-  //       if (filters.ubicacion) params.append("ubicacion", filters.ubicacion);
+   useEffect(() => {
+     const fetchJobs = async () => {
+      setLoading(true);
+       try {
+         const response = await fetch(API,
+               {
+                 credentials: "include"
+               });
+         const data = await response.json();
+         setJobs(data);
         
-
-  //       const response = await fetch(`${API}?${params.toString()}`,
-  //             {
-  //               credentials: "include"
-  //             });
-  //       const data = await response.json();
-  //       setJobs(data);
-        
-  //     } catch (error) {
-  //       console.error("Error al obtener trabajos:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchJobsWithFilters();
-  // }, [filters]);
+       } catch (error) {
+         console.error("Error al obtener trabajos:", error);
+       } finally {
+         setLoading(false);
+       }
+     };
+     fetchJobs();
+   }, []);
 
 
   const fetchJobsWithFilters = async () => {
@@ -85,7 +78,7 @@ export default function Jobs() {
 
   
   const handleSearch = () => {
-    fetchJobsWithFilters();
+    fetchJobsWithFilters()
   };
 
   return (
