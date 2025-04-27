@@ -53,7 +53,7 @@ exports.getOfertaById = async (req, res) => {
       path: "aplicaciones",
       populate: { path: "candidatoId" },
     });
-    console.log(oferta)
+    console.log(oferta);
 
     if (!oferta) {
       return res.status(404).json({ error: "Oferta no encontrada" });
@@ -61,21 +61,36 @@ exports.getOfertaById = async (req, res) => {
 
     let empleador = await EmpleadorEmpresa.findById(oferta.empleadorId);
 
-    if(!empleador) {
+    if (!empleador) {
       empleador = await EmpleadorParticular.findById(oferta.empleadorId);
     }
 
-    if(!empleador) {
-      return res.status(404).json({ error: "Empleador no encontrado"});
+    if (!empleador) {
+      return res.status(404).json({ error: "Empleador no encontrado" });
     }
 
+    // Convertimos oferta a objeto simple
+    const ofertaObj = oferta.toObject();
 
+    // Eliminamos la contraseña de cada candidato
+    if (ofertaObj.aplicaciones && Array.isArray(ofertaObj.aplicaciones)) {
+      ofertaObj.aplicaciones = ofertaObj.aplicaciones.map((aplicacion) => {
+        if (aplicacion.candidatoId && aplicacion.candidatoId.contrasena) {
+          delete aplicacion.candidatoId.contrasena;
+        }
+        return aplicacion;
+      });
+    }
 
-    
+    // Eliminamos la contraseña del empleador
+    const empleadorObj = empleador.toObject();
+    if (empleadorObj.contrasena) {
+      delete empleadorObj.contrasena;
+    }
 
     res.json({
-      ...oferta.toObject(),
-      empleador
+      ...ofertaObj,
+      empleador: empleadorObj,
     });
   } catch (error) {
     res.status(500).json({
@@ -84,6 +99,7 @@ exports.getOfertaById = async (req, res) => {
     });
   }
 };
+
 
 exports.getOfertasByEmpleador = async (req, res) => {
   try {
