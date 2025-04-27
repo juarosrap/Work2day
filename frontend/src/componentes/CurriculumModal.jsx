@@ -17,7 +17,7 @@ export default function CurriculumModal({ isOpen, onClose, candidato }) {
   if (!isOpen || !candidato) return null;
 
   const { curriculum } = candidato;
-  console.log(candidato);
+  console.log(candidato.curriculum.experienciaPrevia);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -66,7 +66,11 @@ export default function CurriculumModal({ isOpen, onClose, candidato }) {
 
           <div className="cv-section">
             <h3>Experiencia Laboral</h3>
-            <p>{curriculum.experienciaLaboral}</p>
+            {curriculum.experienciaPrevia &&
+              curriculum.experienciaPrevia[0] &&
+              curriculum.experienciaPrevia[0].puesto && (
+                <p>{curriculum.experienciaPrevia[0].puesto}</p>
+              )}
           </div>
 
           <div className="cv-section">
