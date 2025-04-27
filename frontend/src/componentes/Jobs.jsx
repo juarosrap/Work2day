@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
 import { FiltersContext } from "../contexts/FiltersContext.jsx";
+import { motion } from "framer-motion";
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -87,8 +88,12 @@ export default function Jobs() {
   };
 
   return (
-    <div className="jobs">
-      <div className="jobs-top-section">
+    <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="jobs"
+        ><div className="jobs-top-section">
         <div className="filters">
           <div className="salary-filter">
             <div className="salary-header">
@@ -155,7 +160,7 @@ export default function Jobs() {
             .map((job) => <JobCard key={job.id} job={job} />)
         )}
       </div>
-      <div className="pagination"></div>
-    </div>
+      <div className="pagination"></div></motion.div>
+    
   );
 }

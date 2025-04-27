@@ -1,0 +1,95 @@
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: black;
+}
+
+.about-text {
+  font-size: 1.125rem;
+  color: #4a5568;
+  margin-bottom: 32px;
+}
+
+.about-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.about-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 24px;
+  flex: 1 1 calc(33% - 24px);
+  min-width: 250px;
+  transition: box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.about-icon {
+  margin-bottom: 16px;
+}
+
+.about-icon.blue {
+  color: #3182ce;
+}
+
+.about-icon.green {
+  color: #48bb78;
+}
+
+.about-icon.yellow {
+  color: #ecc94b;
+}
+
+.about-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.about-card-text {
+  color: #4a5568;
+}
+
+.about-founder {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.about-founder-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.about-founder-text {
+  margin-top: 8px;
+  color: #4a5568;
+}
+
+.about-button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  border: 2px solid #3182ce;
+  background: transparent;
+  color: #3182ce;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.about-button:hover {
+  background: #3182ce;
+  color: white;
+}

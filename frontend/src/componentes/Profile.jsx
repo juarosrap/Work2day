@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Review from "./Review.jsx";
 import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
+import { motion } from "framer-motion";
 
 export default function Profile() {
   const { id } = useParams();
@@ -328,13 +329,18 @@ export default function Profile() {
   );
 
   return (
-    <div className="main-profile">
-      {profile.curriculum
+    <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="main-profile"
+        > 
+        {profile.curriculum
         ? renderCandidatoProfile()
         : profile.nombreEmpresa
         ? renderEmpleadorEmpresaProfile()
         : renderEmpleadorParticularProfile()}
-    </div>
+    </motion.div>
   );
   
 }

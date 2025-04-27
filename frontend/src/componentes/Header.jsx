@@ -11,10 +11,7 @@ export default function Header() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
   const navigate = useNavigate();
-
-  
 
   const handleLogout = () => {
     logout();
@@ -44,10 +41,10 @@ export default function Header() {
             Home
           </NavLink>
           <NavLink
-            // className={({ isActive }) => {
-            //   return isActive ? "is-active" : undefined;
-            // }}
-            to="/"
+            className={({ isActive }) => {
+              return isActive ? "is-active" : undefined;
+            }}
+            to="/about-us"
           >
             About us
           </NavLink>
@@ -59,14 +56,7 @@ export default function Header() {
           >
             Jobs
           </NavLink>
-          <NavLink
-            className={({ isActive }) => {
-              return isActive ? "is-active" : undefined;
-            }}
-            to="/contact"
-          >
-            Contact
-          </NavLink>
+
           {isAuthenticated ? (
             <div className="nav-buttons">
               <div className="user-info">

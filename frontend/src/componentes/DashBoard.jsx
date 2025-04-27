@@ -2,6 +2,7 @@ import "../styles/DashBoard.css";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DashBoardRow from "./DashboardRow";
+import { motion } from "framer-motion";
 
 export default function DashBoard() {
     const { id } = useParams();
@@ -91,8 +92,13 @@ export default function DashBoard() {
     }
 
   return (
-    <div className="main-dash">
-      <div className="title-dash">
+    <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="main-dash"
+        >
+          <div className="title-dash">
         <h2>Dashboard</h2>
         <button className="add-job">
           <Link className="link-addjob" to={`/dashboard/${id}/jobForm`}>
@@ -136,6 +142,7 @@ export default function DashBoard() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
+    
   );
 }

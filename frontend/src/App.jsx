@@ -14,7 +14,7 @@ import JobForm from "./componentes/JobForm.jsx";
 import DeleteJob from "./componentes/DeleteJob.jsx";
 import EditProfile from "./componentes/EditProfile.jsx";
 import ListaCandidatos from "./componentes/ListaCandidatos.jsx";
-
+import AboutUs from "./componentes/AboutUs.jsx";
 
 export default function App() {
   return (
@@ -22,6 +22,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/form" element={<ModalForm />} />
         <Route path="/loginForm" element={<LoginModal />} />
         <Route path="/jobs" element={<Jobs />} />
