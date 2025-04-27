@@ -65,6 +65,18 @@ export default function DashBoard() {
       return cont;
     }
 
+    const numOfertasActivas = () => {
+      let cont = 0;
+
+      for (let i = 0; i < jobs.length; i++) {
+        if (jobs[i].estado === "Activa") {
+          cont += 1;
+        }
+      }
+
+      return cont;
+    };
+
 
 
     if (loading) return <div>Cargando...</div>;
@@ -92,7 +104,7 @@ export default function DashBoard() {
       <div className="statistics-dash">
         <div className="stat-card">
           <p>Ofertas activas</p>
-          <p className="active">{jobs.length}</p>
+          <p className="active">{numOfertasActivas()}</p>
         </div>
         <div className="stat-card">
           <p>Candidatos totales</p>

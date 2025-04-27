@@ -200,16 +200,6 @@ export default function ModalForm() {
         <p style={errorStyle}>{errors.curriculum.formacionAcademica.message}</p>
       )}
 
-      <label>Experiencia Laboral</label>
-      <input
-        {...register("curriculum.experienciaLaboral", {
-          required: "Este campo es obligatorio",
-        })}
-      />
-      {errors.curriculum?.experienciaLaboral && (
-        <p style={errorStyle}>{errors.curriculum.experienciaLaboral.message}</p>
-      )}
-
       <label>Idiomas (separados por coma)</label>
       <input
         {...register("idiomasRaw", { required: "Este campo es obligatorio" })}
@@ -217,6 +207,38 @@ export default function ModalForm() {
       {errors.idiomasRaw && (
         <p style={errorStyle}>{errors.idiomasRaw.message}</p>
       )}
+
+      <h3>Experiencia Laboral</h3>
+
+      <label>Empresa</label>
+      <input
+        {...register("curriculum.experienciaPrevia.empresa")}
+        placeholder="Nombre de la empresa"
+      />
+
+      <label>Puesto</label>
+      <input
+        {...register("curriculum.experienciaPrevia.puesto")}
+        placeholder="Tu puesto en la empresa"
+      />
+
+      <label>Fecha de Inicio</label>
+      <input
+        {...register("curriculum.experienciaPrevia.fechaInicio")}
+        type="date"
+      />
+
+      <label>Fecha de Fin</label>
+      <input
+        {...register("curriculum.experienciaPrevia.fechaFin")}
+        type="date"
+      />
+
+      <label>Descripción</label>
+      <textarea
+        {...register("curriculum.experienciaPrevia.descripcion")}
+        placeholder="Describe tus tareas o logros"
+      />
     </>
   );
 
@@ -241,6 +263,16 @@ export default function ModalForm() {
     } else {
       API = "http://localhost:5000/api/empleadorEmpresa/register";
     }
+
+    if (
+      data.curriculum?.experienciaPrevia &&
+      data.curriculum.experienciaPrevia.empresa
+    ) {
+      data.curriculum.experienciaPrevia = [data.curriculum.experienciaPrevia];
+    } else {
+      delete data.curriculum.experienciaPrevia;
+    }
+
 
     try {
       const response = await fetch(API, {

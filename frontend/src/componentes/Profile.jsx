@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Review from "./Review.jsx";
+import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
 
 export default function Profile() {
   const { id } = useParams();
@@ -23,8 +24,6 @@ export default function Profile() {
 
     const fetchProfile = async () => {
       try {
-        //const API = `http://localhost:5000/api/${currentUser.userType}/${id}`;
-        
         const API = `http://localhost:5000/api/usuarios/${id}`;
 
         const response = await fetch(API, {
@@ -148,39 +147,7 @@ export default function Profile() {
           <p>{calcularMedia()}</p>
         </div>
 
-        <div className="exp-profile box">
-          <h3>Experiencia Destacada</h3>
-          <div className="past-job">
-            <img src="ruta-a-tu-imagen.png" alt="business-photo" />
-            <div className="job-info">
-              <p className="job-title">Desarrolladora Senior - TechSolutions</p>
-              <p className="job-dates">
-                Enero 2020 - Presente · 3 años 8 meses
-              </p>
-              <p className="job-description">
-                Lideré el desarrollo frontend de la plataforma principal
-                utilizando React y TypeScript. Implementé arquitecturas
-                serverless con AWS Lambda y optimicé el rendimiento de
-                aplicaciones existentes.
-              </p>
-            </div>
-          </div>
-          <div className="past-job">
-            <img src="ruta-a-tu-imagen.png" alt="business-photo" />
-            <div className="job-info">
-              <p className="job-title">Desarrolladora Senior - TechSolutions</p>
-              <p className="job-dates">
-                Enero 2020 - Presente · 3 años 8 meses
-              </p>
-              <p className="job-description">
-                Lideré el desarrollo frontend de la plataforma principal
-                utilizando React y TypeScript. Implementé arquitecturas
-                serverless con AWS Lambda y optimicé el rendimiento de
-                aplicaciones existentes.
-              </p>
-            </div>
-          </div>
-        </div>
+        <ExperienciaDestacada experienciaPrevia={profile.curriculum.experienciaPrevia}/>
 
         <div className="opinions-profile box">
           <h3>Reseñas Recientes</h3>

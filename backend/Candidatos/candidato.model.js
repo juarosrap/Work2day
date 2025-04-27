@@ -21,23 +21,35 @@ const CandidatoSchema = new Schema({
   },
   contrasena: {
     type: String,
-    required: true
+    required: true,
   },
   curriculum: {
     informacionPersonal: String,
     ubicacion: String,
     formacionAcademica: String,
-    experienciaLaboral: String,
     idiomas: [String],
+    experienciaPrevia: [
+      {
+        empresa: String,
+        puesto: String,
+        fechaInicio: Date,
+        fechaFin: Date,
+        descripcion: String,
+      },
+    ],
   },
-  aplicaciones: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: "Aplicacion" 
-  }],    
-  valoraciones: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: "ValoracionCandidato" 
-  }],
+  aplicaciones: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Aplicacion",
+    },
+  ],
+  valoraciones: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "ValoracionCandidato",
+    },
+  ],
 });
 
 CandidatoSchema.set('toJSON', {

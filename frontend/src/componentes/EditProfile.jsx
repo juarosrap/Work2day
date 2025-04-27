@@ -64,9 +64,7 @@ export default function EditProfile() {
         const data = await response.json();
         setProfileData(data);
 
-        // Aquí eliminamos el bucle y establecemos manualmente los valores según el tipo de usuario
         if (currentUser.userType === "candidato") {
-          // Establecer datos básicos de candidato
           setValue("nombre", data.nombre || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
@@ -99,6 +97,32 @@ export default function EditProfile() {
             } else {
               setValue("curriculum.idiomas", data.curriculum.idiomas || "");
             }
+
+            // Cargar datos de experiencia previa
+            if (Array.isArray(data.curriculum.experienciaPrevia)) {
+              data.curriculum.experienciaPrevia.forEach((exp, index) => {
+                setValue(
+                  `curriculum.experienciaPrevia.${index}.empresa`,
+                  exp.empresa || ""
+                );
+                setValue(
+                  `curriculum.experienciaPrevia.${index}.puesto`,
+                  exp.puesto || ""
+                );
+                setValue(
+                  `curriculum.experienciaPrevia.${index}.fechaInicio`,
+                  formatDateForInput(exp.fechaInicio) || ""
+                );
+                setValue(
+                  `curriculum.experienciaPrevia.${index}.fechaFin`,
+                  formatDateForInput(exp.fechaFin) || ""
+                );
+                setValue(
+                  `curriculum.experienciaPrevia.${index}.descripcion`,
+                  exp.descripcion || ""
+                );
+              });
+            }
           }
         } else if (currentUser.userType === "empleadorParticular") {
           setValue("nombre", data.nombre || "");
@@ -110,7 +134,6 @@ export default function EditProfile() {
             formatDateForInput(data.fechaNacimiento) || ""
           );
         } else if (currentUser.userType === "empleadorEmpresa") {
-          
           setValue("nombre", data.nombre || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
@@ -150,7 +173,7 @@ export default function EditProfile() {
       processedData.curriculum.idiomas = processedData.curriculum.idiomas
         .split(",")
         .map((idioma) => idioma.trim())
-        .filter((idioma) => idioma !== ""); 
+        .filter((idioma) => idioma !== "");
     }
 
     try {
@@ -191,6 +214,7 @@ export default function EditProfile() {
   const renderCandidatoForm = () => (
     <form onSubmit={handleSubmit(onSubmit)} className="registro-form">
       <h3>Información personal</h3>
+
       <div className="row">
         <div>
           <label>Nombre</label>
@@ -274,13 +298,76 @@ export default function EditProfile() {
       </div>
 
       <div>
-        <label>Experiencia laboral</label>
-        <textarea {...register("curriculum.experienciaLaboral")} rows="3" />
+        <label>Idiomas (separados por coma)</label>
+        <input {...register("curriculum.idiomas")} type="text" />
       </div>
 
       <div>
-        <label>Idiomas (separados por coma)</label>
-        <input {...register("curriculum.idiomas")} type="text" />
+        <h3>Experiencia laboral previa</h3>
+
+        {[0, 1, 2].map((index) => (
+          <div
+            key={index}
+            className="exp-profile box"
+            style={{ marginBottom: "20px" }}
+          >
+            <div className="past-job">
+              <div className="job-info">
+                <div>
+                  <label>Empresa</label>
+                  <input
+                    {...register(
+                      `curriculum.experienciaPrevia.${index}.empresa`
+                    )}
+                    type="text"
+                  />
+                </div>
+
+                <div>
+                  <label>Puesto</label>
+                  <input
+                    {...register(
+                      `curriculum.experienciaPrevia.${index}.puesto`
+                    )}
+                    type="text"
+                  />
+                </div>
+
+                <div className="row">
+                  <div>
+                    <label>Fecha de inicio</label>
+                    <input
+                      {...register(
+                        `curriculum.experienciaPrevia.${index}.fechaInicio`
+                      )}
+                      type="date"
+                    />
+                  </div>
+
+                  <div>
+                    <label>Fecha de fin</label>
+                    <input
+                      {...register(
+                        `curriculum.experienciaPrevia.${index}.fechaFin`
+                      )}
+                      type="date"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label>Descripción</label>
+                  <textarea
+                    {...register(
+                      `curriculum.experienciaPrevia.${index}.descripcion`
+                    )}
+                    rows="3"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {renderFormActions()}

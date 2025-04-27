@@ -9,6 +9,7 @@ const OfertaSchema = new Schema({
   ubicacion: String,
   salario: Number,
   imagen: String,
+  fechaPublicacion: {type: Date, default: Date.now},
   estado: { 
     type: String, enum: ["Activa", "Pausada", "Expirada", "Retirada"] 
   },

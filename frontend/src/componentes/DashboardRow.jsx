@@ -1,6 +1,7 @@
 import "../styles/DashBoard.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import dayjs from "dayjs";
 
 export default function DashBoardRow({ job }) {
   const { currentUser } = useAuth();
@@ -35,7 +36,7 @@ export default function DashBoardRow({ job }) {
         <Link to={`candidatos/${job.id}`}>{job.aplicaciones.length}</Link>
       </div>
       <div className="cell" data-label="FECHA">
-        20/03/2025
+        {dayjs(job.fechaPublicacion).format("DD/MM/YYYY")}
       </div>
       <div className="cell actions" data-label="ACCIONES">
         <span className="edit">

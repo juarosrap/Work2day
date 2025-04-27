@@ -117,6 +117,7 @@ export default function Jobs() {
             <option value="">Todos los sectores</option>
             <option value="Hosteleria">Hostelería</option>
             <option value="Domestico">Doméstico</option>
+            <option value="Obra">Obra</option>
             <option value="Otro">Otro</option>
           </select>
         </div>
