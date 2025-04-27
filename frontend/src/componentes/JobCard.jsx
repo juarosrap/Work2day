@@ -32,13 +32,15 @@ export default function JobCard({ job }) {
             <Link to={`/jobs/jobsDetail/${job.id}`} className="read-more">
               Read more
             </Link>
-            {currentUser && currentUser.userType === "candidato" ?
-             <button className="apply-btn">
-              <Link to="apply" className="link">
-                Apply
-              </Link>
-            </button>
-            : <></>}
+            {currentUser && currentUser.userType === "candidato" ? (
+              <button className="apply-btn">
+                <Link to={`/jobs/jobsDetail/${job.id}/apply`} className="link">
+                  Apply
+                </Link>
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

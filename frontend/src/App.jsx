@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/jobs/jobsDetail/:id" element={<JobsDetail />} />
         <Route path="/jobs/jobsDetail/:id/apply" element={<ApplyForm />} />
         {/*<Route path="/jobs/jobsDetail/apply" element={<ApplyForm />} />*/}
-        <Route path="/jobs/apply" element={<ApplyForm />} />
+        {/* <Route path="/jobs/apply" element={<ApplyForm />} /> */}
         <Route path="/dashboard/:id" element={<DashBoard />} />
         <Route path="/dashboard/:id/jobForm" element={<JobForm />} />
         <Route path="/dashboard/:id/edit/:ofertaId" element={<JobForm />} />
