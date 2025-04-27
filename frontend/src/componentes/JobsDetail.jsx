@@ -81,7 +81,7 @@ export default function JobsDetail() {
       <div className="attachments-section">
         <div className="left-side">Attachments</div>
         <div className="right-side">
-          { currentUser.userType === "candidato" ? <button className="apply-button">
+          {currentUser && currentUser.userType === "candidato" ? <button className="apply-button">
             <Link to={`/jobs/jobsDetail/${id}/apply`} className="link">
               Apply
             </Link>

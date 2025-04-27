@@ -53,6 +53,11 @@ exports.getOfertaById = async (req, res) => {
       path: "aplicaciones",
       populate: { path: "candidatoId" },
     });
+    console.log(oferta)
+
+    if (!oferta) {
+      return res.status(404).json({ error: "Oferta no encontrada" });
+    }
 
     let empleador = await EmpleadorEmpresa.findById(oferta.empleadorId);
 
@@ -66,9 +71,7 @@ exports.getOfertaById = async (req, res) => {
 
 
 
-    if (!oferta) {
-      return res.status(404).json({ error: "Oferta no encontrada" });
-    }
+    
 
     res.json({
       ...oferta.toObject(),

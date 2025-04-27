@@ -73,8 +73,7 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
     const {
       titulo,
       ubicacion,
-      salarioMin,
-      salarioMax,
+      salario,
       tipoContrato,
       jornada,
       categoria,
@@ -93,13 +92,9 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
       filtro.ubicacion = { $regex: ubicacion, $options: 'i' };
     }
 
-    // if (salarioMin) {
-    //   filtro.salario = { ...filtro.salario, $gte: Number(salarioMin) };
-    // }
-
-    // if (salarioMax) {
-    //   filtro.salario = { ...filtro.salario, $lte: Number(salarioMax) };
-    // }
+    if (salario) {
+      filtro.salario = { ...filtro.salario, $lte: Number(salario) };
+    }
 
 
     if (categoria) {

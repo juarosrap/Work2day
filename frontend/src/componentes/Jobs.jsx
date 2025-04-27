@@ -92,7 +92,7 @@ export default function Jobs() {
         <div className="filters">
           <div className="salary-filter">
             <div className="salary-header">
-              <label htmlFor="salario">Salario</label>
+              <label htmlFor="salario">Salario Máximo</label>
               <span className="salary-value">{filters.salario}€</span>
             </div>
             <input
