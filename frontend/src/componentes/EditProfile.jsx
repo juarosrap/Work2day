@@ -21,7 +21,6 @@ export default function EditProfile() {
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
 
-  // Función para formatear la fecha a formato YYYY-MM-DD para input date
   const formatDateForInput = (dateString) => {
     if (!dateString) return "";
 
@@ -98,7 +97,7 @@ export default function EditProfile() {
               setValue("curriculum.idiomas", data.curriculum.idiomas || "");
             }
 
-            // Cargar datos de experiencia previa
+            
             if (Array.isArray(data.curriculum.experienciaPrevia)) {
               data.curriculum.experienciaPrevia.forEach((exp, index) => {
                 setValue(
@@ -126,6 +125,7 @@ export default function EditProfile() {
           }
         } else if (currentUser.userType === "empleadorParticular") {
           setValue("nombre", data.nombre || "");
+          setValue("descripcion", data.descripcion || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
           setValue("fotoPerfil", data.fotoPerfil || "");
@@ -386,6 +386,16 @@ export default function EditProfile() {
           />
           {errors.nombre && (
             <span className="error">{errors.nombre.message}</span>
+          )}
+        </div>
+      </div>
+
+      <div className="row">
+        <div>
+          <label>Descripcion</label>
+          <input {...register("descripcion")} type="text" />
+          {errors.desripcion && (
+            <span className="error">{errors.descripcion.message}</span>
           )}
         </div>
       </div>

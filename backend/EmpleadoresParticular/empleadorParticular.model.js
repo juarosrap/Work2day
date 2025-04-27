@@ -19,6 +19,7 @@ const EmpleadorParticularSchema = new Schema({
     type: Date,
     required: true,
   },
+  descripcion: String,
   contrasena: {
     type: String,
     required: true,

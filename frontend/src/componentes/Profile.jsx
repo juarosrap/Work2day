@@ -108,16 +108,12 @@ export default function Profile() {
           </div>
           <div className="profile-text">
             <h2 className="profile-name">{profile.nombre}</h2>
-            <p className="profile-role">
-              {profile.curriculum?.experienciaLaboral || "No se ha especificado"}
-            </p>
             <div className="profile-tags">
               {profile.curriculum && profile.curriculum.ubicacion && (
                 <span className="tag">
                   📍 {profile.curriculum.ubicacion}, España
                 </span>
               )}
-              <span className="tag">✅ Disponible para trabajar</span>
             </div>
           </div>
 
