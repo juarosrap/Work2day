@@ -19,6 +19,7 @@ export default function JobForm() {
   const [apiError, setApiError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [estado, setEstado] = useState("Activa");
+  const [sector, setSector] = useState("Otro");
 
   const isEditMode = Boolean(ofertaId);
 
@@ -45,9 +46,11 @@ export default function JobForm() {
           requisitos: data.requisitos?.join(", ") || "",
           duracion: data.duracion || "",
           estado: data.estado || "Activa",
+          sector: data.sector || "Otro",
         });
 
         setEstado(data.estado || "Activa");
+        setSector(data.sector || "Otro");
       } catch (error) {
         console.error(error);
         setApiError("Error al cargar la oferta para editar.");
@@ -169,6 +172,18 @@ export default function JobForm() {
             <option value="Pausada">Pausada</option>
             <option value="Expirada">Expirada</option>
             <option value="Retirada">Retirada</option>
+          </select>
+
+          <label>Sector</label>
+          <select
+            {...register("sector", { required: "Este campo es obligatorio" })}
+            value={sector}
+            onChange={(e) => setSector(e.target.value)}
+          >
+            <option value="Hosteleria">Hosteleria</option>
+            <option value="Domestico">Domestico</option>
+            <option value="Obra">Obra</option>
+            <option value="Otro">Otro</option>
           </select>
 
           {(apiError || successMessage) && (

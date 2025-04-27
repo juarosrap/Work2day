@@ -12,6 +12,9 @@ const OfertaSchema = new Schema({
   estado: { 
     type: String, enum: ["Activa", "Pausada", "Expirada", "Retirada"] 
   },
+  sector: {
+    type: String, enum: ["Hosteleria", "Otro", "Domestico", "Obra"]
+  },
   aplicaciones: [{ 
     type: Schema.Types.ObjectId, 
     ref: "Aplicacion" 

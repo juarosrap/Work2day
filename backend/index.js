@@ -76,9 +76,9 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
       salario,
       tipoContrato,
       jornada,
-      categoria,
+      sector,
       experienciaMinima,
-      estado
+      estado,
     } = req.query;
 
     let filtro = {};
@@ -96,9 +96,8 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
       filtro.salario = { ...filtro.salario, $lte: Number(salario) };
     }
 
-
-    if (categoria) {
-      filtro.categoria = { $regex: categoria, $options: 'i' };
+    if (sector) {
+      filtro.sector = { $regex: sector, $options: "i" };
     }
 
     if (estado) {

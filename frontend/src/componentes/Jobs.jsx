@@ -115,9 +115,9 @@ export default function Jobs() {
             onChange={handleSectorChange}
           >
             <option value="">Todos los sectores</option>
-            <option value="hosteleria">Hostelería</option>
-            <option value="domestico">Doméstico</option>
-            <option value="otro">Otro</option>
+            <option value="Hosteleria">Hostelería</option>
+            <option value="Domestico">Doméstico</option>
+            <option value="Otro">Otro</option>
           </select>
         </div>
 
@@ -146,12 +146,12 @@ export default function Jobs() {
       <div className="cards">
         {loading ? (
           <p>Cargando trabajos...</p>
-        ) : jobs.length === 0 ? (
-          <p>No se encontraron trabajos.</p>
+        ) : jobs.filter((job) => job.estado === "Activa").length === 0 ? (
+          <p>No hay trabajos activos.</p>
         ) : (
           jobs
-          .filter((job) => job.estado === "Activa")
-          .map((job) => <JobCard key={job.id} job={job} />)
+            .filter((job) => job.estado === "Activa")
+            .map((job) => <JobCard key={job.id} job={job} />)
         )}
       </div>
       <div className="pagination"></div>
