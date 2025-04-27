@@ -26,7 +26,7 @@ export default function DashBoard() {
               }
 
               const data = await response.json();
-              console.log(data);
+              // console.log(data);
               setJobs(data);
             } catch (e) {
               console.error("Error al obtener trabajos:", e);

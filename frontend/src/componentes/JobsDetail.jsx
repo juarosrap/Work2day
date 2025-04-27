@@ -28,7 +28,7 @@ export default function JobsDetail() {
 
         const data = await response.json();
         setJob(data);
-        console.log(data)
+        
       } catch (err) {
         console.error("Error al obtener trabajos:", err);
         setError("Error al cargar los detalles del trabajo.");

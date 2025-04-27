@@ -34,7 +34,7 @@ export default function LoginModal() {
     if (success) {
       setSuccessMessage("Login exitoso. ¡Bienvenido!");
 
-      console.log(data)
+      // console.log(data)
       setTimeout(() => {
         navigate("/");
       }, 2000);

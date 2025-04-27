@@ -42,7 +42,7 @@ export default function Profile() {
 
         const data = await response.json();
         setProfile(data); 
-        console.log(data.valoraciones)
+        // console.log(data.valoraciones);
       } catch (err) {
         console.error("Error al obtener la persona:", err);
         setError("Error al cargar los detalles del perfil.");

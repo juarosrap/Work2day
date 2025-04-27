@@ -76,7 +76,6 @@ export default function EditProfile() {
             formatDateForInput(data.fechaNacimiento) || ""
           );
 
-          // Establecer datos del curriculum
           if (data.curriculum) {
             setValue(
               "curriculum.informacionPersonal",
@@ -92,7 +91,6 @@ export default function EditProfile() {
               data.curriculum.experienciaLaboral || ""
             );
 
-            // Manejar array de idiomas
             if (Array.isArray(data.curriculum.idiomas)) {
               setValue(
                 "curriculum.idiomas",
@@ -103,7 +101,6 @@ export default function EditProfile() {
             }
           }
         } else if (currentUser.userType === "empleadorParticular") {
-          // Establecer datos de empleador particular
           setValue("nombre", data.nombre || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
@@ -113,7 +110,7 @@ export default function EditProfile() {
             formatDateForInput(data.fechaNacimiento) || ""
           );
         } else if (currentUser.userType === "empleadorEmpresa") {
-          // Establecer datos básicos de empleador empresa
+          
           setValue("nombre", data.nombre || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
@@ -123,7 +120,6 @@ export default function EditProfile() {
             formatDateForInput(data.fechaNacimiento) || ""
           );
 
-          // Establecer datos específicos de empresa
           setValue("nombreEmpresa", data.nombreEmpresa || "");
           setValue("sector", data.sector || "");
           setValue("ubicacion", data.ubicacion || "");
@@ -150,12 +146,11 @@ export default function EditProfile() {
 
     const processedData = { ...data };
 
-    // Procesar idiomas del curriculum si existen
     if (processedData.curriculum && processedData.curriculum.idiomas) {
       processedData.curriculum.idiomas = processedData.curriculum.idiomas
         .split(",")
         .map((idioma) => idioma.trim())
-        .filter((idioma) => idioma !== ""); // Eliminar elementos vacíos
+        .filter((idioma) => idioma !== ""); 
     }
 
     try {

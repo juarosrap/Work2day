@@ -114,13 +114,22 @@ h2 {
 }
 
 .status.active {
-    background-color: #22c55e;
-    color: white;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
 }
 
+
 .status.paused {
-    background-color: #facc15;
-    color: black;
+  background-color: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffcc80;
+}
+
+.status.expired {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
 }
 
 .actions {

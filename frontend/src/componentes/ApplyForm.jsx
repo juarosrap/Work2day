@@ -98,8 +98,8 @@ export default function ApplyForm() {
         console.error(response.json());
       }
 
-      const data = response.json()
-      console.log("CV enviado:", data);
+      // const data = response.json()
+      // console.log("CV enviado:", data);
 
       
       setSuccessMessage("Aplicación enviada con éxito");
