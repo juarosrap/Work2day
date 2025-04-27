@@ -39,6 +39,33 @@ export default function DashBoard() {
         getData();
     }, [id]);
 
+    const numCandidatos = () => {
+      let cont = 0;
+
+      if (!jobs) return cont; 
+
+      for (let i = 0; i < jobs.length; i++) {
+        if (jobs[i].aplicaciones && Array.isArray(jobs[i].aplicaciones)) {
+          cont += jobs[i].aplicaciones.length;
+        }
+      }
+
+      return cont;
+    };
+
+    const numPuestosCubiertos = () => {
+      let cont = 0;
+
+      for(let i = 0; i < jobs.length; i++) {
+        if (jobs[i].estado === "Pausada") {
+          cont += 1;
+        }
+      }
+
+      return cont;
+    }
+
+
 
     if (loading) return <div>Cargando...</div>;
 
@@ -56,22 +83,24 @@ export default function DashBoard() {
       <div className="title-dash">
         <h2>Dashboard</h2>
         <button className="add-job">
-          <Link  className="link-addjob" to={`/dashboard/${id}/jobForm`}>+ Nueva oferta de trabajo</Link>
+          <Link className="link-addjob" to={`/dashboard/${id}/jobForm`}>
+            + Nueva oferta de trabajo
+          </Link>
         </button>
       </div>
 
       <div className="statistics-dash">
         <div className="stat-card">
           <p>Ofertas activas</p>
-          <p className="active">12</p>
+          <p className="active">{jobs.length}</p>
         </div>
         <div className="stat-card">
           <p>Candidatos totales</p>
-          <p className="total">12</p>
+          <p className="total">{numCandidatos()}</p>
         </div>
         <div className="stat-card">
           <p>Puestos cubiertos</p>
-          <p className="filled">12</p>
+          <p className="filled">{numPuestosCubiertos()}</p>
         </div>
       </div>
 
@@ -93,7 +122,6 @@ export default function DashBoard() {
           {jobs.map((job) => (
             <DashBoardRow key={job.id} job={job} />
           ))}
-          
         </div>
       </div>
     </div>

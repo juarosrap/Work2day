@@ -149,7 +149,9 @@ export default function Jobs() {
         ) : jobs.length === 0 ? (
           <p>No se encontraron trabajos.</p>
         ) : (
-          jobs.map((job) => <JobCard key={job.id} job={job} />)
+          jobs
+          .filter((job) => job.estado === "Activa")
+          .map((job) => <JobCard key={job.id} job={job} />)
         )}
       </div>
       <div className="pagination"></div>
