@@ -22,6 +22,7 @@ export default function Header() {
     <header className="header">
       <div className="logo">
         <img src={logo} alt="Work2Day Logo" />
+        <h3>Work2Day</h3>
       </div>
 
       <div className="menu-icon" onClick={toggleMenu}>

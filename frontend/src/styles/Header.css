@@ -16,11 +16,14 @@
 
 .logo {
   height: 40px;
+  display: flex;
+  flex-direction: row;
 }
 
 .logo img {
   height: 100%;
   width: auto;
+  margin-right: 15%;
 }
 
 .nav {
