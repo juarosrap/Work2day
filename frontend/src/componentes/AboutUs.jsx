@@ -18,6 +18,8 @@ const AboutUs = () => {
         para facilitar la conexión entre empresas y trabajadores.
       </p>
 
+      
+
       <div className="about-grid">
         <div className="about-card">
           <Briefcase size={32} className="about-icon blue" />

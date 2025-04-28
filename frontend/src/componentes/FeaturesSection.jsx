@@ -2,6 +2,7 @@ import "../styles/FeaturesSection.css";
 import job from "../assets/job.svg"
 import work from "../assets/work.svg";
 import chart from "../assets/chart.svg";
+import { BriefcaseBusiness, ChartNoAxesColumnIncreasing, Search } from "lucide-react";
 
 export default function FeaturesSection() {
     return (
@@ -17,7 +18,7 @@ export default function FeaturesSection() {
         <div className="feature-bottom-section">
           <div className="card">
             <div className="icon">
-              <img src={work} alt="Icon" />
+              <Search size={32} className="about-icon green"/>
             </div>
             <h3>Search a job</h3>
             <p>
@@ -30,7 +31,7 @@ export default function FeaturesSection() {
           </div>
           <div className="card">
             <div className="icon">
-              <img src={chart} alt="Icon" />
+              <ChartNoAxesColumnIncreasing size={32} />
             </div>
             <h3>Apply for a job</h3>
             <p>
@@ -43,7 +44,7 @@ export default function FeaturesSection() {
           </div>
           <div className="card">
             <div className="icon">
-              <img src={job} alt="Icon" />
+              <BriefcaseBusiness size={32} className="about-icon blue" />
             </div>
             <h3>Work!</h3>
             <p>
