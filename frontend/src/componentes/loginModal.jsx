@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../styles/ModalForm.css";
 import "../styles/Modal.css";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext"; 
 
 export default function LoginModal() {
@@ -75,6 +75,7 @@ export default function LoginModal() {
             })}
             type="password"
           />
+          <Link to="/forgetPassword"><p>¿Has olvidado la contraseña?</p></Link>
           {errors.contrasena && (
             <p style={errorStyle}>{errors.contrasena.message}</p>
           )}

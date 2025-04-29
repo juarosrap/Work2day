@@ -29,23 +29,26 @@ exports.forgetPassword = async (req, res) => {
       expiresIn: "10m",
     });
 
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD_APP_EMAIL,
+        user: process.env.MAIL,
+        pass: process.env.MAIL_PASSWORD,
       },
     });
 
     const mailOptions = {
-      from: process.env.EMAIL,
+      from: process.env.MAIL,
       to: req.body.correo,
       subject: "Restablecer Contraseña",
-      html: `<h1>Restablece tu contraseña</h1>
+      html: `<h1>Restablece tu contraseña de Work2Day</h1>
                 <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
                 <a href="http://localhost:5173/reset-password/${token}">http://localhost:5173/reset-password/${token}</a>
                 <p>El enlace expirará en 10 minutos.</p>
-                <p>Si no solicitaste un restablecimiento de contraseña, ignora este correo.</p>`,
+                <p>Si no solicitaste un restablecimiento de contraseña, ignora este correo.
+                    PD:Vaya mariquita estas hecho
+                </p>`,
     };
 
     transporter.sendMail(mailOptions, (err, info) => {

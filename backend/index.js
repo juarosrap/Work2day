@@ -35,6 +35,7 @@ const Candidato = require('./Candidatos/candidato.model');
 const usuarioRoutes = require('./User/user.routes');
 
 
+
 //Rutas
 app.use("/api/candidato", candidatoRoutes);
 app.use("/api/aplicaciones", aplicacionRoutes);
