@@ -19,10 +19,9 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
 
-const Oferta = require("./Ofertas/oferta.model.js");
+const Oferta = require("./Ofertas/oferta.model");
 
 
-// Importar rutas de componentes
 const candidatoRoutes = require("./Candidatos/candidato.routes");
 const aplicacionRoutes = require("./Aplicaciones/aplicacion.routes");
 const empleadorEmpresaRoutes = require("./EmpleadoresEmpresa/empleadorEmpresa.routes");
@@ -30,9 +29,10 @@ const empleadorParticularRoutes = require("./EmpleadoresParticular/empleadorPart
 const ofertaRoutes = require("./Ofertas/ofertas.routes");
 const valoracionCandidatoRoutes = require("./ValoracionesCandidato/valoracionCandidato.routes");
 const valoracionEmpleadorRoutes = require("./ValoracionesEmpleador/valoracionEmpleador.routes");
-const EmpleadorEmpresa = require('./EmpleadoresEmpresa/empleadorEmpresa.model.js');
-const EmpleadorParticular = require('./EmpleadoresParticular/empleadorParticular.model.js');
-const Candidato = require('./Candidatos/candidato.model.js');
+const EmpleadorEmpresa = require('./EmpleadoresEmpresa/empleadorEmpresa.model');
+const EmpleadorParticular = require('./EmpleadoresParticular/empleadorParticular.model');
+const Candidato = require('./Candidatos/candidato.model');
+const usuarioRoutes = require('./User/user.routes');
 
 
 //Rutas
@@ -43,6 +43,7 @@ app.use("/api/empleadorParticular", empleadorParticularRoutes);
 app.use("/api/ofertas", ofertaRoutes);
 app.use("/api/valoraciones-candidato", valoracionCandidatoRoutes);
 app.use("/api/valoraciones-empleador", valoracionEmpleadorRoutes);
+app.use("/api",usuarioRoutes);
 
 // Conexión a MongoDB
 const uri = process.env.MONGO_URI;
@@ -63,9 +64,6 @@ mongoose
     process.exit(1); 
   });
 
-
-
-//------------------- Rutas de búsqueda avanzada -------------------
 
 // Búsqueda avanzada de ofertas
 app.get('/api/busqueda/ofertas', async (req, res) => {
