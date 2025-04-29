@@ -59,16 +59,57 @@ exports.forgetPassword = async (req, res) => {
   }
 };
 
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user._id; 
+    
+    const candidato = await Candidato.findById(userId);
+    const empleadorEmpresa = await EmpleadorEmpresa.findById(userId);
+    const empleadorParticular = await EmpleadorParticular.findById(userId);
+    
+    let usuario = candidato || empleadorEmpresa || empleadorParticular;
+    
+    if (!usuario) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+    
+    const isMatch = await bcrypt.compare(currentPassword, usuario.contrasena);
+    if (!isMatch) {
+      return res.status(400).send({ message: "Contraseña actual incorrecta" });
+    }
+    
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    
+    if (candidato) {
+      candidato.contrasena = hashedPassword;
+      await candidato.save();
+    } else if (empleadorParticular) {
+      empleadorParticular.contrasena = hashedPassword;
+      await empleadorParticular.save();
+    } else {
+      empleadorEmpresa.contrasena = hashedPassword;
+      await empleadorEmpresa.save();
+    }
+    
+    res.status(200).send({ message: "Contraseña actualizada con éxito" });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+
 exports.resetPassword = async (req, res) => {
   try {
-    // Verify token
+
     const decodedToken = jwt.verify(req.params.token, process.env.JWT_SECRET);
 
     if (!decodedToken) {
       return res.status(400).send({ message: "Token inválido" });
     }
 
-    // Find user by ID across all user types
     const candidato = await Candidato.findById(decodedToken.userId);
     const empleadorEmpresa = await EmpleadorEmpresa.findById(
       decodedToken.userId
@@ -77,25 +118,21 @@ exports.resetPassword = async (req, res) => {
       decodedToken.userId
     );
 
-    // Determine which user was found
     let usuario = candidato || empleadorEmpresa || empleadorParticular;
 
     if (!usuario) {
       return res.status(404).send({ message: "Usuario no encontrado" });
     }
 
-    // Validate new password
     if (!req.body.newPassword) {
       return res
         .status(400)
         .send({ message: "La nueva contraseña es requerida" });
     }
 
-    // Hash the new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-    // Update the user's password based on type
     if (candidato) {
       candidato.contrasena = hashedPassword;
       await candidato.save();
@@ -109,7 +146,7 @@ exports.resetPassword = async (req, res) => {
 
     res.status(200).send({ message: "Contraseña actualizada con éxito" });
   } catch (error) {
-    // Handle token verification errors specifically
+    
     if (error instanceof jwt.JsonWebTokenError) {
       return res.status(401).send({ message: "Token inválido o expirado" });
     }
