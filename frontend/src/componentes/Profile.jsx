@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import Review from "./Review.jsx";
 import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
 import { motion } from "framer-motion";
+import dayjs from "dayjs";
 
 export default function Profile() {
   const { id } = useParams();
@@ -166,11 +167,14 @@ export default function Profile() {
         <div className="banner" />
         <div className="profile-info">
           <div className="profile-photo">
-          {profile.fotoPerfil ? (
+            {profile.fotoPerfil ? (
               <img src={profile.fotoPerfil} alt="Logo de empresa" />
-              ) : (
-              <img src="/ruta/a/imagen-por-defecto.png" alt="Logo por defecto" />
-              )}
+            ) : (
+              <img
+                src="/ruta/a/imagen-por-defecto.png"
+                alt="Logo por defecto"
+              />
+            )}
           </div>
           <div className="profile-text">
             <h2 className="profile-name">
@@ -185,12 +189,15 @@ export default function Profile() {
             </div>
           </div>
 
-          {currentUser.id === profile.id ?
+          {currentUser.id === profile.id ? (
             <div className="profile-edit">
-            <button>
-              <Link to="/profile/edit">Editar perfil</Link>
-            </button>
-          </div> : <div></div>}
+              <button>
+                <Link to="/profile/edit">Editar perfil</Link>
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
 
@@ -215,7 +222,10 @@ export default function Profile() {
                 <img src="ruta-a-tu-imagen.png" alt="job-photo" />
                 <div className="job-info">
                   <p className="job-title">{oferta.titulo}</p>
-                  <p className="job-dates">{oferta.duracion}</p>
+                  <div className="duration">
+                    <p className="job-dates">Publicada el {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}</p>
+                    <p className="job-dates">Duración: {oferta.duracion}</p>
+                  </div>
                   <p className="job-description">{oferta.descripcion}</p>
                 </div>
               </div>
@@ -248,9 +258,12 @@ export default function Profile() {
           <div className="profile-photo">
             {profile.fotoPerfil ? (
               <img src={profile.fotoPerfil} alt="Logo de empresa" />
-              ) : (
-              <img src="/ruta/a/imagen-por-defecto.png" alt="Logo por defecto" />
-              )}
+            ) : (
+              <img
+                src="/ruta/a/imagen-por-defecto.png"
+                alt="Logo por defecto"
+              />
+            )}
           </div>
           <div className="profile-text">
             <h2 className="profile-name">
@@ -267,13 +280,15 @@ export default function Profile() {
             </div>
           </div>
 
-          {currentUser.id === profile.id ?
+          {currentUser.id === profile.id ? (
             <div className="profile-edit">
-            <button>
-              <Link to="/profile/edit">Editar perfil</Link>
-            </button>
-          </div> : <div></div>}
-
+              <button>
+                <Link to="/profile/edit">Editar perfil</Link>
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
 
@@ -301,9 +316,13 @@ export default function Profile() {
                 <img src="ruta-a-tu-imagen.png" alt="job-photo" />
                 <div className="job-info">
                   <p className="job-title">{oferta.titulo}</p>
-                  <p className="job-dates">
-                    {oferta.duracion} - {oferta.ubicacion}
-                  </p>
+                  <div className="duration">
+                    <p className="job-dates">
+                      Publicada el{" "}
+                      {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}
+                    </p>
+                    <p className="job-dates">Duración: {oferta.duracion}</p>
+                  </div>
                   <p className="job-description">{oferta.descripcion}</p>
                 </div>
               </div>
@@ -323,7 +342,6 @@ export default function Profile() {
             <p>No hay reseñas disponibles</p>
           )}
         </div>
-
       </div>
     </>
   );

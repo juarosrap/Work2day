@@ -209,6 +209,12 @@ img {
   line-height: 1.4;
 }
 
+.duration {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 @media (max-width: 768px) {
   .main-profile {
     grid-template-rows: auto auto;

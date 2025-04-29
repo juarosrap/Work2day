@@ -549,6 +549,16 @@ export default function EditProfile() {
 
       <div className="row">
         <div>
+          <label>Descripcion</label>
+          <input {...register("descripcion")} type="text" />
+          {errors.desripcion && (
+            <span className="error">{errors.descripcion.message}</span>
+          )}
+        </div>
+      </div>
+
+      <div className="row">
+        <div>
           <label>Ubicación</label>
           <input {...register("ubicacion")} type="text" />
         </div>

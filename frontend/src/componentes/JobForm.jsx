@@ -1,6 +1,6 @@
 import "../styles/ModalForm.css";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm,useWatch } from "react-hook-form";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -9,8 +9,11 @@ export default function JobForm() {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm();
+
 
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -22,6 +25,23 @@ export default function JobForm() {
   const [sector, setSector] = useState("Otro");
 
   const isEditMode = Boolean(ofertaId);
+
+  useEffect(() => {
+    const fechaInicio = watch("fechaInicio");
+    const fechaFin = watch("fechaFin");
+
+    if (fechaInicio && fechaFin) {
+      const inicio = new Date(fechaInicio);
+      const fin = new Date(fechaFin);
+
+      if (!isNaN(inicio) && !isNaN(fin)) {
+        const diffTime = fin - inicio;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        setValue("duracion", diffDays >= 0 ? `${diffDays} días` : "0 días");
+      }
+    }
+  }, [watch("fechaInicio"), watch("fechaFin"), setValue]);
+
 
   
   useEffect(() => {
@@ -35,6 +55,9 @@ export default function JobForm() {
         if (!res.ok) throw new Error("No se pudo obtener la oferta");
         const data = await res.json();
 
+        const formatDate = (isoString) => isoString ? isoString.slice(0, 10) : "";
+
+
         console.log("Datos recibidos:", data); 
 
         reset({
@@ -44,6 +67,8 @@ export default function JobForm() {
           salario: data.salario || "",
           imagen: data.imagen || "",
           requisitos: data.requisitos?.join(", ") || "",
+          fechaInicio: formatDate(data.fechaInicio),
+          fechaFin: formatDate(data.fechaFin),
           duracion: data.duracion || "",
           estado: data.estado || "Activa",
           sector: data.sector || "Otro",
@@ -148,6 +173,22 @@ export default function JobForm() {
 
           <label>Imagen</label>
           <input {...register("imagen")} />
+
+          <label>Fecha de Inicio</label>
+          <input
+            {...register("fechaInicio", {
+              required: "Este campo es obligatorio",
+            })}
+            type="date"
+          />
+
+          <label>Fecha de Finalización</label>
+          <input
+            {...register("fechaFin", {
+              required: "Este campo es obligatorio",
+            })}
+            type="date"
+          />
 
           <label>Requisitos (separados por coma)</label>
           <input

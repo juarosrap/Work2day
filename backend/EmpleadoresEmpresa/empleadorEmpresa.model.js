@@ -27,6 +27,7 @@ const EmpleadorEmpresaSchema = new Schema({
     type: String,
     required: true,
   },
+  descripcion: String,
   sector: {
     type: String,
     required: true,

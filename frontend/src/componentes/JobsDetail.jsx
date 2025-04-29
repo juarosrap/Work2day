@@ -2,6 +2,7 @@ import "../styles/JobsDetails.css";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import dayjs from "dayjs";
 
 export default function JobsDetail() {
   const { id } = useParams();
@@ -60,11 +61,22 @@ export default function JobsDetail() {
       </div>
       <div className="enterprise-section">
         <div className="left-side">Enterprise/Employer</div>
-        <div className="right-side"><Link to={`/profile/${job.empleadorId}`}>{job.empleador.nombreEmpresa ||job.empleador.nombre}</Link></div>
+        <div className="right-side">
+          <Link to={`/profile/${job.empleadorId}`}>
+            {job.empleador.nombreEmpresa || job.empleador.nombre}
+          </Link>
+        </div>
       </div>
       <div className="application-section">
         <div className="left-side">Application for</div>
         <div className="right-side">{job.titulo}</div>
+      </div>
+      <div className="date-section">
+        <div className="left-side">Date of the job</div>
+        <div className="right-side">
+          {dayjs(job.fechaInicio).format("DD/MM/YYYY")} -
+          {dayjs(job.fechaFin).format("DD/MM/YYYY")}
+        </div>
       </div>
       <div className="contact-section">
         <div className="left-side">Contact</div>
@@ -81,11 +93,15 @@ export default function JobsDetail() {
       <div className="attachments-section">
         <div className="left-side">Attachments</div>
         <div className="right-side">
-          {currentUser && currentUser.userType === "candidato" ? <button className="apply-button">
-            <Link to={`/jobs/jobsDetail/${id}/apply`} className="link">
-              Apply
-            </Link>
-          </button> : <></>}
+          {currentUser && currentUser.userType === "candidato" ? (
+            <button className="apply-button">
+              <Link to={`/jobs/jobsDetail/${id}/apply`} className="link">
+                Apply
+              </Link>
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

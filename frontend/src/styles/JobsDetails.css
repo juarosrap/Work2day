@@ -4,7 +4,7 @@
     color: black;
 }
 
-.enterprise-section, .contact-section, .about-section {
+.enterprise-section, .salary-section,.attachments-section, .date-section{
     background-color: #f1f5fc;
 }
 
@@ -14,7 +14,7 @@
 
 .enterprise-section, .contact-section,
  .about-section, .application-section, 
- .salary-section, .attachments-section {
+ .salary-section, .attachments-section, .date-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
