@@ -29,6 +29,8 @@ export default function ChangePassword() {
       return null;
     };
 
+    const password = watch("currentPassword");
+
 
 
     const onSubmit = async (data) => {
@@ -38,7 +40,7 @@ export default function ChangePassword() {
           navigate("/");
           return;
         }
-        
+
         const token = getTokenFromCookies();
 
         if (!token) {
@@ -165,6 +167,7 @@ export default function ChangePassword() {
                 type="password"
                 {...register("newPassword", {
                   required: "La contraseña es obligatoria",
+                  validate: (value) => value !== password || "La contraseña nueva no puede ser la misma que la actual.",
                   minLength: {
                     value: 6,
                     message: "La contraseña debe tener al menos 6 caracteres",
