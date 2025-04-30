@@ -97,7 +97,7 @@ export default function ResetPassword() {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="form-container">
-          <div className="form-group">
+          <div className="form-group-modal">
             <label htmlFor="newPassword" className="form-label">
               Nueva contraseña
             </label>
@@ -118,7 +118,7 @@ export default function ResetPassword() {
             )}
           </div>
 
-          <div className="form-group">
+          <div className="form-group-modal">
             <label htmlFor="confirmPassword" className="form-label">
               Confirmar contraseña
             </label>

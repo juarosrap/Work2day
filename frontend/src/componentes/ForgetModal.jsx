@@ -90,7 +90,7 @@ export default function ForgetModal() {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="form-container">
-          <div className="form-group">
+          <div className="form-group-modal">
             <label htmlFor="correo" className="form-label">
               Introduzca su correo
             </label>
