@@ -102,11 +102,14 @@ export default function Profile() {
         <div className="banner" />
         <div className="profile-info">
           <div className="profile-photo">
-          {profile.fotoPerfil ? (
+            {profile.fotoPerfil ? (
               <img src={profile.fotoPerfil} alt="Logo de empresa" />
-              ) : (
-              <img src="/ruta/a/imagen-por-defecto.png" alt="Logo por defecto" />
-              )}
+            ) : (
+              <img
+                src="/ruta/a/imagen-por-defecto.png"
+                alt="Logo por defecto"
+              />
+            )}
           </div>
           <div className="profile-text">
             <h2 className="profile-name">{profile.nombre}</h2>
@@ -119,12 +122,18 @@ export default function Profile() {
             </div>
           </div>
 
-          {currentUser.id === profile.id ?
+          {currentUser.id === profile.id ? (
             <div className="profile-edit">
-            <button>
-              <Link to="/profile/edit">Editar perfil</Link>
-            </button>
-          </div> : <div></div>}
+              <button>
+                <Link to="/profile/edit">Editar perfil</Link>
+              </button>
+              <button>
+                <Link to="/change-password">Cambiar contraseña</Link>
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
 
@@ -145,7 +154,9 @@ export default function Profile() {
           <p>{calcularMedia()}</p>
         </div>
 
-        <ExperienciaDestacada experienciaPrevia={profile.curriculum.experienciaPrevia}/>
+        <ExperienciaDestacada
+          experienciaPrevia={profile.curriculum.experienciaPrevia}
+        />
 
         <div className="opinions-profile box">
           <h3>Reseñas Recientes</h3>
@@ -194,6 +205,9 @@ export default function Profile() {
               <button>
                 <Link to="/profile/edit">Editar perfil</Link>
               </button>
+              <button>
+                <Link to="/change-password">Cambiar contraseña</Link>
+              </button>
             </div>
           ) : (
             <div></div>
@@ -223,7 +237,10 @@ export default function Profile() {
                 <div className="job-info">
                   <p className="job-title">{oferta.titulo}</p>
                   <div className="duration">
-                    <p className="job-dates">Publicada el {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}</p>
+                    <p className="job-dates">
+                      Publicada el{" "}
+                      {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}
+                    </p>
                     <p className="job-dates">Duración: {oferta.duracion}</p>
                   </div>
                   <p className="job-description">{oferta.descripcion}</p>
@@ -284,6 +301,9 @@ export default function Profile() {
             <div className="profile-edit">
               <button>
                 <Link to="/profile/edit">Editar perfil</Link>
+              </button>
+              <button>
+                <Link to="/change-password">Cambiar contraseña</Link>
               </button>
             </div>
           ) : (

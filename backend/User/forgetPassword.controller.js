@@ -25,7 +25,7 @@ exports.forgetPassword = async (req, res) => {
       return res.status(404).send({ message: "Usuario no encontrado" });
     }
 
-    const token = jwt.sign({ userId: usuario._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: usuario.id }, process.env.JWT_SECRET, {
       expiresIn: "10m",
     });
 
@@ -66,11 +66,16 @@ exports.forgetPassword = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const userId = req.user._id; 
     
-    const candidato = await Candidato.findById(userId);
-    const empleadorEmpresa = await EmpleadorEmpresa.findById(userId);
-    const empleadorParticular = await EmpleadorParticular.findById(userId);
+    const userCorreo = req.body.correo;
+    
+    const candidato = await Candidato.findOne({ correo: userCorreo});
+    const empleadorEmpresa = await EmpleadorEmpresa.findOne({
+      correo: userCorreo,
+    });
+    const empleadorParticular = await EmpleadorParticular.findOne({
+      correo: userCorreo,
+    });
     
     let usuario = candidato || empleadorEmpresa || empleadorParticular;
     

@@ -17,6 +17,7 @@ import ListaCandidatos from "./componentes/ListaCandidatos.jsx";
 import AboutUs from "./componentes/AboutUs.jsx";
 import ForgetModal from "./componentes/ForgetModal.jsx";
 import ResetPassword from "./componentes/ResetPassword.jsx";
+import ChangePassword from "./componentes/ChangePassword.jsx";
 
 export default function App() {
   return (
@@ -28,12 +29,16 @@ export default function App() {
         <Route path="/form" element={<ModalForm />} />
         <Route path="/loginForm" element={<LoginModal />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/forgetPassword" element={<ForgetModal />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/jobs/jobsDetail/:id" element={<JobsDetail />} />
         <Route path="/jobs/jobsDetail/:id/apply" element={<ApplyForm />} />
         <Route path="/dashboard/:id" element={<DashBoard />} />
-        <Route path="/dashboard/:id/candidatos/:ofertaId" element={<ListaCandidatos />}/>
+        <Route
+          path="/dashboard/:id/candidatos/:ofertaId"
+          element={<ListaCandidatos />}
+        />
         <Route path="/dashboard/:id/jobForm" element={<JobForm />} />
         <Route path="/dashboard/:id/edit/:ofertaId" element={<JobForm />} />
         <Route path="/dashboard/:id/delete/:ofertaId" element={<DeleteJob />} />

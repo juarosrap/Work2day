@@ -135,11 +135,9 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
 
     res
       .cookie("access_token", accessToken, {
-        httpOnly: true,
         maxAge: 1000 * 60 * 60,
       })
       .cookie("refresh_token", refreshToken, {
-        httpOnly: true,
         path: "/api/empleadorEmpresa/refresh",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
@@ -218,7 +216,6 @@ exports.refreshToken = async (req, res) => {
       
       res
         .cookie("access_token", newAccessToken, {
-          httpOnly: true,
           maxAge: 15 * 60 * 1000,
           path: '/'
         })

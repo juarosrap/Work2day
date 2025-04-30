@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
         const userType = localStorage.getItem("userType");
 
         if (!userType) {
-          console.log("No hay userType en localStorage");
           setLoading(false);
           return; 
         }
@@ -90,7 +89,7 @@ export const AuthProvider = ({ children }) => {
         if (!userType) return false;
       }
 
-      console.log("Intentando refresh para:", userType);
+      //console.log("Intentando refresh para:", userType);
 
       let refreshEndpoint;
       switch (userType) {
@@ -109,7 +108,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error("Tipo de usuario no válido");
       }
 
-      console.log("Usando endpoint de refresh:", refreshEndpoint);
+      //console.log("Usando endpoint de refresh:", refreshEndpoint);
 
       const response = await fetch(refreshEndpoint, {
         method: "POST",
@@ -120,7 +119,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      console.log("Respuesta de refresh:", response.status);
+      //console.log("Respuesta de refresh:", response.status);
 
       if (response.ok) {
         const meEndpoint = refreshEndpoint.replace("/refresh", "/me");
@@ -135,11 +134,11 @@ export const AuthProvider = ({ children }) => {
           },
         });
 
-        console.log("Respuesta de /me tras refresh:", userResponse.status);
+        //console.log("Respuesta de /me tras refresh:", userResponse.status);
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          console.log("Datos de usuario tras refresh:", userData);
+          //console.log("Datos de usuario tras refresh:", userData);
           setCurrentUser({
             ...userData,
             userType,
@@ -195,11 +194,11 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log("Respuesta del login:", data);
+      //console.log("Respuesta del login:", data);
 
-      
+      localStorage.setItem("correo", data.candidato.correo);
       localStorage.setItem("userType", userType);
-      console.log("userType guardado en localStorage:", userType);
+      //console.log("userType guardado en localStorage:", userType);
 
       
       let userData;
@@ -222,7 +221,7 @@ export const AuthProvider = ({ children }) => {
         userType,
       });
 
-      console.log("Usuario establecido:", userData);
+      //console.log("Usuario establecido:", userData);
       return true;
     } catch (err) {
       console.error("Error en login:", err);
