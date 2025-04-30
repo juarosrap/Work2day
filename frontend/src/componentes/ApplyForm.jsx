@@ -214,7 +214,7 @@ export default function ApplyForm() {
             </span>
           )}
 
-          <label>Experiencia Laboral</label>
+          {/* <label>Experiencia Laboral</label>
           <input
             {...register("experienciaLaboral", {
               required: "La experiencia laboral es obligatoria",
@@ -224,7 +224,7 @@ export default function ApplyForm() {
             <span className="error-text">
               {errors.experienciaLaboral.message}
             </span>
-          )}
+          )} */}
 
           <label>Idiomas (separados por coma)</label>
           <input {...register("idiomas")} />

@@ -13,13 +13,11 @@ export default function ListaCandidatos() {
   const { ofertaId } = useParams();
 
   let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
-  
 
   useEffect(() => {
     fetchOferta();
   }, [API, ofertaId]);
 
-  
   const fetchOferta = async () => {
     try {
       setLoading(true);
@@ -46,34 +44,31 @@ export default function ListaCandidatos() {
     setCvModalOpen(true);
   };
 
-  
   const cerrarModalCV = () => {
     setCvModalOpen(false);
   };
 
   const editOferta = async () => {
-    try{
+    try {
+      const datosActualizados = {
+        estado: "Pausada",
+      };
+      const response = await fetch(API, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datosActualizados),
+      });
 
-        const datosActualizados = {
-            estado: "Pausada"
-        };
-        const response = await fetch(API, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(datosActualizados),
-        });
-
-        if (!response.ok) {
-          throw new Error("Error al actualizar oferta");
-        }
+      if (!response.ok) {
+        throw new Error("Error al actualizar oferta");
+      }
     } catch (err) {
-        console.error("Error al actualizar oferta:", err);
+      console.error("Error al actualizar oferta:", err);
     }
-  }
+  };
 
-  
   const seleccionarCandidato = async (aplicacionId) => {
     try {
       setSeleccionandoCandidato(true);
@@ -111,9 +106,13 @@ export default function ListaCandidatos() {
     }
   };
 
+  const hayCandidatoSeleccionado = oferta?.aplicaciones?.some(
+    (aplicacion) => aplicacion.seleccionado
+  );
+
   return (
     <div className="modal-overlay">
-      <div className="modal-container">
+      <div className="modal-container-candidatos">
         <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
           Candidatos para esta oferta
         </h2>
@@ -173,7 +172,16 @@ export default function ListaCandidatos() {
                         </button>
                       </td>
                       <td>
-                        {!aplicacion.seleccionado ? (
+                        {aplicacion.seleccionado ? (
+                          <span className="ya-seleccionado">
+                            Seleccionado el{" "}
+                            {new Date(
+                              aplicacion.fechaSeleccion
+                            ).toLocaleDateString("es-ES")}
+                          </span>
+                        ) : hayCandidatoSeleccionado ? (
+                          <span className="no-disponible">No disponible</span>
+                        ) : (
                           <button
                             className="seleccionar-button"
                             onClick={() => seleccionarCandidato(aplicacion._id)}
@@ -183,13 +191,6 @@ export default function ListaCandidatos() {
                               ? "Procesando..."
                               : "Seleccionar"}
                           </button>
-                        ) : (
-                          <span className="ya-seleccionado">
-                            Seleccionado el{" "}
-                            {new Date(
-                              aplicacion.fechaSeleccion
-                            ).toLocaleDateString("es-ES")}
-                          </span>
                         )}
                       </td>
                     </tr>

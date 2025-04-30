@@ -23,7 +23,6 @@ export default function ExperienciaDestacada({ experienciaPrevia }) {
     });
   };
 
-  // Filtrar las experiencias que tienen al menos empresa o puesto
   const experienciasValidas = experienciaPrevia.filter(
     (exp) => exp && (exp.empresa || exp.puesto)
   );

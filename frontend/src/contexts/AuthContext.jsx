@@ -196,7 +196,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       //console.log("Respuesta del login:", data);
 
-      localStorage.setItem("correo", data.candidato.correo);
+
+      localStorage.setItem("correo", data[userType]?.correo);
       localStorage.setItem("userType", userType);
       //console.log("userType guardado en localStorage:", userType);
 
@@ -249,6 +250,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       localStorage.removeItem("userType");
+      localStorage.removeItem("correo");
 
       if (response.ok) {
         setCurrentUser(null);

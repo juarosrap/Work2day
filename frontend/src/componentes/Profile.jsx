@@ -42,7 +42,7 @@ export default function Profile() {
         }
 
         const data = await response.json();
-        setProfile(data); 
+        setProfile(data);
         // console.log(data.valoraciones);
       } catch (err) {
         console.error("Error al obtener la persona:", err);
@@ -96,289 +96,304 @@ export default function Profile() {
     return <div>No se encontró el perfil</div>;
   }
 
-  const renderCandidatoProfile = () => (
-    <>
-      <div className="header-profile">
-        <div className="banner" />
-        <div className="profile-info">
-          <div className="profile-photo">
-            {profile.fotoPerfil ? (
-              <img src={profile.fotoPerfil} alt="Logo de empresa" />
+  const renderCandidatoProfile = () => {
+    const experienciasLimitadas =
+      profile.curriculum && profile.curriculum.experienciaPrevia
+        ? profile.curriculum.experienciaPrevia.slice(0, 3)
+        : [];
+
+    return (
+      <>
+        <div className="header-profile">
+          <div className="banner" />
+          <div className="profile-info">
+            <div className="profile-photo">
+              {profile.fotoPerfil ? (
+                <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ) : (
+                <img
+                  src="/ruta/a/imagen-por-defecto.png"
+                  alt="Logo por defecto"
+                />
+              )}
+            </div>
+            <div className="profile-text">
+              <h2 className="profile-name">{profile.nombre}</h2>
+              <div className="profile-tags">
+                {profile.curriculum && profile.curriculum.ubicacion && (
+                  <span className="tag">
+                    📍 {profile.curriculum.ubicacion}, España
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {currentUser.id === profile.id ? (
+              <div className="profile-edit">
+                <button>
+                  <Link to="/profile/edit">Editar perfil</Link>
+                </button>
+                <button>
+                  <Link to="/change-password">Cambiar contraseña</Link>
+                </button>
+              </div>
             ) : (
-              <img
-                src="/ruta/a/imagen-por-defecto.png"
-                alt="Logo por defecto"
-              />
+              <div></div>
             )}
           </div>
-          <div className="profile-text">
-            <h2 className="profile-name">{profile.nombre}</h2>
-            <div className="profile-tags">
-              {profile.curriculum && profile.curriculum.ubicacion && (
+        </div>
+
+        <div className="bottom-profile">
+          <div className="resume-profile box">
+            <h3>Resumen Profesional</h3>
+            <p>
+              {profile.curriculum && profile.curriculum.informacionPersonal
+                ? profile.curriculum.informacionPersonal
+                : "No hay información personal disponible"}
+            </p>
+          </div>
+
+          <div className="grades-profile box">
+            <h3>Calificaciones</h3>
+            <h5>Valoración general</h5>
+            <p>Basado en {profile.valoraciones?.length || 0} evaluaciones</p>
+            <p>{calcularMedia()}</p>
+          </div>
+
+          <ExperienciaDestacada experienciaPrevia={experienciasLimitadas} />
+          
+
+          <div className="opinions-profile box">
+            <h3>Reseñas Recientes</h3>
+            {profile.valoraciones && profile.valoraciones.length > 0 ? (
+              profile.valoraciones.map((review) => (
+                <Review key={review.id} review={review} />
+              ))
+            ) : (
+              <p>No hay reseñas disponibles</p>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderEmpleadorParticularProfile = () => {
+    
+    const ofertasLimitadas = profile.ofertas ? profile.ofertas.slice(0, 3) : [];
+
+    return (
+      <>
+        <div className="header-profile">
+          <div className="banner" />
+          <div className="profile-info">
+            <div className="profile-photo">
+              {profile.fotoPerfil ? (
+                <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ) : (
+                <img
+                  src="/ruta/a/imagen-por-defecto.png"
+                  alt="Logo por defecto"
+                />
+              )}
+            </div>
+            <div className="profile-text">
+              <h2 className="profile-name">
+                {profile.nombre} {profile.apellidos || ""}
+              </h2>
+              <p className="profile-role">Empleador Particular</p>
+              <div className="profile-tags">
+                {profile.ubicacion && (
+                  <span className="tag">📍 {profile.ubicacion}</span>
+                )}
+                <span className="tag">✉️ {profile.correo}</span>
+              </div>
+            </div>
+
+            {currentUser.id === profile.id ? (
+              <div className="profile-edit">
+                <button>
+                  <Link to="/profile/edit">Editar perfil</Link>
+                </button>
+                <button>
+                  <Link to="/change-password">Cambiar contraseña</Link>
+                </button>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
+        </div>
+
+        <div className="bottom-profile">
+          <div className="resume-profile box">
+            <h3>Sobre mí</h3>
+            <p>{profile.descripcion || "No hay información disponible"}</p>
+          </div>
+
+          <div className="grades-profile box">
+            <h3>Calificaciones como Empleador</h3>
+            <h5>Valoración general</h5>
+            <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+            <p>{calcularMedia()}</p>
+          </div>
+
+          <div className="exp-profile box">
+            <h3>3 Últimas Ofertas Activas</h3>
+            {ofertasLimitadas.length > 0 ? (
+              ofertasLimitadas.map((oferta, index) => (
+                <div className="past-job" key={index}>
+                  <img src="ruta-a-tu-imagen.png" alt="job-photo" />
+                  <div className="job-info">
+                    <p className="job-title">{oferta.titulo}</p>
+                    <div className="duration">
+                      <p className="job-dates">
+                        Publicada el{" "}
+                        {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}
+                      </p>
+                      <p className="job-dates">Duración: {oferta.duracion}</p>
+                    </div>
+                    <p className="job-description">{oferta.descripcion}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No hay ofertas publicadas</p>
+            )}
+          </div>
+
+          <div className="opinions-profile box">
+            <h3>Reseñas de Candidatos</h3>
+            {profile.valoraciones && profile.valoraciones.length > 0 ? (
+              profile.valoraciones.map((review) => (
+                <Review key={review.id} review={review} />
+              ))
+            ) : (
+              <p>No hay reseñas disponibles</p>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderEmpleadorEmpresaProfile = () => {
+    const ofertasLimitadas = profile.ofertas ? profile.ofertas.slice(0, 3) : [];
+
+    return (
+      <>
+        <div className="header-profile">
+          <div className="banner" />
+
+          <div className="profile-info">
+            <div className="profile-photo">
+              {profile.fotoPerfil ? (
+                <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ) : (
+                <img
+                  src="/ruta/a/imagen-por-defecto.png"
+                  alt="Logo por defecto"
+                />
+              )}
+            </div>
+            <div className="profile-text">
+              <h2 className="profile-name">
+                {profile.nombreEmpresa || profile.nombre}
+              </h2>
+              <p className="profile-role">{profile.sector || "Empresa"}</p>
+              <div className="profile-tags">
+                {profile.ubicacion && (
+                  <span className="tag">📍 {profile.ubicacion}</span>
+                )}
                 <span className="tag">
-                  📍 {profile.curriculum.ubicacion}, España
+                  🌐 {profile.paginaWeb || "Sin sitio web"}
                 </span>
-              )}
+              </div>
             </div>
-          </div>
 
-          {currentUser.id === profile.id ? (
-            <div className="profile-edit">
-              <button>
-                <Link to="/profile/edit">Editar perfil</Link>
-              </button>
-              <button>
-                <Link to="/change-password">Cambiar contraseña</Link>
-              </button>
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
-      </div>
-
-      <div className="bottom-profile">
-        <div className="resume-profile box">
-          <h3>Resumen Profesional</h3>
-          <p>
-            {profile.curriculum && profile.curriculum.informacionPersonal
-              ? profile.curriculum.informacionPersonal
-              : "No hay información personal disponible"}
-          </p>
-        </div>
-
-        <div className="grades-profile box">
-          <h3>Calificaciones</h3>
-          <h5>Valoración general</h5>
-          <p>Basado en {profile.valoraciones?.length || 0} evaluaciones</p>
-          <p>{calcularMedia()}</p>
-        </div>
-
-        <ExperienciaDestacada
-          experienciaPrevia={profile.curriculum.experienciaPrevia}
-        />
-
-        <div className="opinions-profile box">
-          <h3>Reseñas Recientes</h3>
-          {profile.valoraciones && profile.valoraciones.length > 0 ? (
-            profile.valoraciones.map((review) => (
-              <Review key={review.id} review={review} />
-            ))
-          ) : (
-            <p>No hay reseñas disponibles</p>
-          )}
-        </div>
-      </div>
-    </>
-  );
-
-  const renderEmpleadorParticularProfile = () => (
-    <>
-      <div className="header-profile">
-        <div className="banner" />
-        <div className="profile-info">
-          <div className="profile-photo">
-            {profile.fotoPerfil ? (
-              <img src={profile.fotoPerfil} alt="Logo de empresa" />
+            {currentUser.id === profile.id ? (
+              <div className="profile-edit">
+                <button>
+                  <Link to="/profile/edit">Editar perfil</Link>
+                </button>
+                <button>
+                  <Link to="/change-password">Cambiar contraseña</Link>
+                </button>
+              </div>
             ) : (
-              <img
-                src="/ruta/a/imagen-por-defecto.png"
-                alt="Logo por defecto"
-              />
+              <div></div>
             )}
           </div>
-          <div className="profile-text">
-            <h2 className="profile-name">
-              {profile.nombre} {profile.apellidos || ""}
-            </h2>
-            <p className="profile-role">Empleador Particular</p>
-            <div className="profile-tags">
-              {profile.ubicacion && (
-                <span className="tag">📍 {profile.ubicacion}</span>
-              )}
-              <span className="tag">✉️ {profile.correo}</span>
-            </div>
+        </div>
+
+        <div className="bottom-profile">
+          <div className="resume-profile box">
+            <h3>Sobre la empresa</h3>
+            <p>
+              {profile.descripcion ||
+                "No hay información disponible sobre esta empresa"}
+            </p>
           </div>
 
-          {currentUser.id === profile.id ? (
-            <div className="profile-edit">
-              <button>
-                <Link to="/profile/edit">Editar perfil</Link>
-              </button>
-              <button>
-                <Link to="/change-password">Cambiar contraseña</Link>
-              </button>
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
-      </div>
+          <div className="grades-profile box">
+            <h3>Calificaciones como Empleador</h3>
+            <h5>Valoración general</h5>
+            <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+            <p>{calcularMedia()}</p>
+          </div>
 
-      <div className="bottom-profile">
-        <div className="resume-profile box">
-          <h3>Sobre mí</h3>
-          <p>{profile.descripcion || "No hay información disponible"}</p>
-        </div>
-
-        <div className="grades-profile box">
-          <h3>Calificaciones como Empleador</h3>
-          <h5>Valoración general</h5>
-          <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
-          <p>{calcularMedia()}</p>
-        </div>
-
-        <div className="exp-profile box">
-          <h3>Ofertas Publicadas</h3>
-          {profile.ofertas && profile.ofertas.length > 0 ? (
-            profile.ofertas.map((oferta, index) => (
-              <div className="past-job" key={index}>
-                <img src="ruta-a-tu-imagen.png" alt="job-photo" />
-                <div className="job-info">
-                  <p className="job-title">{oferta.titulo}</p>
-                  <div className="duration">
-                    <p className="job-dates">
-                      Publicada el{" "}
-                      {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}
-                    </p>
-                    <p className="job-dates">Duración: {oferta.duracion}</p>
+          <div className="exp-profile box">
+            <h3>3 Últimas Ofertas Activas</h3>
+            {ofertasLimitadas.length > 0 ? (
+              ofertasLimitadas.map((oferta, index) => (
+                <div className="past-job" key={index}>
+                  <img src="ruta-a-tu-imagen.png" alt="job-photo" />
+                  <div className="job-info">
+                    <p className="job-title">{oferta.titulo}</p>
+                    <div className="duration">
+                      <p className="job-dates">
+                        Publicada el{" "}
+                        {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}
+                      </p>
+                      <p className="job-dates">Duración: {oferta.duracion}</p>
+                    </div>
+                    <p className="job-description">{oferta.descripcion}</p>
                   </div>
-                  <p className="job-description">{oferta.descripcion}</p>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>No hay ofertas publicadas</p>
-          )}
-        </div>
-
-        <div className="opinions-profile box">
-          <h3>Reseñas de Candidatos</h3>
-          {profile.valoraciones && profile.valoraciones.length > 0 ? (
-            profile.valoraciones.map((review) => (
-              <Review key={review.id} review={review} />
-            ))
-          ) : (
-            <p>No hay reseñas disponibles</p>
-          )}
-        </div>
-      </div>
-    </>
-  );
-
-  const renderEmpleadorEmpresaProfile = () => (
-    <>
-      <div className="header-profile">
-        <div className="banner" />
-
-        <div className="profile-info">
-          <div className="profile-photo">
-            {profile.fotoPerfil ? (
-              <img src={profile.fotoPerfil} alt="Logo de empresa" />
+              ))
             ) : (
-              <img
-                src="/ruta/a/imagen-por-defecto.png"
-                alt="Logo por defecto"
-              />
+              <p>No hay ofertas activas</p>
+            )}
+            
+          </div>
+
+          <div className="opinions-profile box">
+            <h3>Opiniones de Empleados y Candidatos</h3>
+            {profile.valoraciones && profile.valoraciones.length > 0 ? (
+              profile.valoraciones.map((review) => (
+                <Review key={review.id} review={review} />
+              ))
+            ) : (
+              <p>No hay reseñas disponibles</p>
             )}
           </div>
-          <div className="profile-text">
-            <h2 className="profile-name">
-              {profile.nombreEmpresa || profile.nombre}
-            </h2>
-            <p className="profile-role">{profile.sector || "Empresa"}</p>
-            <div className="profile-tags">
-              {profile.ubicacion && (
-                <span className="tag">📍 {profile.ubicacion}</span>
-              )}
-              <span className="tag">
-                🌐 {profile.paginaWeb || "Sin sitio web"}
-              </span>
-            </div>
-          </div>
-
-          {currentUser.id === profile.id ? (
-            <div className="profile-edit">
-              <button>
-                <Link to="/profile/edit">Editar perfil</Link>
-              </button>
-              <button>
-                <Link to="/change-password">Cambiar contraseña</Link>
-              </button>
-            </div>
-          ) : (
-            <div></div>
-          )}
         </div>
-      </div>
-
-      <div className="bottom-profile">
-        <div className="resume-profile box">
-          <h3>Sobre la empresa</h3>
-          <p>
-            {profile.descripcion ||
-              "No hay información disponible sobre esta empresa"}
-          </p>
-        </div>
-
-        <div className="grades-profile box">
-          <h3>Calificaciones como Empleador</h3>
-          <h5>Valoración general</h5>
-          <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
-          <p>{calcularMedia()}</p>
-        </div>
-
-        <div className="exp-profile box">
-          <h3>Ofertas Activas</h3>
-          {profile.ofertas && profile.ofertas.length > 0 ? (
-            profile.ofertas.map((oferta, index) => (
-              <div className="past-job" key={index}>
-                <img src="ruta-a-tu-imagen.png" alt="job-photo" />
-                <div className="job-info">
-                  <p className="job-title">{oferta.titulo}</p>
-                  <div className="duration">
-                    <p className="job-dates">
-                      Publicada el{" "}
-                      {dayjs(oferta.fechaPublicacion).format("DD/MM/YYYY")}
-                    </p>
-                    <p className="job-dates">Duración: {oferta.duracion}</p>
-                  </div>
-                  <p className="job-description">{oferta.descripcion}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No hay ofertas activas</p>
-          )}
-        </div>
-
-        <div className="opinions-profile box">
-          <h3>Opiniones de Empleados y Candidatos</h3>
-          {profile.valoraciones && profile.valoraciones.length > 0 ? (
-            profile.valoraciones.map((review) => (
-              <Review key={review.id} review={review} />
-            ))
-          ) : (
-            <p>No hay reseñas disponibles</p>
-          )}
-        </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  };
 
   return (
     <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="main-profile"
-        > 
-        {profile.curriculum
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="main-profile"
+    >
+      {profile.curriculum
         ? renderCandidatoProfile()
         : profile.nombreEmpresa
         ? renderEmpleadorEmpresaProfile()
         : renderEmpleadorParticularProfile()}
     </motion.div>
   );
-  
 }

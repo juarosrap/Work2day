@@ -34,6 +34,18 @@
   overflow-y: auto;
 }
 
+.modal-container-candidatos {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 .modal-loading, .modal-error {
   text-align: center;
   padding: 30px;
