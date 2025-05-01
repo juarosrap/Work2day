@@ -180,13 +180,28 @@ h2 {
     display: none;
   }
 
-  .cell {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.25rem;
-    color: black;
+  .table-row {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+  background-color: white;
+  gap: 0.5rem;
 }
+
+.cell {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cell::before {
+  content: attr(data-label);
+  font-weight: bold;
+  margin-right: 1rem;
+  color: #666;
+}
+
 
 }

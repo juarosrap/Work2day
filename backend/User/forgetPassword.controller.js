@@ -47,7 +47,6 @@ exports.forgetPassword = async (req, res) => {
                 <a href="http://localhost:5173/reset-password/${token}">http://localhost:5173/reset-password/${token}</a>
                 <p>El enlace expirará en 10 minutos.</p>
                 <p>Si no solicitaste un restablecimiento de contraseña, ignora este correo.
-                    PD:Vaya mariquita estas hecho
                 </p>`,
     };
 

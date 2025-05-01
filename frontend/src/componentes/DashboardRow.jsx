@@ -2,13 +2,44 @@ import "../styles/DashBoard.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
-export default function DashBoardRow({ job }) {
+export default function DashBoardRow({ data, type }) {
   const { currentUser } = useAuth();
+  const [aplicaciones, setAplicaciones] = useState(null);
+  const [loading, setLoading] = useState(type === "aplicacion");
 
-  
+  const getAplicacion = async () => {
+    setLoading(true);
+    try {
+      let API = "http://localhost:5000/api/ofertas/";
+      const response = await fetch(`${API}${data.ofertaId}`);
+
+      if (!response.ok) {
+        throw new Error(`Error al obtener la oferta ${data.ofertaId}`);
+      }
+
+      const ofertaData = await response.json();
+      setAplicaciones(ofertaData);
+      setLoading(false);
+      return {
+        ...data,
+        oferta: ofertaData,
+      };
+    } catch (err) {
+      console.error(`Error al obtener ofertas`, err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (type === "aplicacion") {
+      getAplicacion();
+    }
+  }, [data, type]);
+
   const getStatusClass = (estado) => {
-    switch (estado.toLowerCase()) {
+    switch (estado?.toLowerCase()) {
       case "activa":
         return "active";
       case "pausada":
@@ -21,33 +52,118 @@ export default function DashBoardRow({ job }) {
     }
   };
 
-  return (
-    <div className="table-row">
-      <div className="cell" data-label="TÍTULO">
-        <p>{job.titulo}</p>
-        <span className="subtitle">{job.ubicacion}</span>
+  const onDelete = async () => {
+    try {
+      let API = "http://localhost:5000/api/aplicaciones/";
+      const response = await fetch(`${API}${data.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error al eliminar la oferta ${data.ofertaId}`);
+      }
+
+      if (onRemoved) onRemoved(data.id);
+      
+    } catch(err) {
+      console.error("Error:", err);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="table-row loading">
+        <div className="cell" colSpan="5">
+          <p>Cargando datos...</p>
+        </div>
       </div>
-      <div className="cell" data-label="ESTADO">
-        <span className={`status ${getStatusClass(job.estado)}`}>
-          {job.estado}
-        </span>
+    );
+  }
+
+  const renderJobRow = () => {
+    const job = data;
+    return (
+      <div className="table-row">
+        <div className="cell" data-label="TÍTULO">
+          <p>{job.titulo}</p>
+          <span className="subtitle">{job.ubicacion}</span>
+        </div>
+        <div className="cell" data-label="ESTADO">
+          <span className={`status ${getStatusClass(job.estado)}`}>
+            {job.estado}
+          </span>
+        </div>
+        <div className="cell" data-label="CANDIDATOS">
+          <Link to={`candidatos/${job.id}`}>{job.aplicaciones.length}</Link>
+        </div>
+        <div className="cell" data-label="FECHA">
+          {dayjs(job.fechaPublicacion).format("DD/MM/YYYY")}
+        </div>
+        <div className="cell actions" data-label="ACCIONES">
+          {job.estado === "Activa" ? (
+            <>
+              <span className="edit">
+                <Link to={`/dashboard/${currentUser.id}/edit/${job.id}`}>
+                  Editar
+                </Link>
+              </span>
+              <span className="delete">
+                <Link to={`/dashboard/${currentUser.id}/delete/${job.id}`}>
+                  Eliminar
+                </Link>
+              </span>
+            </>
+          ) : (
+            "Podrás valorar al candidato cuando acabe el trabajo"
+          )}
+        </div>
       </div>
-      <div className="cell" data-label="CANDIDATOS">
-        <Link to={`candidatos/${job.id}`}>{job.aplicaciones.length}</Link>
+    );
+  };
+
+  const renderAplicacionRow = () => {
+  
+    if (!aplicaciones) {
+      return null;
+    }
+
+    return (
+      <div className="table-row">
+        <div className="cell" data-label="TÍTULO">
+          <p>{aplicaciones?.titulo || "N/A"}</p>
+          <span className="subtitle">{aplicaciones?.ubicacion || "N/A"}</span>
+        </div>
+        <div className="cell" data-label="ESTADO">
+          <span className="view">
+            {data.seleccionado
+              ? "Seleccionado"
+              : aplicaciones.estado === "Pausada"
+              ? "No seleccionado"
+              : "En espera de selección"}
+          </span>
+        </div>
+        <div className="cell" data-label="EMPRESA">
+          <p>
+            {aplicaciones.empleador?.nombreEmpresa ||
+              aplicaciones.empleador?.nombre ||
+              "N/A"}
+          </p>
+        </div>
+        <div className="cell" data-label="FECHA">
+          {dayjs(data.fecha).format("DD/MM/YYYY")}
+        </div>
+        <div className="cell actions" data-label="ACCIONES">
+          {data.seleccionado ? (
+            "Podrás valorar al empleador cuando acabe el trabajo"
+          ) : (
+            <button onClick={onDelete}>Quitar</button>
+          )}
+        </div>
       </div>
-      <div className="cell" data-label="FECHA">
-        {dayjs(job.fechaPublicacion).format("DD/MM/YYYY")}
-      </div>
-      <div className="cell actions" data-label="ACCIONES">
-        <span className="edit">
-          <Link to={`/dashboard/${currentUser.id}/edit/${job.id}`}>Editar</Link>
-        </span>
-        <span className="delete">
-          <Link to={`/dashboard/${currentUser.id}/delete/${job.id}`}>
-            Eliminar
-          </Link>
-        </span>
-      </div>
-    </div>
-  );
+    );
+  };
+
+  return type === "job" ? renderJobRow() : renderAplicacionRow();
 }

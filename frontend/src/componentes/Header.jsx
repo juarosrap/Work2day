@@ -11,7 +11,6 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Cerrar el menú cuando cambie la ruta
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
@@ -25,7 +24,6 @@ export default function Header() {
     navigate("/");
   };
 
-  // Cierra el menú cuando se hace clic en un enlace
   const handleLinkClick = () => {
     setMenuOpen(false);
   };
@@ -78,9 +76,6 @@ export default function Header() {
           {isAuthenticated ? (
             <div className="nav-buttons">
               <div className="user-info">
-                {(currentUser.userType === "empleadorParticular" ||
-                  currentUser.userType === "empleadorEmpresa") && (
-                  <>
                     <NavLink
                       to={`dashboard/${currentUser.id}`}
                       className={({ isActive }) => {
@@ -97,20 +92,8 @@ export default function Header() {
                     >
                       Mi Perfil
                     </NavLink>
-                  </>
-                )}
                 <span className="welcome"> Hola, {currentUser.nombre}</span>
               </div>
-              {currentUser.userType === "candidato" && (
-                <NavLink
-                  to={`profile/${currentUser.id}`}
-                  className="btn-outline"
-                  onClick={handleLinkClick}
-                >
-                  Mi Perfil
-                </NavLink>
-              )}
-
               <button onClick={handleLogout} className="btn-primary">
                 Cerrar Sesión
               </button>
