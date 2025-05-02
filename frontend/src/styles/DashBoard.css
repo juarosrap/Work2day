@@ -1,6 +1,8 @@
-.main-dash {
+@media (min-width: 769px) {
+  .main-dash {
     display: grid;
     grid-template-rows: 1fr 1fr 3fr;
+  }
 }
 
 .title-dash {
@@ -201,6 +203,10 @@ h2 {
   font-weight: bold;
   margin-right: 1rem;
   color: #666;
+}
+
+.main-dash {
+    display: grid !important;
 }
 
 

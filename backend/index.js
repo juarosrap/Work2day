@@ -92,7 +92,7 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
     }
 
     if (salario) {
-      filtro.salario = { ...filtro.salario, $lte: Number(salario) };
+      filtro.salario = { ...filtro.salario, $gte: Number(salario) };
     }
 
     if (sector) {

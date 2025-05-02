@@ -18,6 +18,7 @@ import AboutUs from "./componentes/AboutUs.jsx";
 import ForgetModal from "./componentes/ForgetModal.jsx";
 import ResetPassword from "./componentes/ResetPassword.jsx";
 import ChangePassword from "./componentes/ChangePassword.jsx";
+import Valoracion from "./componentes/Valoracion.jsx";
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/dashboard/:id/jobForm" element={<JobForm />} />
         <Route path="/dashboard/:id/edit/:ofertaId" element={<JobForm />} />
         <Route path="/dashboard/:id/delete/:ofertaId" element={<DeleteJob />} />
+        <Route path="/dashboard/:id/valoracion/:valorado" element={<Valoracion />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
       </Routes>

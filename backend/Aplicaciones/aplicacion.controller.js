@@ -93,23 +93,23 @@ exports.actualizarAplicacion = async (req, res) => {
 // Eliminar una aplicación
 exports.eliminarAplicacion = async (req, res) => {
   try {
+
+    
     const aplicacion = await Aplicacion.findById(req.params.id);
 
     if (!aplicacion) {
       return res.status(404).json({ error: "Aplicación no encontrada" });
     }
 
-    // Eliminar la referencia de la aplicación en la oferta
+    
     await Oferta.findByIdAndUpdate(aplicacion.ofertaId, {
       $pull: { aplicaciones: req.params.id },
     });
 
-    // Eliminar la referencia de la aplicación en el candidato
     await Candidato.findByIdAndUpdate(aplicacion.candidatoId, {
       $pull: { aplicaciones: req.params.id },
     });
 
-    // Eliminar la aplicación
     await Aplicacion.findByIdAndDelete(req.params.id);
 
     res.json({ mensaje: "Aplicación eliminada correctamente" });

@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-export default function DashBoardRow({ data, type }) {
+export default function DashBoardRow({ data, type, onRemoved }) {
   const { currentUser } = useAuth();
   const [aplicaciones, setAplicaciones] = useState(null);
   const [loading, setLoading] = useState(type === "aplicacion");
@@ -22,6 +22,7 @@ export default function DashBoardRow({ data, type }) {
       const ofertaData = await response.json();
       setAplicaciones(ofertaData);
       setLoading(false);
+      // console.log(aplicaciones)
       return {
         ...data,
         oferta: ofertaData,
@@ -54,6 +55,7 @@ export default function DashBoardRow({ data, type }) {
 
   const onDelete = async () => {
     try {
+      console.log(data)
       let API = "http://localhost:5000/api/aplicaciones/";
       const response = await fetch(`${API}${data.id}`, {
         method: "DELETE",
@@ -62,7 +64,7 @@ export default function DashBoardRow({ data, type }) {
         },
       });
       if (!response.ok) {
-        throw new Error(`Error al eliminar la oferta ${data.ofertaId}`);
+        throw new Error(`Error al eliminar la aplicacion ${data.id}`);
       }
 
       if (onRemoved) onRemoved(data.id);
@@ -84,6 +86,8 @@ export default function DashBoardRow({ data, type }) {
 
   const renderJobRow = () => {
     const job = data;
+    console.log(job.aplicaciones)
+    const tiempoRestante = new Date(job.fechaFin) - Date.now();
     return (
       <div className="table-row">
         <div className="cell" data-label="TÍTULO">
@@ -115,8 +119,12 @@ export default function DashBoardRow({ data, type }) {
                 </Link>
               </span>
             </>
+          ) : tiempoRestante > 0 ? (
+            `Podrás valorar al candidato en ${Math.ceil(
+              tiempoRestante / (1000 * 60 * 60 * 24)
+            )} días`
           ) : (
-            "Podrás valorar al candidato cuando acabe el trabajo"
+            <Link to={`/dashboard/${currentUser.id}/valoracion/`}>Ya puedes valorar al candidato</Link>
           )}
         </div>
       </div>
@@ -128,6 +136,8 @@ export default function DashBoardRow({ data, type }) {
     if (!aplicaciones) {
       return null;
     }
+
+    const tiempoRestante = new Date(aplicaciones.fechaFin) - Date.now();
 
     return (
       <div className="table-row">
@@ -155,8 +165,12 @@ export default function DashBoardRow({ data, type }) {
           {dayjs(data.fecha).format("DD/MM/YYYY")}
         </div>
         <div className="cell actions" data-label="ACCIONES">
-          {data.seleccionado ? (
-            "Podrás valorar al empleador cuando acabe el trabajo"
+          {data.seleccionado && tiempoRestante > 0 ? (
+            `Podrás valorar al empleador en ${Math.ceil(
+              tiempoRestante / (1000 * 60 * 60 * 24)
+            )} días`
+          ) : data.seleccionado && tiempoRestante < 0 ? (
+            "Valorar al empleador"
           ) : (
             <button onClick={onDelete}>Quitar</button>
           )}

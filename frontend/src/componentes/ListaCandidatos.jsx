@@ -29,7 +29,6 @@ export default function ListaCandidatos() {
       }
 
       const data = await response.json();
-      console.log("Datos recibidos:", data);
       setOferta(data);
     } catch (err) {
       console.error("Error al cargar oferta:", err);
