@@ -59,12 +59,11 @@ exports.crearValoracion = async (req, res) => {
   try {
     const nuevaValoracion = new ValoracionEmpleador({
       ...req.body,
-      fecha: req.body.fecha || new Date(),
+      fecha: req.body.fecha,
     });
 
     const valoracionGuardada = await nuevaValoracion.save();
 
-    // Actualizar el empleador con esta valoración
     const esEmpresa = await EmpleadorEmpresa.findById(
       valoracionGuardada.empleadorId
     );

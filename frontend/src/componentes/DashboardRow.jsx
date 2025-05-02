@@ -124,7 +124,9 @@ export default function DashBoardRow({ data, type, onRemoved }) {
               tiempoRestante / (1000 * 60 * 60 * 24)
             )} días`
           ) : (
-            <Link to={`/dashboard/${currentUser.id}/valoracion/`}>Ya puedes valorar al candidato</Link>
+            <Link to={`candidatos/${job.id}`}>
+              Ya puedes valorar al candidato
+            </Link>
           )}
         </div>
       </div>
@@ -136,6 +138,7 @@ export default function DashBoardRow({ data, type, onRemoved }) {
     if (!aplicaciones) {
       return null;
     }
+    console.log(aplicaciones)
 
     const tiempoRestante = new Date(aplicaciones.fechaFin) - Date.now();
 
@@ -170,7 +173,11 @@ export default function DashBoardRow({ data, type, onRemoved }) {
               tiempoRestante / (1000 * 60 * 60 * 24)
             )} días`
           ) : data.seleccionado && tiempoRestante < 0 ? (
-            "Valorar al empleador"
+            <Link
+              to={`/dashboard/${currentUser.id}/valoracion/${aplicaciones.empleador._id}`}
+            >
+              Valorar al empleador
+            </Link>
           ) : (
             <button onClick={onDelete}>Quitar</button>
           )}

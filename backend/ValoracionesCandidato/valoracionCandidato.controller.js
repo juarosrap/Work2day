@@ -59,12 +59,11 @@ exports.crearValoracion = async (req, res) => {
     const nuevaValoracion = new ValoracionCandidato({
       ...req.body,
       candidatoId: req.params.id,
-      fecha: req.body.fecha || new Date(),
+      fecha: req.body.fecha || Date.now(),
     });
 
     const valoracionGuardada = await nuevaValoracion.save();
 
-    // Actualizar el candidato con esta valoración
     await Candidato.findByIdAndUpdate(valoracionGuardada.candidatoId, {
       $push: { valoraciones: valoracionGuardada._id },
     });

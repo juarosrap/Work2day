@@ -43,7 +43,7 @@ export default function App() {
         <Route path="/dashboard/:id/jobForm" element={<JobForm />} />
         <Route path="/dashboard/:id/edit/:ofertaId" element={<JobForm />} />
         <Route path="/dashboard/:id/delete/:ofertaId" element={<DeleteJob />} />
-        <Route path="/dashboard/:id/valoracion/:valorado" element={<Valoracion />} />
+        <Route path="/dashboard/:id/valoracion/:valoradoId" element={<Valoracion />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
       </Routes>

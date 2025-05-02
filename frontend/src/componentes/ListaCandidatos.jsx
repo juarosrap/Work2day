@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "../styles/Modal.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import CurriculumModal from "./CurriculumModal";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function ListaCandidatos() {
   const [oferta, setOferta] = useState(null);
@@ -11,6 +12,7 @@ export default function ListaCandidatos() {
   const [selectedCandidato, setSelectedCandidato] = useState(null);
   const [seleccionandoCandidato, setSeleccionandoCandidato] = useState(false);
   const { ofertaId } = useParams();
+  const { currentUser } = useAuth(); // Obtener el usuario actual
 
   let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
 
@@ -105,9 +107,28 @@ export default function ListaCandidatos() {
     }
   };
 
+  // Actualizado para usar la misma lógica que en DashBoardRow
+  const puedeValorar = () => {
+    if (!oferta || !oferta.fechaFin) return false;
+
+    const tiempoRestante = new Date(oferta.fechaFin) - Date.now();
+    return tiempoRestante <= 0;
+  };
+
+  // Función para calcular días restantes para valoración
+  const getDiasRestantesParaValorar = () => {
+    if (!oferta || !oferta.fechaFin) return 0;
+
+    const tiempoRestante = new Date(oferta.fechaFin) - Date.now();
+    return Math.ceil(tiempoRestante / (1000 * 60 * 60 * 24));
+  };
+
   const hayCandidatoSeleccionado = oferta?.aplicaciones?.some(
     (aplicacion) => aplicacion.seleccionado
   );
+
+  const esValorable = puedeValorar();
+  const diasRestantes = getDiasRestantesParaValorar();
 
   return (
     <div className="modal-overlay">
@@ -145,6 +166,7 @@ export default function ListaCandidatos() {
               <tbody>
                 {oferta.aplicaciones.map((aplicacion) => {
                   const candidato = aplicacion.candidatoId;
+
                   return (
                     <tr key={aplicacion._id}>
                       <td>{candidato.nombre}</td>
@@ -172,12 +194,37 @@ export default function ListaCandidatos() {
                       </td>
                       <td>
                         {aplicacion.seleccionado ? (
-                          <span className="ya-seleccionado">
-                            Seleccionado el{" "}
-                            {new Date(
-                              aplicacion.fechaSeleccion
-                            ).toLocaleDateString("es-ES")}
-                          </span>
+                          <div>
+                            <span className="ya-seleccionado">
+                              Seleccionado el{" "}
+                              {new Date(
+                                aplicacion.fechaSeleccion
+                              ).toLocaleDateString("es-ES")}
+                            </span>
+                            {aplicacion.seleccionado && currentUser ? (
+                              diasRestantes > 0 ? (
+                                <div
+                                  style={{
+                                    marginTop: "8px",
+                                    fontSize: "14px",
+                                    color: "#666",
+                                  }}
+                                >
+                                  Podrás valorar al candidato en {diasRestantes}{" "}
+                                  días
+                                </div>
+                              ) : (
+                                <div style={{ marginTop: "8px" }}>
+                                  <Link
+                                    to={`/dashboard/${currentUser.id}/valoracion/${candidato._id}`}
+                                    className="valorar-link"
+                                  >
+                                    Valorar candidato
+                                  </Link>
+                                </div>
+                              )
+                            ) : null}
+                          </div>
                         ) : hayCandidatoSeleccionado ? (
                           <span className="no-disponible">No disponible</span>
                         ) : (
