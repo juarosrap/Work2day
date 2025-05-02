@@ -199,10 +199,16 @@ img {
 }
 
 .stars {
-  color: #f4c150;
-  font-size: 1rem;
-  margin-bottom: 0.4rem;
+  display: flex;
+  gap: 2px;
+  font-size: 1.2rem;
+  color: gray;
 }
+
+.star.filled {
+  color: gold;
+}
+
 
 .review-text {
   color: #333;

@@ -18,6 +18,10 @@ const OfertaSchema = new Schema({
   sector: {
     type: String, enum: ["Hosteleria", "Otro", "Domestico", "Obra"]
   },
+  valorada: {
+    type: Boolean,
+    default: false,
+  },
   aplicaciones: [{ 
     type: Schema.Types.ObjectId, 
     ref: "Aplicacion" 

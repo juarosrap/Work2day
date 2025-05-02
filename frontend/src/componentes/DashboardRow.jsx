@@ -138,7 +138,7 @@ export default function DashBoardRow({ data, type, onRemoved }) {
     if (!aplicaciones) {
       return null;
     }
-    console.log(aplicaciones)
+    
 
     const tiempoRestante = new Date(aplicaciones.fechaFin) - Date.now();
 

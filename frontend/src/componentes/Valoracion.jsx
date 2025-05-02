@@ -50,11 +50,8 @@ export default function Valoracion() {
         let endpoint;
 
         if (isEmpleador) {
-          // Si es empleador valorando a un candidato
           endpoint = `http://localhost:5000/api/candidato/${valoradoId}`;
         } else {
-          // Si es candidato valorando a un empleador (particular o empresa)
-          // Primero intentamos consultar como empleadorParticular
           const responseParticular = await fetch(
             `http://localhost:5000/api/empleadorParticular/${valoradoId}`
           );
@@ -67,7 +64,6 @@ export default function Valoracion() {
             return;
           }
 
-          // Si no es particular, intentamos como empleadorEmpresa
           endpoint = `http://localhost:5000/api/empleadorEmpresa/${valoradoId}`;
         }
 

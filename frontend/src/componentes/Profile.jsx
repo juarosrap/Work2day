@@ -234,7 +234,7 @@ export default function Profile() {
           <div className="grades-profile box">
             <h3>Calificaciones como Empleador</h3>
             <h5>Valoración general</h5>
-            <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+            <p>Basado en {profile.valoraciones?.length || 0} valoraciones</p>
             <p>{calcularMedia()}</p>
           </div>
 
@@ -338,7 +338,7 @@ export default function Profile() {
           <div className="grades-profile box">
             <h3>Calificaciones como Empleador</h3>
             <h5>Valoración general</h5>
-            <p>Basado en {profile.evaluaciones?.length || 0} evaluaciones</p>
+            <p>Basado en {profile.valoraciones?.length || 0} valoraciones</p>
             <p>{calcularMedia()}</p>
           </div>
 
@@ -364,7 +364,6 @@ export default function Profile() {
             ) : (
               <p>No hay ofertas activas</p>
             )}
-            
           </div>
 
           <div className="opinions-profile box">

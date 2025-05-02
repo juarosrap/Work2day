@@ -1,6 +1,7 @@
 const ValoracionEmpleador = require("../ValoracionesEmpleador/valoracionEmpleador.model");
 const EmpleadorEmpresa = require("../EmpleadoresEmpresa/empleadorEmpresa.model");
 const EmpleadorParticular = require("../EmpleadoresParticular/empleadorParticular.model");
+const Oferta = require("../Ofertas/oferta.model");
 
 // Obtener todas las valoraciones
 exports.obtenerValoraciones = async (req, res) => {
@@ -77,6 +78,12 @@ exports.crearValoracion = async (req, res) => {
         valoracionGuardada.empleadorId,
         { $push: { valoraciones: valoracionGuardada._id } }
       );
+    }
+
+    if (req.body.ofertaId) {
+      await Oferta.findByIdAndUpdate(req.body.ofertaId, {
+        valorado: true,
+      });
     }
 
     res.status(201).json(valoracionGuardada);

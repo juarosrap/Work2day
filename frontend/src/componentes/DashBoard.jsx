@@ -216,7 +216,7 @@ export default function DashBoard() {
               <div className="header-cell">ACCIONES</div>
             </div>
 
-            {aplicaciones &&
+            {aplicaciones && aplicaciones.filter(aplicacion => !aplicacion.valorada) &&
               aplicaciones.map((aplicacion) => (
                 <DashBoardRow
                   key={aplicacion.id}
