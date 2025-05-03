@@ -3,8 +3,10 @@ const Oferta = require("../Ofertas/oferta.model");
 const Aplicacion = require("../Aplicaciones/aplicacion.model");
 const Candidato = require("../Candidatos/candidato.model");
 const ValoracionEmpleador = require("../ValoracionesEmpleador/valoracionEmpleador.model");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const path = require("path");
 
 // Obtener todos los empleadores empresa
 exports.obtenerEmpleadoresEmpresa = async (req, res) => {
@@ -43,7 +45,9 @@ exports.crearEmpleadorEmpresa = async (req, res) => {
     const { contrasena, correo, correoEmpresa, ...otrosDatos } = req.body;
 
     const correoExistente = await EmpleadorEmpresa.findOne({ correo });
-    const correoEmpresaExistente = await EmpleadorEmpresa.findOne({correoEmpresa});
+    const correoEmpresaExistente = await EmpleadorEmpresa.findOne({
+      correoEmpresa,
+    });
 
     if (correoExistente || correoEmpresaExistente) {
       return res
@@ -66,15 +70,20 @@ exports.crearEmpleadorEmpresa = async (req, res) => {
         .status(400)
         .json({ error: "La contraseña debe tener al menos 6 caracteres" });
     }
-    
+
     const passwordHash = await bcrypt.hash(contrasena, 10);
 
-    
+    let imagenPath = null;
+    if (req.file) {
+      imagenPath = `/uploads/empresas/${req.file.filename}`;
+    }
+
     const nuevoEmpleador = new EmpleadorEmpresa({
       ...otrosDatos,
       correo,
       correoEmpresa,
       contrasena: passwordHash,
+      fotoPerfil: imagenPath,
     });
 
     const empleadorGuardado = await nuevoEmpleador.save({
@@ -83,12 +92,13 @@ exports.crearEmpleadorEmpresa = async (req, res) => {
 
     res.status(201).json(empleadorGuardado);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: "Error al crear empleador empresa",
-        detalle: error.message,
-      });
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({
+      error: "Error al crear empleador empresa",
+      detalle: error.message,
+    });
   }
 };
 
@@ -109,7 +119,10 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
-    const contrasenaValida = await bcrypt.compare(contrasena,empleadorExistente.contrasena);
+    const contrasenaValida = await bcrypt.compare(
+      contrasena,
+      empleadorExistente.contrasena
+    );
 
     if (!contrasenaValida) {
       return res.status(401).json({ error: "Credenciales inválidas" });
@@ -148,6 +161,7 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
           id: empleadorExistente._id,
           nombre: empleadorExistente.nombre,
           correo: empleadorExistente.correo,
+          imagen: empleadorExistente.imagen,
         },
         accessToken,
       });
@@ -159,12 +173,13 @@ exports.loginEmpleadorEmpresa = async (req, res) => {
   }
 };
 
-
 exports.getCurrentUser = async (req, res) => {
   try {
     console.log("Obteniendo información del empleador con ID:", req.userId);
 
-    const empleador = await EmpleadorEmpresa.findById(req.userId).select("-contrasena");
+    const empleador = await EmpleadorEmpresa.findById(req.userId).select(
+      "-contrasena"
+    );
 
     if (!empleador) {
       console.log("No se encontró el empleador con ID:", req.userId);
@@ -203,7 +218,6 @@ exports.refreshToken = async (req, res) => {
         return res.status(403).json({ error: "Token ya no es válido" });
       }
 
-      
       const newAccessToken = jwt.sign(
         {
           id: empleador._id,
@@ -213,11 +227,10 @@ exports.refreshToken = async (req, res) => {
         { expiresIn: "15m" }
       );
 
-      
       res
         .cookie("access_token", newAccessToken, {
           maxAge: 15 * 60 * 1000,
-          path: '/'
+          path: "/",
         })
         .json({
           mensaje: "Token renovado exitosamente",
@@ -236,36 +249,68 @@ exports.refreshToken = async (req, res) => {
   }
 };
 
-//Logout de un enmpleador
-exports.logoutEmpleadorEmpresa = async (req,res) => {
+//Logout de un empleador
+exports.logoutEmpleadorEmpresa = async (req, res) => {
   try {
-    res.clearCookie('access_token')
-       .clearCookie('refresh_token')
-       .json({message: 'Logout succesful' })
-    
-  } catch(error) {
+    res
+      .clearCookie("access_token")
+      .clearCookie("refresh_token")
+      .json({ message: "Logout succesful" });
+  } catch (error) {
     res.status(500).json({
       error: "Error al cerrar sesión",
       detalle: error.message,
     });
   }
-}
+};
 
 // Actualizar un empleador empresa
 exports.actualizarEmpleadorEmpresa = async (req, res) => {
   try {
+    // Preparar datos para actualización
+    const datosActualizacion = { ...req.body };
+
+    // Si hay una imagen subida, añadirla a los datos de actualización
+    if (req.file) {
+      const empleadorActual = await EmpleadorEmpresa.findById(req.params.id);
+      if (
+        empleadorActual &&
+        empleadorActual.fotoPerfil &&
+        empleadorActual.fotoPerfil.startsWith("/uploads/")
+      ) {
+        const rutaAnterior = path.join(
+          __dirname,
+          "..",
+          empleadorActual.fotoPerfil
+        );
+        if (fs.existsSync(rutaAnterior)) {
+          fs.unlinkSync(rutaAnterior);
+        }
+      }
+
+      datosActualizacion.fotoPerfil = `/uploads/empresas/${req.file.filename}`;
+    }
+
     const empleadorActualizado = await EmpleadorEmpresa.findByIdAndUpdate(
       req.params.id,
-      req.body,
-      { new: true }
+      datosActualizacion,
+      { new: true, runValidators: true }
     );
 
     if (!empleadorActualizado) {
+      // Si no se encuentra el empleador y se subió imagen, eliminarla
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
+      }
       return res.status(404).json({ error: "Empleador empresa no encontrado" });
     }
 
     res.json(empleadorActualizado);
   } catch (error) {
+    // Si hay error y se subió imagen, eliminarla
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     res
       .status(500)
       .json({ error: "Error al actualizar empleador", detalle: error.message });
@@ -280,26 +325,31 @@ exports.eliminarEmpleadorEmpresa = async (req, res) => {
     if (!empleador) {
       return res.status(404).json({ error: "Empleador empresa no encontrado" });
     }
+
+    // Eliminar imagen asociada si existe
+    if (empleador.fotoPerfil && empleador.imagen.startsWith("/uploads/")) {
+      const rutaImagen = path.join(__dirname, "..", empleador.fotoPerfil);
+      if (fs.existsSync(rutaImagen)) {
+        fs.unlinkSync(rutaImagen);
+      }
+    }
+
     const ofertaIds = empleador.ofertas;
 
     await ValoracionEmpleador.deleteMany({ empleadorId: req.params.id });
 
-    
     for (const ofertaId of ofertaIds) {
       const aplicaciones = await Aplicacion.find({ ofertaId });
 
-      
       for (const aplicacion of aplicaciones) {
         await Candidato.findByIdAndUpdate(aplicacion.candidatoId, {
           $pull: { aplicaciones: aplicacion._id },
         });
       }
 
-      
       await Aplicacion.deleteMany({ ofertaId });
     }
 
-    
     await Oferta.deleteMany({ _id: { $in: ofertaIds } });
 
     await EmpleadorEmpresa.findByIdAndDelete(req.params.id);
@@ -309,11 +359,56 @@ exports.eliminarEmpleadorEmpresa = async (req, res) => {
         "Empleador empresa y sus datos relacionados eliminados correctamente",
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: "Error al eliminar empleador empresa",
-        detalle: error.message,
-      });
+    res.status(500).json({
+      error: "Error al eliminar empleador empresa",
+      detalle: error.message,
+    });
+  }
+};
+
+// Subir o actualizar imagen de perfil
+exports.subirImagenPerfil = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ error: "No se ha proporcionado ninguna imagen" });
+    }
+
+    const empleadorId = req.params.id;
+    const empleador = await EmpleadorEmpresa.findById(empleadorId);
+
+    if (!empleador) {
+      // Si no se encuentra el empleador, eliminar la imagen subida
+      fs.unlinkSync(req.file.path);
+      return res.status(404).json({ error: "Empleador empresa no encontrado" });
+    }
+
+    // Si ya tenía una imagen, eliminar la anterior
+    if (empleador.fotoPerfil && empleador.imagen.startsWith("/uploads/")) {
+      const imagenAnterior = path.join(__dirname, "..", empleador.fotoPerfil);
+      if (fs.existsSync(imagenAnterior)) {
+        fs.unlinkSync(imagenAnterior);
+      }
+    }
+
+    // Actualizar con la nueva ruta de imagen
+    const imagenPath = `/uploads/empresas/${req.file.filename}`;
+    empleador.fotoPerfil = imagenPath;
+    await empleador.save();
+
+    res.json({
+      mensaje: "Imagen de perfil actualizada correctamente",
+      fotoPerfil: imagenPath,
+    });
+  } catch (error) {
+    // Si hay error, eliminar la imagen subida
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({
+      error: "Error al subir la imagen de perfil",
+      detalle: error.message,
+    });
   }
 };

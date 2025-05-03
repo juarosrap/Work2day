@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require("path");
 const app = express();
 const router = express.Router();
 const cors = require("cors");
@@ -37,6 +39,7 @@ const usuarioRoutes = require('./User/user.routes');
 
 
 //Rutas
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/candidato", candidatoRoutes);
 app.use("/api/aplicaciones", aplicacionRoutes);
 app.use("/api/empleadorEmpresa", empleadorEmpresaRoutes);
@@ -45,6 +48,8 @@ app.use("/api/ofertas", ofertaRoutes);
 app.use("/api/valoraciones-candidato", valoracionCandidatoRoutes);
 app.use("/api/valoraciones-empleador", valoracionEmpleadorRoutes);
 app.use("/api",usuarioRoutes);
+
+
 
 // Conexión a MongoDB
 const uri = process.env.MONGO_URI;

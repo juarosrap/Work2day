@@ -7,6 +7,9 @@ import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
 import { motion } from "framer-motion";
 import dayjs from "dayjs";
 
+
+const API_URL = "http://localhost:5000";
+
 export default function Profile() {
   const { id } = useParams();
   const [profile, setProfile] = useState(null);
@@ -14,6 +17,7 @@ export default function Profile() {
   const [error, setError] = useState(null);
   const { currentUser, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -26,7 +30,7 @@ export default function Profile() {
 
     const fetchProfile = async () => {
       try {
-        const API = `http://localhost:5000/api/usuarios/${id}`;
+        const API = `${API_URL}/api/usuarios/${id}`;
 
         const response = await fetch(API, {
           credentials: "include",
@@ -43,7 +47,8 @@ export default function Profile() {
 
         const data = await response.json();
         setProfile(data);
-        // console.log(data.valoraciones);
+        console.log(data)
+        setImageError(false);
       } catch (err) {
         console.error("Error al obtener la persona:", err);
         setError("Error al cargar los detalles del perfil.");
@@ -70,6 +75,28 @@ export default function Profile() {
     }
 
     return (sum / profile.valoraciones.length).toFixed(1);
+  };
+
+  // Función para renderizar la foto de perfil
+  const renderProfilePhoto = (photoUrl) => {
+    console.log(photoUrl)
+    return (
+      <div className="profile-photo">
+        {photoUrl ? (
+          <img
+            src={`${API_URL}${photoUrl}`}
+            alt="Foto de perfil"
+            onError={() => setImageError(true)}
+            style={{ display: imageError ? "none" : "block" }}
+          />
+        ) : (
+          <img src="/assets/default-avatar.png" alt="Foto por defecto" />
+        )}
+       {photoUrl && imageError && (
+          <img src="/assets/default-avatar.png" alt="Foto por defecto" />
+        )} 
+      </div>
+    );
   };
 
   if (authLoading || loading) return <div>Cargando...</div>;
@@ -107,16 +134,7 @@ export default function Profile() {
         <div className="header-profile">
           <div className="banner" />
           <div className="profile-info">
-            <div className="profile-photo">
-              {profile.fotoPerfil ? (
-                <img src={profile.fotoPerfil} alt="Logo de empresa" />
-              ) : (
-                <img
-                  src="/ruta/a/imagen-por-defecto.png"
-                  alt="Logo por defecto"
-                />
-              )}
-            </div>
+            {renderProfilePhoto(profile.fotoPerfil)}
             <div className="profile-text">
               <h2 className="profile-name">{profile.nombre}</h2>
               <div className="profile-tags">
@@ -161,7 +179,6 @@ export default function Profile() {
           </div>
 
           <ExperienciaDestacada experienciaPrevia={experienciasLimitadas} />
-          
 
           <div className="opinions-profile box">
             <h3>Reseñas Recientes</h3>
@@ -179,7 +196,6 @@ export default function Profile() {
   };
 
   const renderEmpleadorParticularProfile = () => {
-    
     const ofertasLimitadas = profile.ofertas ? profile.ofertas.slice(0, 3) : [];
 
     return (
@@ -187,16 +203,7 @@ export default function Profile() {
         <div className="header-profile">
           <div className="banner" />
           <div className="profile-info">
-            <div className="profile-photo">
-              {profile.fotoPerfil ? (
-                <img src={profile.fotoPerfil} alt="Logo de empresa" />
-              ) : (
-                <img
-                  src="/ruta/a/imagen-por-defecto.png"
-                  alt="Logo por defecto"
-                />
-              )}
-            </div>
+            {renderProfilePhoto(profile.fotoPerfil)}
             <div className="profile-text">
               <h2 className="profile-name">
                 {profile.nombre} {profile.apellidos || ""}
@@ -243,7 +250,21 @@ export default function Profile() {
             {ofertasLimitadas.length > 0 ? (
               ofertasLimitadas.map((oferta, index) => (
                 <div className="past-job" key={index}>
-                  <img src="ruta-a-tu-imagen.png" alt="job-photo" />
+                  {oferta.imagen ? (
+                    <img
+                      src={`${API_URL}/${oferta.imagen}`}
+                      alt="Imagen de oferta"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/assets/default-job.png";
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src="/assets/default-job.png"
+                      alt="Imagen por defecto"
+                    />
+                  )}
                   <div className="job-info">
                     <p className="job-title">{oferta.titulo}</p>
                     <div className="duration">
@@ -286,16 +307,7 @@ export default function Profile() {
           <div className="banner" />
 
           <div className="profile-info">
-            <div className="profile-photo">
-              {profile.fotoPerfil ? (
-                <img src={profile.fotoPerfil} alt="Logo de empresa" />
-              ) : (
-                <img
-                  src="/ruta/a/imagen-por-defecto.png"
-                  alt="Logo por defecto"
-                />
-              )}
-            </div>
+            {renderProfilePhoto(profile.fotoPerfil)}
             <div className="profile-text">
               <h2 className="profile-name">
                 {profile.nombreEmpresa || profile.nombre}
@@ -347,7 +359,21 @@ export default function Profile() {
             {ofertasLimitadas.length > 0 ? (
               ofertasLimitadas.map((oferta, index) => (
                 <div className="past-job" key={index}>
-                  <img src="ruta-a-tu-imagen.png" alt="job-photo" />
+                  {oferta.imagen ? (
+                    <img
+                      src={`${API_URL}/${oferta.imagen}`}
+                      alt="Imagen de oferta"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/assets/default-job.png";
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src="/assets/default-job.png"
+                      alt="Imagen por defecto"
+                    />
+                  )}
                   <div className="job-info">
                     <p className="job-title">{oferta.titulo}</p>
                     <div className="duration">

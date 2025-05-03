@@ -99,8 +99,8 @@ export default function ModalForm() {
         <p style={errorStyle}>{errors.confirmarContrasena.message}</p>
       )}
 
-      <label>Foto de perfil (URL)</label>
-      <input {...register("fotoPerfil")} />
+      <label>Foto de perfil</label>
+      <input type="file" accept="image/*" {...register("fotoPerfil")} />
     </>
   );
 
@@ -128,8 +128,8 @@ export default function ModalForm() {
       />
       {errors.ubicacion && <p style={errorStyle}>{errors.ubicacion.message}</p>}
 
-      <label>Foto de empresa (URL)</label>
-      <input {...register("fotoEmpresa")} />
+      <label>Foto de empresa</label>
+      <input type="file" accept="image/*" {...register("fotoEmpresa")} />
 
       <label>Correo de empresa</label>
       <input
@@ -243,25 +243,24 @@ export default function ModalForm() {
   );
 
   const onSubmit = async (data) => {
-    if (data.tipo === "candidato") {
-      API = "http://localhost:5000/api/candidato/register";
+    let endpoint = "";
 
-      
+    if (data.tipo === "candidato") {
+      endpoint = "candidato/register";
+
       if (data.idiomasRaw) {
         const idiomasArray = data.idiomasRaw
           .split(",")
           .map((idioma) => idioma.trim())
           .filter((idioma) => idioma !== "");
-
         data.curriculum.idiomas = idiomasArray;
       }
 
-      
       delete data.idiomasRaw;
     } else if (data.tipo === "empleadorParticular") {
-      API = "http://localhost:5000/api/empleadorParticular/register";
+      endpoint = "empleadorParticular/register";
     } else {
-      API = "http://localhost:5000/api/empleadorEmpresa/register";
+      endpoint = "empleadorEmpresa/register";
     }
 
     if (
@@ -273,31 +272,54 @@ export default function ModalForm() {
       delete data.curriculum.experienciaPrevia;
     }
 
+    const formData = new FormData();
+
+    // Adjuntar campos simples
+    formData.append("tipo", data.tipo);
+    formData.append("nombre", data.nombre);
+    formData.append("telefono", data.telefono);
+    formData.append("correo", data.correo);
+    formData.append("fechaNacimiento", data.fechaNacimiento);
+    formData.append("contrasena", data.contrasena);
+
+    // Adjuntar archivo si existe
+    if (data.fotoPerfil && data.fotoPerfil[0]) {
+      formData.append("fotoPerfil", data.fotoPerfil[0]);
+    }
+
+    // Adjuntar campos de empresa si aplica
+    if (data.tipo === "empleadorEmpresa") {
+      formData.append("nombreEmpresa", data.nombreEmpresa);
+      formData.append("sector", data.sector);
+      formData.append("ubicacion", data.ubicacion);
+      formData.append("correoEmpresa", data.correoEmpresa);
+      formData.append("telefonoEmpresa", data.telefonoEmpresa);
+      formData.append("paginaWeb", data.paginaWeb);
+
+      if (data.fotoEmpresa && data.fotoEmpresa[0]) {
+        formData.append("fotoEmpresa", data.fotoEmpresa[0]);
+      }
+    }
+
+    // Adjuntar currículum si aplica
+    if (data.tipo === "candidato") {
+      formData.append("curriculum", JSON.stringify(data.curriculum));
+    }
 
     try {
-      const response = await fetch(API, {
+      const response = await fetch(`http://localhost:5000/api/${endpoint}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       if (!response.ok) {
-        if (response.status === 400) {
-          const errorData = await response.json();
-          if (errorData.error) {
-            setApiError(errorData.error);
-          }
-        } else {
-          setApiError(`Error del servidor (${response.status})`);
-        }
+        const errorData = await response.json();
+        setApiError(errorData?.error || "Error del servidor");
         return;
       }
 
       setApiError("");
       setSuccessMessage("Registro exitoso. ¡Bienvenido!");
-
       setTimeout(() => {
         navigate("/");
       }, 3000);
@@ -309,8 +331,13 @@ export default function ModalForm() {
     }
   };
 
+
   return (
-    <form className="registro-form" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="registro-form"
+      onSubmit={handleSubmit(onSubmit)}
+      encType="multipart/form-data"
+    >
       <label>¿Qué eres?</label>
       <select
         {...register("tipo", { required: "Este campo es obligatorio" })}
