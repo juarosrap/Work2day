@@ -20,6 +20,7 @@ export default function EditProfile() {
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const formatDateForInput = (dateString) => {
     if (!dateString) return "";
@@ -67,7 +68,6 @@ export default function EditProfile() {
           setValue("nombre", data.nombre || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
-          setValue("fotoPerfil", data.fotoPerfil || "");
           setValue(
             "fechaNacimiento",
             formatDateForInput(data.fechaNacimiento) || ""
@@ -97,7 +97,6 @@ export default function EditProfile() {
               setValue("curriculum.idiomas", data.curriculum.idiomas || "");
             }
 
-            
             if (Array.isArray(data.curriculum.experienciaPrevia)) {
               data.curriculum.experienciaPrevia.forEach((exp, index) => {
                 setValue(
@@ -128,7 +127,6 @@ export default function EditProfile() {
           setValue("descripcion", data.descripcion || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
-          setValue("fotoPerfil", data.fotoPerfil || "");
           setValue(
             "fechaNacimiento",
             formatDateForInput(data.fechaNacimiento) || ""
@@ -137,7 +135,6 @@ export default function EditProfile() {
           setValue("nombre", data.nombre || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
-          setValue("fotoPerfil", data.fotoPerfil || "");
           setValue(
             "fechaNacimiento",
             formatDateForInput(data.fechaNacimiento) || ""
@@ -146,7 +143,6 @@ export default function EditProfile() {
           setValue("nombreEmpresa", data.nombreEmpresa || "");
           setValue("sector", data.sector || "");
           setValue("ubicacion", data.ubicacion || "");
-          setValue("fotoEmpresa", data.fotoEmpresa || "");
           setValue("correoEmpresa", data.correoEmpresa || "");
           setValue("telefonoEmpresa", data.telefonoEmpresa || "");
           setValue("paginaWeb", data.paginaWeb || "");
@@ -163,30 +159,97 @@ export default function EditProfile() {
     getProfile();
   }, [currentUser, navigate, setValue]);
 
+const handleFileChange = (e) => {
+  if (e.target.files && e.target.files[0]) {
+    setSelectedFile(e.target.files[0]);
+  }
+};
+
   const onSubmit = async (data) => {
     setApiError("");
     setSuccessMessage("");
 
-    const processedData = { ...data };
 
-    if (processedData.curriculum && processedData.curriculum.idiomas) {
-      processedData.curriculum.idiomas = processedData.curriculum.idiomas
-        .split(",")
-        .map((idioma) => idioma.trim())
-        .filter((idioma) => idioma !== "");
+    const formData = new FormData();
+
+    // Agregar campos básicos
+    formData.append("nombre", data.nombre);
+    formData.append("correo", data.correo);
+    formData.append("telefono", data.telefono);
+    formData.append("fechaNacimiento", data.fechaNacimiento);
+
+    // En onSubmit
+    if (selectedFile) {
+      formData.append("fotoPerfil", selectedFile);
+      console.log(
+        "Foto adjuntada:",
+        selectedFile.name,
+        selectedFile.type,
+        selectedFile.size
+      );
     }
+
+    if (currentUser.userType === "candidato") {
+      if (data.curriculum && data.curriculum.idiomas) {
+        const idiomasArray = data.curriculum.idiomas
+          .split(",")
+          .map((idioma) => idioma.trim())
+          .filter((idioma) => idioma !== "");
+
+        const curriculumData = {
+          informacionPersonal: data.curriculum.informacionPersonal,
+          ubicacion: data.curriculum.ubicacion,
+          formacionAcademica: data.curriculum.formacionAcademica,
+          idiomas: idiomasArray,
+          experienciaPrevia: [],
+        };
+
+        if (data.curriculum.experienciaPrevia) {
+          for (let i = 0; i < 3; i++) {
+            const exp = data.curriculum.experienciaPrevia[i];
+            if (exp && exp.empresa) {
+              curriculumData.experienciaPrevia.push({
+                empresa: exp.empresa,
+                puesto: exp.puesto,
+                fechaInicio: exp.fechaInicio,
+                fechaFin: exp.fechaFin,
+                descripcion: exp.descripcion,
+              });
+            }
+          }
+        }
+
+        formData.append("curriculum", JSON.stringify(curriculumData));
+      }
+    } else if (currentUser.userType === "empleadorParticular") {
+      if (data.descripcion) {
+        formData.append("descripcion", data.descripcion);
+      }
+    } else if (currentUser.userType === "empleadorEmpresa") {
+      formData.append("nombreEmpresa", data.nombreEmpresa);
+      formData.append("sector", data.sector);
+      formData.append("ubicacion", data.ubicacion);
+      formData.append("correoEmpresa", data.correoEmpresa);
+      formData.append("telefonoEmpresa", data.telefonoEmpresa);
+      formData.append("paginaWeb", data.paginaWeb);
+
+      if (data.descripcion) {
+        formData.append("descripcion", data.descripcion);
+      }
+    }
+
+    
 
     try {
       const API = `http://localhost:5000/api/${currentUser.userType}/${currentUser.id}`;
 
       const response = await fetch(API, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
         credentials: "include",
-        body: JSON.stringify(processedData),
+        body: formData,
       });
+
+      console.log("Respuesta recibida:", response.status); 
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -212,7 +275,11 @@ export default function EditProfile() {
   };
 
   const renderCandidatoForm = () => (
-    <form onSubmit={handleSubmit(onSubmit)} className="registro-form">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="registro-form"
+      encType="multipart/form-data"
+    >
       <h3>Información personal</h3>
 
       <div className="row">
@@ -260,8 +327,22 @@ export default function EditProfile() {
 
       <div className="row">
         <div>
-          <label>URL de la foto de perfil</label>
-          <input {...register("fotoPerfil")} type="text" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e)}
+            name="fotoPerfil"
+          />
+          {selectedFile && (
+            <p className="file-info">
+              Imagen seleccionada: {selectedFile.name}
+            </p>
+          )}
+          {profileData?.fotoPerfil && !selectedFile && (
+            <p className="file-info">
+              Imagen actual: {profileData.fotoPerfil.split("/").pop()}
+            </p>
+          )}
         </div>
 
         <div>
@@ -375,7 +456,11 @@ export default function EditProfile() {
   );
 
   const renderEmpleadorParticularForm = () => (
-    <form onSubmit={handleSubmit(onSubmit)} className="registro-form">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="registro-form"
+      encType="multipart/form-data"
+    >
       <h3>Información personal</h3>
       <div className="row">
         <div>
@@ -394,7 +479,7 @@ export default function EditProfile() {
         <div>
           <label>Descripcion</label>
           <input {...register("descripcion")} type="text" />
-          {errors.desripcion && (
+          {errors.descripcion && (
             <span className="error">{errors.descripcion.message}</span>
           )}
         </div>
@@ -432,8 +517,23 @@ export default function EditProfile() {
 
       <div className="row">
         <div>
-          <label>URL de la foto de perfil</label>
-          <input {...register("fotoPerfil")} type="text" />
+          <label>Foto de perfil</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e)}
+            name="fotoPerfil"
+          />
+          {selectedFile && (
+            <p className="file-info">
+              Imagen seleccionada: {selectedFile.name}
+            </p>
+          )}
+          {profileData?.fotoPerfil && !selectedFile && (
+            <p className="file-info">
+              Imagen actual: {profileData.fotoPerfil.split("/").pop()}
+            </p>
+          )}
         </div>
 
         <div>
@@ -455,7 +555,11 @@ export default function EditProfile() {
   );
 
   const renderEmpleadorEmpresaForm = () => (
-    <form onSubmit={handleSubmit(onSubmit)} className="registro-form">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="registro-form"
+      encType="multipart/form-data"
+    >
       <h3>Información personal</h3>
       <div className="row">
         <div>
@@ -502,8 +606,24 @@ export default function EditProfile() {
 
       <div className="row">
         <div>
-          <label>URL de la foto de perfil</label>
-          <input {...register("fotoPerfil")} type="text" />
+          <label>Foto de perfil</label>
+          <label>Foto de perfil</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e)}
+            name="fotoPerfil"
+          />
+          {selectedFile && (
+            <p className="file-info">
+              Imagen seleccionada: {selectedFile.name}
+            </p>
+          )}
+          {profileData?.fotoPerfil && !selectedFile && (
+            <p className="file-info">
+              Imagen actual: {profileData.fotoPerfil.split("/").pop()}
+            </p>
+          )}
         </div>
 
         <div>
@@ -551,7 +671,7 @@ export default function EditProfile() {
         <div>
           <label>Descripcion</label>
           <input {...register("descripcion")} type="text" />
-          {errors.desripcion && (
+          {errors.descripcion && (
             <span className="error">{errors.descripcion.message}</span>
           )}
         </div>
@@ -565,8 +685,28 @@ export default function EditProfile() {
       </div>
 
       <div>
-        <label>URL de la foto de la empresa</label>
-        <input {...register("fotoEmpresa")} type="text" />
+        <label>Foto de la empresa</label>
+        <input
+          {...register("fotoEmpresa")}
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFileChange(e, "fotoEmpresa")}
+          key={
+            selectedFile && selectedFile.name === "fotoEmpresa"
+              ? "file-selected"
+              : "no-file"
+          }
+        />
+        {selectedFile && selectedFile.name === "fotoEmpresa" && (
+          <p className="file-info">
+            Imagen seleccionada: {selectedFile.file.name}
+          </p>
+        )}
+        {profileData?.fotoEmpresa && !selectedFile && (
+          <p className="file-info">
+            Imagen actual: {profileData.fotoEmpresa.split("/").pop()}
+          </p>
+        )}
       </div>
 
       <div className="row">

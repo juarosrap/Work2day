@@ -274,7 +274,6 @@ export default function ModalForm() {
 
     const formData = new FormData();
 
-    // Adjuntar campos simples
     formData.append("tipo", data.tipo);
     formData.append("nombre", data.nombre);
     formData.append("telefono", data.telefono);
@@ -282,12 +281,10 @@ export default function ModalForm() {
     formData.append("fechaNacimiento", data.fechaNacimiento);
     formData.append("contrasena", data.contrasena);
 
-    // Adjuntar archivo si existe
     if (data.fotoPerfil && data.fotoPerfil[0]) {
       formData.append("fotoPerfil", data.fotoPerfil[0]);
     }
 
-    // Adjuntar campos de empresa si aplica
     if (data.tipo === "empleadorEmpresa") {
       formData.append("nombreEmpresa", data.nombreEmpresa);
       formData.append("sector", data.sector);
@@ -301,7 +298,6 @@ export default function ModalForm() {
       }
     }
 
-    // Adjuntar currículum si aplica
     if (data.tipo === "candidato") {
       formData.append("curriculum", JSON.stringify(data.curriculum));
     }

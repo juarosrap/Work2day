@@ -13,7 +13,12 @@ router.post("/register",upload.single('fotoPerfil'),multerErrorHandler, candidat
 router.post("/login", candidatoController.loginCandidato);
 router.post("/refresh", candidatoController.refreshToken);
 router.post("/logout", candidatoController.logoutCandidato);
-router.put("/:id", candidatoController.actualizarCandidato);
+router.put(
+  "/:id",
+  upload.single("fotoPerfil"),
+  multerErrorHandler,
+  candidatoController.actualizarCandidato
+);
 router.delete("/:id", candidatoController.eliminarCandidato);
 
 module.exports = router;

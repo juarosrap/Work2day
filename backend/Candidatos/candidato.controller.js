@@ -310,10 +310,8 @@ exports.logoutCandidato = async (req, res) => {
 // Actualizar un candidato
 exports.actualizarCandidato = async (req, res) => {
   try {
-    // Preparar datos para actualización
     const datosActualizacion = { ...req.body };
-
-    // Si hay una imagen subida, añadirla a los datos de actualización
+    console.log(req.file)
     if (req.file) {
       const candidatoActual = await Candidato.findById(req.params.id);
       if (
@@ -341,7 +339,6 @@ exports.actualizarCandidato = async (req, res) => {
     );
 
     if (!candidatoActualizado) {
-      // Si no se encuentra el candidato y se subió imagen, eliminarla
       if (req.file) {
         fs.unlinkSync(req.file.path);
       }
@@ -350,7 +347,6 @@ exports.actualizarCandidato = async (req, res) => {
 
     res.json(candidatoActualizado);
   } catch (error) {
-    // Si hay error y se subió imagen, eliminarla
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }

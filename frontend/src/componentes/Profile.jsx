@@ -77,7 +77,7 @@ export default function Profile() {
     return (sum / profile.valoraciones.length).toFixed(1);
   };
 
-  // Función para renderizar la foto de perfil
+
   const renderProfilePhoto = (photoUrl) => {
     console.log(photoUrl)
     return (
