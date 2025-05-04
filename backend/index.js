@@ -128,7 +128,7 @@ app.get('/api/usuarios/:id', async (req,res) => {
     }
 
     if(!usuario){
-      usuario = await Candidato.findById(usuarioId).populate("valoraciones");;
+      usuario = await Candidato.findById(usuarioId).populate("valoraciones");
     }
 
     if(!usuario){

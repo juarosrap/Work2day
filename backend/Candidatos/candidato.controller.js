@@ -46,6 +46,8 @@ exports.obtenerCandidatoPorId = async (req, res) => {
 exports.crearCandidato = async (req, res) => {
   try {
     const { contrasena, correo, ...otrosDatos } = req.body;
+    
+    console.log("Datos recibidos en el controlador:", req.body);
 
     const candidatoExistente = await Candidato.findOne({ correo });
 
@@ -77,13 +79,62 @@ exports.crearCandidato = async (req, res) => {
     if (req.file) {
       imagenPath = `/uploads/candidatos/${req.file.filename}`;
     }
+    
+    const curriculum = {};
+    
+    if (req.body.informacionPersonal) {
+      curriculum.informacionPersonal = req.body.informacionPersonal;
+    }
+    
+    if (req.body.ubicacionCurriculum) {
+      curriculum.ubicacion = req.body.ubicacionCurriculum;
+    }
+    
+    if (req.body.formacionAcademica) {
+      curriculum.formacionAcademica = req.body.formacionAcademica;
+    }
+    
+    if (req.body.idiomas) {
+      try {
+        curriculum.idiomas = JSON.parse(req.body.idiomas);
+      } catch (e) {
+        console.error("Error al parsear idiomas:", e);
+        curriculum.idiomas = req.body.idiomas.split(",").map(i => i.trim());
+      }
+    }
+    
+    if (req.body.experienciaPrevia) {
+      try {
+        curriculum.experienciaPrevia = JSON.parse(req.body.experienciaPrevia);
+      } catch (e) {
+        console.error("Error al parsear experienciaPrevia:", e);
+      }
+    }
+    
+    if (req.body.curriculumCompleto) {
+      try {
+        const curriculumParsed = JSON.parse(req.body.curriculumCompleto);
+        curriculum.informacionPersonal = curriculum.informacionPersonal || curriculumParsed.informacionPersonal;
+        curriculum.ubicacion = curriculum.ubicacion || curriculumParsed.ubicacion;
+        curriculum.formacionAcademica = curriculum.formacionAcademica || curriculumParsed.formacionAcademica;
+        curriculum.idiomas = curriculum.idiomas || curriculumParsed.idiomas;
+        curriculum.experienciaPrevia = curriculum.experienciaPrevia || curriculumParsed.experienciaPrevia;
+      } catch (e) {
+        console.error("Error al parsear curriculumCompleto:", e);
+      }
+    }
+    
+    console.log("Curriculum procesado:", curriculum);
 
     const nuevoCandidato = new Candidato({
       ...otrosDatos,
       correo,
       contrasena: passwordHash,
       fotoPerfil: imagenPath,
+      curriculum: curriculum 
     });
+
+    console.log("Nuevo candidato a guardar:", nuevoCandidato);
 
     const candidatoGuardado = await nuevoCandidato.save({
       runValidators: true,
@@ -91,6 +142,7 @@ exports.crearCandidato = async (req, res) => {
 
     res.status(201).json(candidatoGuardado);
   } catch (error) {
+    console.error("Error completo:", error);
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }

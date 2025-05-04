@@ -3,7 +3,7 @@ import "../styles/ModalForm.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-export default function ModalForm() {
+export default function registerModal() {
   const {
     register,
     handleSubmit,
@@ -170,34 +170,32 @@ export default function ModalForm() {
       <h3 style={{ textAlign: "center" }}>Currículum</h3>
       <label>Información Personal</label>
       <input
-        {...register("curriculum.informacionPersonal", {
+        {...register("informacionPersonal", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.curriculum?.informacionPersonal && (
-        <p style={errorStyle}>
-          {errors.curriculum.informacionPersonal.message}
-        </p>
+      {errors.informacionPersonal && (
+        <p style={errorStyle}>{errors.informacionPersonal.message}</p>
       )}
 
       <label>Ubicación</label>
       <input
-        {...register("curriculum.ubicacion", {
+        {...register("ubicacionCurriculum", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.curriculum?.ubicacion && (
-        <p style={errorStyle}>{errors.curriculum.ubicacion.message}</p>
+      {errors.ubicacionCurriculum && (
+        <p style={errorStyle}>{errors.ubicacionCurriculum.message}</p>
       )}
 
       <label>Formación Académica</label>
       <input
-        {...register("curriculum.formacionAcademica", {
+        {...register("formacionAcademica", {
           required: "Este campo es obligatorio",
         })}
       />
-      {errors.curriculum?.formacionAcademica && (
-        <p style={errorStyle}>{errors.curriculum.formacionAcademica.message}</p>
+      {errors.formacionAcademica && (
+        <p style={errorStyle}>{errors.formacionAcademica.message}</p>
       )}
 
       <label>Idiomas (separados por coma)</label>
@@ -211,99 +209,128 @@ export default function ModalForm() {
       <h3>Experiencia Laboral</h3>
 
       <label>Empresa</label>
-      <input
-        {...register("curriculum.experienciaPrevia.empresa")}
-        placeholder="Nombre de la empresa"
-      />
+      <input {...register("empresa")} placeholder="Nombre de la empresa" />
 
       <label>Puesto</label>
-      <input
-        {...register("curriculum.experienciaPrevia.puesto")}
-        placeholder="Tu puesto en la empresa"
-      />
+      <input {...register("puesto")} placeholder="Tu puesto en la empresa" />
 
       <label>Fecha de Inicio</label>
-      <input
-        {...register("curriculum.experienciaPrevia.fechaInicio")}
-        type="date"
-      />
+      <input {...register("fechaInicio")} type="date" />
 
       <label>Fecha de Fin</label>
-      <input
-        {...register("curriculum.experienciaPrevia.fechaFin")}
-        type="date"
-      />
+      <input {...register("fechaFin")} type="date" />
 
       <label>Descripción</label>
       <textarea
-        {...register("curriculum.experienciaPrevia.descripcion")}
+        {...register("descripcion")}
         placeholder="Describe tus tareas o logros"
       />
     </>
   );
 
   const onSubmit = async (data) => {
-    let endpoint = "";
-
-    if (data.tipo === "candidato") {
-      endpoint = "candidato/register";
-
-      if (data.idiomasRaw) {
-        const idiomasArray = data.idiomasRaw
-          .split(",")
-          .map((idioma) => idioma.trim())
-          .filter((idioma) => idioma !== "");
-        data.curriculum.idiomas = idiomasArray;
-      }
-
-      delete data.idiomasRaw;
-    } else if (data.tipo === "empleadorParticular") {
-      endpoint = "empleadorParticular/register";
-    } else {
-      endpoint = "empleadorEmpresa/register";
-    }
-
-    if (
-      data.curriculum?.experienciaPrevia &&
-      data.curriculum.experienciaPrevia.empresa
-    ) {
-      data.curriculum.experienciaPrevia = [data.curriculum.experienciaPrevia];
-    } else {
-      delete data.curriculum.experienciaPrevia;
-    }
-
-    const formData = new FormData();
-
-    formData.append("tipo", data.tipo);
-    formData.append("nombre", data.nombre);
-    formData.append("telefono", data.telefono);
-    formData.append("correo", data.correo);
-    formData.append("fechaNacimiento", data.fechaNacimiento);
-    formData.append("contrasena", data.contrasena);
-
-    if (data.fotoPerfil && data.fotoPerfil[0]) {
-      formData.append("fotoPerfil", data.fotoPerfil[0]);
-    }
-
-    if (data.tipo === "empleadorEmpresa") {
-      formData.append("nombreEmpresa", data.nombreEmpresa);
-      formData.append("sector", data.sector);
-      formData.append("ubicacion", data.ubicacion);
-      formData.append("correoEmpresa", data.correoEmpresa);
-      formData.append("telefonoEmpresa", data.telefonoEmpresa);
-      formData.append("paginaWeb", data.paginaWeb);
-
-      if (data.fotoEmpresa && data.fotoEmpresa[0]) {
-        formData.append("fotoEmpresa", data.fotoEmpresa[0]);
-      }
-    }
-
-    if (data.tipo === "candidato") {
-      formData.append("curriculum", JSON.stringify(data.curriculum));
-    }
-
     try {
-      const response = await fetch(`http://localhost:5000/api/${endpoint}`, {
+      // Preparar los datos según el tipo de usuario
+      let endpoint = "";
+      const formData = new FormData();
+
+      // Añadir datos comunes
+      formData.append("tipo", data.tipo);
+      formData.append("nombre", data.nombre);
+      formData.append("telefono", data.telefono);
+      formData.append("correo", data.correo);
+      formData.append("fechaNacimiento", data.fechaNacimiento);
+      formData.append("contrasena", data.contrasena);
+
+      if (data.fotoPerfil && data.fotoPerfil[0]) {
+        formData.append("fotoPerfil", data.fotoPerfil[0]);
+      }
+
+      // Añadir datos según el tipo de usuario
+      if (data.tipo === "candidato") {
+        endpoint = "candidato/register";
+
+        // Preparar el curriculum como un objeto separado
+        const curriculum = {
+          informacionPersonal: data.informacionPersonal,
+          ubicacion: data.ubicacionCurriculum,
+          formacionAcademica: data.formacionAcademica,
+        };
+
+        // Procesar idiomas
+        if (data.idiomasRaw) {
+          curriculum.idiomas = data.idiomasRaw
+            .split(",")
+            .map((idioma) => idioma.trim())
+            .filter((idioma) => idioma !== "");
+        }
+
+        // Procesar experiencia previa si se proporcionó información
+        if (data.empresa && data.empresa.trim() !== "") {
+          curriculum.experienciaPrevia = [
+            {
+              empresa: data.empresa,
+              puesto: data.puesto || "",
+              fechaInicio: data.fechaInicio || null,
+              fechaFin: data.fechaFin || null,
+              descripcion: data.descripcion || "",
+            },
+          ];
+        }
+
+        // Añadir cada campo del curriculum por separado
+        formData.append("informacionPersonal", curriculum.informacionPersonal);
+        formData.append("ubicacionCurriculum", curriculum.ubicacion);
+        formData.append("formacionAcademica", curriculum.formacionAcademica);
+
+        // Añadir idiomas como un array
+        if (curriculum.idiomas && curriculum.idiomas.length > 0) {
+          formData.append("idiomas", JSON.stringify(curriculum.idiomas));
+        }
+
+        // Añadir experiencia previa si existe
+        if (
+          curriculum.experienciaPrevia &&
+          curriculum.experienciaPrevia.length > 0
+        ) {
+          formData.append(
+            "experienciaPrevia",
+            JSON.stringify(curriculum.experienciaPrevia)
+          );
+        }
+
+        // También añadir todo el curriculum como JSON para tener un respaldo
+        formData.append("curriculumCompleto", JSON.stringify(curriculum));
+
+        console.log("Curriculum enviado:", curriculum);
+      } else if (data.tipo === "empleadorParticular") {
+        endpoint = "empleadorParticular/register";
+      } else {
+        endpoint = "empleadorEmpresa/register";
+
+        formData.append("nombreEmpresa", data.nombreEmpresa);
+        formData.append("sector", data.sector);
+        formData.append("ubicacion", data.ubicacion);
+        formData.append("correoEmpresa", data.correoEmpresa);
+        formData.append("telefonoEmpresa", data.telefonoEmpresa);
+        formData.append("paginaWeb", data.paginaWeb);
+
+        if (data.fotoEmpresa && data.fotoEmpresa[0]) {
+          formData.append("fotoEmpresa", data.fotoEmpresa[0]);
+        }
+      }
+
+      // Log del FormData para depurar
+      console.log("Tipo de usuario:", data.tipo);
+      console.log("Endpoint:", endpoint);
+
+      // Solo para depuración - mostrar los pares clave/valor del FormData
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+
+      // Enviar la solicitud
+      const response = await fetch(`${API}${endpoint}`, {
         method: "POST",
         body: formData,
       });
@@ -311,8 +338,12 @@ export default function ModalForm() {
       if (!response.ok) {
         const errorData = await response.json();
         setApiError(errorData?.error || "Error del servidor");
+        console.error("Error response:", errorData);
         return;
       }
+
+      const responseData = await response.json();
+      console.log("Respuesta exitosa:", responseData);
 
       setApiError("");
       setSuccessMessage("Registro exitoso. ¡Bienvenido!");
@@ -320,13 +351,12 @@ export default function ModalForm() {
         navigate("/");
       }, 3000);
     } catch (e) {
-      console.error("Error:", e);
+      console.error("Error en la solicitud:", e);
       setApiError(
         "Error de conexión. Por favor verifica tu conexión a internet."
       );
     }
   };
-
 
   return (
     <form

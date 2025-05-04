@@ -46,8 +46,8 @@ export default function Profile() {
         }
 
         const data = await response.json();
-        setProfile(data);
         console.log(data)
+        setProfile(data);
         setImageError(false);
       } catch (err) {
         console.error("Error al obtener la persona:", err);
@@ -79,7 +79,6 @@ export default function Profile() {
 
 
   const renderProfilePhoto = (photoUrl) => {
-    console.log(photoUrl)
     return (
       <div className="profile-photo">
         {photoUrl ? (
