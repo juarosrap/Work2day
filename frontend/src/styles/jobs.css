@@ -162,3 +162,77 @@
   font-size: 0.9rem;
   color: #1F2937;
 }
+
+/* Añadir estos estilos a tu archivo jobs.css */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pagination-button {
+  color: #000;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.pagination-button:hover:not(.disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  margin: 0 0.5rem;
+}
+
+.pagination-number {
+  color: #000;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.pagination-number:hover:not(.active) {
+  background-color: #e0e0e0;
+}
+
+.pagination-number.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-ellipsis {
+  margin: 0 0.25rem;
+  color: #666;
+}
+
+.pagination-info {
+  margin-left: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
