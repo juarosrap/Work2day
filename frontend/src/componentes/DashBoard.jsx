@@ -13,6 +13,10 @@ export default function DashBoard() {
   const [error, setError] = useState(null);
   const { currentUser } = useAuth();
 
+  // Estados para la paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 4;
+
   const isEmpleador = currentUser
     ? currentUser.userType === "empleadorParticular" ||
       currentUser.userType === "empleadorEmpresa"
@@ -124,6 +128,62 @@ export default function DashBoard() {
     return cont;
   };
 
+  // Funciones de paginación
+  const paginate = (array) => {
+    if (!array) return [];
+    const indexOfLastRow = currentPage * rowsPerPage;
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    return array.slice(indexOfFirstRow, indexOfLastRow);
+  };
+
+  const totalPages = (array) => {
+    if (!array) return 0;
+    return Math.ceil(array.length / rowsPerPage);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Componente de paginación
+  const Pagination = ({ totalPages, currentPage, onPageChange }) => {
+    if (totalPages <= 1) return null;
+
+    return (
+      <div className="pagination">
+        <button
+          className="pagination-button"
+          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+          disabled={currentPage === 1}
+        >
+          &laquo; Anterior
+        </button>
+
+        <div className="pagination-numbers">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+            <button
+              key={number}
+              className={`pagination-number ${
+                currentPage === number ? "active" : ""
+              }`}
+              onClick={() => onPageChange(number)}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
+
+        <button
+          className="pagination-button"
+          onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente &raquo;
+        </button>
+      </div>
+    );
+  };
+
   if (loading) return <div>Cargando...</div>;
 
   if (error) {
@@ -136,6 +196,9 @@ export default function DashBoard() {
   }
 
   const renderEmpleado = () => {
+    const paginatedJobs = paginate(jobs);
+    const totalJobPages = totalPages(jobs);
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -182,17 +245,30 @@ export default function DashBoard() {
               <div className="header-cell">ACCIONES</div>
             </div>
 
-            {jobs &&
-              jobs.map((job) => (
+            {paginatedJobs &&
+              paginatedJobs.map((job) => (
                 <DashBoardRow key={job.id} data={job} type="job" />
               ))}
           </div>
+
+          <Pagination
+            totalPages={totalJobPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
         </div>
       </motion.div>
     );
   };
 
   const renderCandidato = () => {
+    // Filtrar aplicaciones no valoradas si es necesario
+    const aplicacionesFiltradas = aplicaciones
+      ? aplicaciones.filter((aplicacion) => !aplicacion.valorada)
+      : [];
+    const paginatedAplicaciones = paginate(aplicacionesFiltradas);
+    const totalAplicacionesPages = totalPages(aplicacionesFiltradas);
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -216,8 +292,8 @@ export default function DashBoard() {
               <div className="header-cell">ACCIONES</div>
             </div>
 
-            {aplicaciones && aplicaciones.filter(aplicacion => !aplicacion.valorada) &&
-              aplicaciones.map((aplicacion) => (
+            {paginatedAplicaciones &&
+              paginatedAplicaciones.map((aplicacion) => (
                 <DashBoardRow
                   key={aplicacion.id}
                   data={aplicacion}
@@ -230,6 +306,12 @@ export default function DashBoard() {
                 />
               ))}
           </div>
+
+          <Pagination
+            totalPages={totalAplicacionesPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
         </div>
       </motion.div>
     );
