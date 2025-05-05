@@ -112,7 +112,7 @@ export default function Valoracion() {
 
       if (isEmpleador) {
         // Empleador valorando a un candidato
-        API = `http://localhost:5000/api/valoraciones-candidato`;
+        API = `http://localhost:5000/api/valoraciones-candidato/${valoradoId}`;
         valoracionData = {
           empleadorId: currentUser.id,
           candidatoId: valoradoId,
@@ -122,7 +122,7 @@ export default function Valoracion() {
         };
       } else {
         // Candidato valorando a un empleador
-        API = `http://localhost:5000/api/valoraciones-empleador`;
+        API = `http://localhost:5000/api/valoraciones-empleador/${valoradoId}`;
 
         valoracionData = {
           candidatoId: currentUser.id,

@@ -124,6 +124,7 @@ export default function EditProfile() {
           }
         } else if (currentUser.userType === "empleadorParticular") {
           setValue("nombre", data.nombre || "");
+          // Asegurarse de que descripcion siempre tenga un valor, incluso si es una cadena vacía
           setValue("descripcion", data.descripcion || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
@@ -146,6 +147,7 @@ export default function EditProfile() {
           setValue("correoEmpresa", data.correoEmpresa || "");
           setValue("telefonoEmpresa", data.telefonoEmpresa || "");
           setValue("paginaWeb", data.paginaWeb || "");
+          setValue("descripcion", data.descripcion || "");
         }
 
         setIsLoading(false);
@@ -159,17 +161,20 @@ export default function EditProfile() {
     getProfile();
   }, [currentUser, navigate, setValue]);
 
-const handleFileChange = (e) => {
-  if (e.target.files && e.target.files[0]) {
-    setSelectedFile(e.target.files[0]);
-  }
-};
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
 
   const onSubmit = async (data) => {
     setApiError("");
     setSuccessMessage("");
 
+    // Para depurar
+    console.log("Datos del formulario a enviar:", data);
 
+    // Crear el objeto FormData
     const formData = new FormData();
 
     // Agregar campos básicos
@@ -178,7 +183,7 @@ const handleFileChange = (e) => {
     formData.append("telefono", data.telefono);
     formData.append("fechaNacimiento", data.fechaNacimiento);
 
-    // En onSubmit
+    // Adjuntar la foto de perfil si se seleccionó
     if (selectedFile) {
       formData.append("fotoPerfil", selectedFile);
       console.log(
@@ -190,58 +195,89 @@ const handleFileChange = (e) => {
     }
 
     if (currentUser.userType === "candidato") {
-      if (data.curriculum && data.curriculum.idiomas) {
-        const idiomasArray = data.curriculum.idiomas
-          .split(",")
-          .map((idioma) => idioma.trim())
-          .filter((idioma) => idioma !== "");
+      // Información general del curriculum
+      if (data.curriculum) {
+        formData.append(
+          "curriculum[informacionPersonal]",
+          data.curriculum.informacionPersonal || ""
+        );
+        formData.append(
+          "curriculum[ubicacion]",
+          data.curriculum.ubicacion || ""
+        );
+        formData.append(
+          "curriculum[formacionAcademica]",
+          data.curriculum.formacionAcademica || ""
+        );
 
-        const curriculumData = {
-          informacionPersonal: data.curriculum.informacionPersonal,
-          ubicacion: data.curriculum.ubicacion,
-          formacionAcademica: data.curriculum.formacionAcademica,
-          idiomas: idiomasArray,
-          experienciaPrevia: [],
-        };
+        // Convertir idiomas a array y luego a string para el backend
+        if (data.curriculum.idiomas) {
+          const idiomasArray = data.curriculum.idiomas
+            .split(",")
+            .map((idioma) => idioma.trim())
+            .filter((idioma) => idioma !== "");
 
+          // Añadir cada idioma como un elemento del array
+          idiomasArray.forEach((idioma, index) => {
+            formData.append(`curriculum[idiomas][${index}]`, idioma);
+          });
+        }
+
+        // Experiencia previa
         if (data.curriculum.experienciaPrevia) {
           for (let i = 0; i < 3; i++) {
             const exp = data.curriculum.experienciaPrevia[i];
             if (exp && exp.empresa) {
-              curriculumData.experienciaPrevia.push({
-                empresa: exp.empresa,
-                puesto: exp.puesto,
-                fechaInicio: exp.fechaInicio,
-                fechaFin: exp.fechaFin,
-                descripcion: exp.descripcion,
-              });
+              formData.append(
+                `curriculum[experienciaPrevia][${i}][empresa]`,
+                exp.empresa || ""
+              );
+              formData.append(
+                `curriculum[experienciaPrevia][${i}][puesto]`,
+                exp.puesto || ""
+              );
+              formData.append(
+                `curriculum[experienciaPrevia][${i}][fechaInicio]`,
+                exp.fechaInicio || ""
+              );
+              formData.append(
+                `curriculum[experienciaPrevia][${i}][fechaFin]`,
+                exp.fechaFin || ""
+              );
+              formData.append(
+                `curriculum[experienciaPrevia][${i}][descripcion]`,
+                exp.descripcion || ""
+              );
             }
           }
         }
-
-        formData.append("curriculum", JSON.stringify(curriculumData));
       }
     } else if (currentUser.userType === "empleadorParticular") {
-      if (data.descripcion) {
-        formData.append("descripcion", data.descripcion);
-      }
+      // Siempre incluir la descripción, incluso si está vacía
+      formData.append("descripcion", data.descripcion || "");
+      console.log(
+        "Descripcion enviada para empleadorParticular:",
+        data.descripcion || ""
+      );
     } else if (currentUser.userType === "empleadorEmpresa") {
-      formData.append("nombreEmpresa", data.nombreEmpresa);
-      formData.append("sector", data.sector);
-      formData.append("ubicacion", data.ubicacion);
-      formData.append("correoEmpresa", data.correoEmpresa);
-      formData.append("telefonoEmpresa", data.telefonoEmpresa);
-      formData.append("paginaWeb", data.paginaWeb);
-
-      if (data.descripcion) {
-        formData.append("descripcion", data.descripcion);
-      }
+      formData.append("nombreEmpresa", data.nombreEmpresa || "");
+      formData.append("sector", data.sector || "");
+      formData.append("ubicacion", data.ubicacion || "");
+      formData.append("correoEmpresa", data.correoEmpresa || "");
+      formData.append("telefonoEmpresa", data.telefonoEmpresa || "");
+      formData.append("paginaWeb", data.paginaWeb || "");
+      formData.append("descripcion", data.descripcion || "");
     }
 
-    
+    // Log de los datos del FormData para depuración
+    console.log("FormData contents:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
 
     try {
       const API = `http://localhost:5000/api/${currentUser.userType}/${currentUser.id}`;
+      console.log("Sending update to:", API);
 
       const response = await fetch(API, {
         method: "PUT",
@@ -249,15 +285,20 @@ const handleFileChange = (e) => {
         body: formData,
       });
 
-      console.log("Respuesta recibida:", response.status); 
+      console.log("Respuesta recibida:", response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
-        setApiError(errorData.message || "Error al actualizar el perfil");
+        setApiError(
+          errorData.error ||
+            errorData.message ||
+            "Error al actualizar el perfil"
+        );
         return;
       }
 
       const updatedData = await response.json();
+      console.log("Updated data received:", updatedData);
       setProfileData(updatedData);
       setSuccessMessage("Perfil actualizado correctamente");
 
@@ -327,6 +368,7 @@ const handleFileChange = (e) => {
 
       <div className="row">
         <div>
+          <label>Foto de perfil</label>
           <input
             type="file"
             accept="image/*"
@@ -477,8 +519,12 @@ const handleFileChange = (e) => {
 
       <div className="row">
         <div>
-          <label>Descripcion</label>
-          <input {...register("descripcion")} type="text" />
+          <label>Descripción</label>
+          <textarea
+            {...register("descripcion")}
+            rows="3"
+            placeholder="Describe tu perfil profesional"
+          />
           {errors.descripcion && (
             <span className="error">{errors.descripcion.message}</span>
           )}
@@ -607,7 +653,6 @@ const handleFileChange = (e) => {
       <div className="row">
         <div>
           <label>Foto de perfil</label>
-          <label>Foto de perfil</label>
           <input
             type="file"
             accept="image/*"
@@ -669,8 +714,12 @@ const handleFileChange = (e) => {
 
       <div className="row">
         <div>
-          <label>Descripcion</label>
-          <input {...register("descripcion")} type="text" />
+          <label>Descripción</label>
+          <textarea
+            {...register("descripcion")}
+            rows="3"
+            placeholder="Describe tu empresa"
+          />
           {errors.descripcion && (
             <span className="error">{errors.descripcion.message}</span>
           )}
@@ -687,20 +736,13 @@ const handleFileChange = (e) => {
       <div>
         <label>Foto de la empresa</label>
         <input
-          {...register("fotoEmpresa")}
           type="file"
           accept="image/*"
-          onChange={(e) => handleFileChange(e, "fotoEmpresa")}
-          key={
-            selectedFile && selectedFile.name === "fotoEmpresa"
-              ? "file-selected"
-              : "no-file"
-          }
+          onChange={(e) => handleFileChange(e)}
+          name="fotoEmpresa"
         />
         {selectedFile && selectedFile.name === "fotoEmpresa" && (
-          <p className="file-info">
-            Imagen seleccionada: {selectedFile.file.name}
-          </p>
+          <p className="file-info">Imagen seleccionada: {selectedFile.name}</p>
         )}
         {profileData?.fotoEmpresa && !selectedFile && (
           <p className="file-info">

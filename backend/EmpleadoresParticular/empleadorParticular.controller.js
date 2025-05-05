@@ -262,13 +262,10 @@ exports.logoutEmpleadorParticular = async (req, res) => {
   }
 };
 
-// Actualizar un empleador particular
 exports.actualizarEmpleadorParticular = async (req, res) => {
   try {
-    // Preparar datos para actualización
     const datosActualizacion = { ...req.body };
 
-    // Si hay una imagen subida, añadirla a los datos de actualización
     if (req.file) {
       const empleadorActual = await EmpleadorParticular.findById(req.params.id);
       if (
@@ -296,7 +293,6 @@ exports.actualizarEmpleadorParticular = async (req, res) => {
     );
 
     if (!empleadorActualizado) {
-      // Si no se encuentra el empleador y se subió imagen, eliminarla
       if (req.file) {
         fs.unlinkSync(req.file.path);
       }
@@ -307,7 +303,6 @@ exports.actualizarEmpleadorParticular = async (req, res) => {
 
     res.json(empleadorActualizado);
   } catch (error) {
-    // Si hay error y se subió imagen, eliminarla
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }

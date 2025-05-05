@@ -6,6 +6,7 @@ import Review from "./Review.jsx";
 import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
 import { motion } from "framer-motion";
 import dayjs from "dayjs";
+import defaultAvatar from "../assets/default-avatar.jpg";
 
 
 const API_URL = "http://localhost:5000";
@@ -18,6 +19,7 @@ export default function Profile() {
   const { currentUser, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
+
 
   useEffect(() => {
     if (authLoading) return;
@@ -89,11 +91,11 @@ export default function Profile() {
             style={{ display: imageError ? "none" : "block" }}
           />
         ) : (
-          <img src="/assets/default-avatar.png" alt="Foto por defecto" />
+          <img src={defaultAvatar} alt="Foto por defecto" />
         )}
-       {photoUrl && imageError && (
-          <img src="/assets/default-avatar.png" alt="Foto por defecto" />
-        )} 
+        {photoUrl && imageError && (
+          <img src={defaultAvatar} alt="Foto por defecto" />
+        )}
       </div>
     );
   };
