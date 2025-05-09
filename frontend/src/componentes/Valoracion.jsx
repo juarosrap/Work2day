@@ -12,6 +12,7 @@ export default function Valoracion() {
   const [valoradoData, setValoradoData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
+  const { ofertaId } = useParams();
 
   const {
     register,
@@ -145,7 +146,25 @@ export default function Valoracion() {
         body: JSON.stringify(valoracionData),
       });
 
-      if (response.ok) {
+      let APIV = `http://localhost:5000/api/ofertas/${ofertaId}`;
+
+      const valorada = {
+        valorada: true,
+        estado: "Expirada"
+      }
+
+      const setValorada = await fetch(APIV,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(valorada),
+        }
+      )
+
+      if (response.ok && setValorada.ok) {
         setSuccessMessage("Valoración enviada con éxito");
 
         setTimeout(() => {
@@ -153,8 +172,9 @@ export default function Valoracion() {
         }, 2000);
       } else {
         const errorData = await response.json();
+        const errorOferta = await setValorada.json();
         setError(
-          errorData.message || "Ha ocurrido un error al enviar la valoración"
+          errorData.message || errorOferta.message || "Ha ocurrido un error al enviar la valoración"
         );
       }
     } catch (err) {

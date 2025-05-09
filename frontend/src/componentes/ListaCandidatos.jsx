@@ -12,7 +12,7 @@ export default function ListaCandidatos() {
   const [selectedCandidato, setSelectedCandidato] = useState(null);
   const [seleccionandoCandidato, setSeleccionandoCandidato] = useState(false);
   const { ofertaId } = useParams();
-  const { currentUser } = useAuth(); // Obtener el usuario actual
+  const { currentUser } = useAuth(); 
 
   let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
 
@@ -107,7 +107,6 @@ export default function ListaCandidatos() {
     }
   };
 
-  // Actualizado para usar la misma lógica que en DashBoardRow
   const puedeValorar = () => {
     if (!oferta || !oferta.fechaFin) return false;
 
@@ -115,7 +114,6 @@ export default function ListaCandidatos() {
     return tiempoRestante <= 0;
   };
 
-  // Función para calcular días restantes para valoración
   const getDiasRestantesParaValorar = () => {
     if (!oferta || !oferta.fechaFin) return 0;
 
@@ -216,7 +214,7 @@ export default function ListaCandidatos() {
                               ) : (
                                 <div style={{ marginTop: "8px" }}>
                                   <Link
-                                    to={`/dashboard/${currentUser.id}/valoracion/${candidato._id}`}
+                                    to={`/dashboard/${currentUser.id}/${ofertaId}/valoracion/${candidato._id}`}
                                     className="valorar-link"
                                   >
                                     Valorar candidato

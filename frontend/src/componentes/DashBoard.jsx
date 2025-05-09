@@ -13,7 +13,6 @@ export default function DashBoard() {
   const [error, setError] = useState(null);
   const { currentUser } = useAuth();
 
-  // Estados para la paginación
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 4;
 
@@ -128,7 +127,6 @@ export default function DashBoard() {
     return cont;
   };
 
-  // Funciones de paginación
   const paginate = (array) => {
     if (!array) return [];
     const indexOfLastRow = currentPage * rowsPerPage;
@@ -145,7 +143,6 @@ export default function DashBoard() {
     setCurrentPage(pageNumber);
   };
 
-  // Componente de paginación
   const Pagination = ({ totalPages, currentPage, onPageChange }) => {
     if (totalPages <= 1) return null;
 
@@ -262,7 +259,6 @@ export default function DashBoard() {
   };
 
   const renderCandidato = () => {
-    // Filtrar aplicaciones no valoradas si es necesario
     const aplicacionesFiltradas = aplicaciones
       ? aplicaciones.filter((aplicacion) => !aplicacion.valorada)
       : [];

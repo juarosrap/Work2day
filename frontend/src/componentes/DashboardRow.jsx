@@ -8,6 +8,7 @@ export default function DashBoardRow({ data, type, onRemoved }) {
   const { currentUser } = useAuth();
   const [aplicaciones, setAplicaciones] = useState(null);
   const [loading, setLoading] = useState(type === "aplicacion");
+  let valorado = false;
 
   const getAplicacion = async () => {
     setLoading(true);
@@ -20,9 +21,9 @@ export default function DashBoardRow({ data, type, onRemoved }) {
       }
 
       const ofertaData = await response.json();
+      console.log(ofertaData)
       setAplicaciones(ofertaData);
       setLoading(false);
-      // console.log(aplicaciones)
       return {
         ...data,
         oferta: ofertaData,
@@ -123,6 +124,8 @@ export default function DashBoardRow({ data, type, onRemoved }) {
             `Podrás valorar al candidato en ${Math.ceil(
               tiempoRestante / (1000 * 60 * 60 * 24)
             )} días`
+          ) : job.valorada ?(
+            "Ya has valorado a este candidato"
           ) : (
             <Link to={`candidatos/${job.id}`}>
               Ya puedes valorar al candidato
@@ -139,7 +142,7 @@ export default function DashBoardRow({ data, type, onRemoved }) {
       return null;
     }
     
-
+    console.log(aplicaciones.valorada)
     const tiempoRestante = new Date(aplicaciones.fechaFin) - Date.now();
 
     return (
@@ -178,6 +181,8 @@ export default function DashBoardRow({ data, type, onRemoved }) {
             >
               Valorar al empleador
             </Link>
+          ) : aplicaciones.valorada ? (
+            "Ya has valorado al empleador"
           ) : (
             <button onClick={onDelete}>Quitar</button>
           )}

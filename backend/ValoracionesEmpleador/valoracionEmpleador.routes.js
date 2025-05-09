@@ -9,7 +9,7 @@ router.get(
   "/empleador/:empleadorId",
   valoracionEmpleadorController.obtenerValoracionesPorEmpleador
 );
-router.post("/", valoracionEmpleadorController.crearValoracion);
+router.post("/:id", valoracionEmpleadorController.crearValoracion);
 router.put("/:id", valoracionEmpleadorController.actualizarValoracion);
 router.delete("/:id", valoracionEmpleadorController.eliminarValoracion);
 
