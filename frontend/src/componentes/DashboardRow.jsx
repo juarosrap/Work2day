@@ -8,7 +8,6 @@ export default function DashBoardRow({ data, type, onRemoved }) {
   const { currentUser } = useAuth();
   const [aplicaciones, setAplicaciones] = useState(null);
   const [loading, setLoading] = useState(type === "aplicacion");
-  let valorado = false;
 
   const getAplicacion = async () => {
     setLoading(true);
@@ -21,7 +20,7 @@ export default function DashBoardRow({ data, type, onRemoved }) {
       }
 
       const ofertaData = await response.json();
-      console.log(ofertaData)
+
       setAplicaciones(ofertaData);
       setLoading(false);
       return {
@@ -56,7 +55,6 @@ export default function DashBoardRow({ data, type, onRemoved }) {
 
   const onDelete = async () => {
     try {
-      console.log(data)
       let API = "http://localhost:5000/api/aplicaciones/";
       const response = await fetch(`${API}${data.id}`, {
         method: "DELETE",
@@ -87,7 +85,6 @@ export default function DashBoardRow({ data, type, onRemoved }) {
 
   const renderJobRow = () => {
     const job = data;
-    console.log(job.aplicaciones)
     const tiempoRestante = new Date(job.fechaFin) - Date.now();
     return (
       <div className="table-row">
@@ -142,7 +139,6 @@ export default function DashBoardRow({ data, type, onRemoved }) {
       return null;
     }
     
-    console.log(aplicaciones.valorada)
     const tiempoRestante = new Date(aplicaciones.fechaFin) - Date.now();
 
     return (
@@ -175,14 +171,14 @@ export default function DashBoardRow({ data, type, onRemoved }) {
             `Podrás valorar al empleador en ${Math.ceil(
               tiempoRestante / (1000 * 60 * 60 * 24)
             )} días`
-          ) : data.seleccionado && tiempoRestante < 0 ? (
+          ) :aplicaciones.valorada ? (
+            "Ya has valorado al empleador"
+          ): data.seleccionado && tiempoRestante < 0 ? (
             <Link
-              to={`/dashboard/${currentUser.id}/valoracion/${aplicaciones.empleador._id}`}
+              to={`/dashboard/${currentUser.id}/valoracion/${aplicaciones.empleador._id}/${data.ofertaId}`}
             >
               Valorar al empleador
             </Link>
-          ) : aplicaciones.valorada ? (
-            "Ya has valorado al empleador"
           ) : (
             <button onClick={onDelete}>Quitar</button>
           )}

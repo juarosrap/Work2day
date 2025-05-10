@@ -13,6 +13,7 @@ export default function Valoracion() {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
   const { ofertaId } = useParams();
+  console.log(ofertaId)
 
   const {
     register,

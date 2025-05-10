@@ -48,7 +48,7 @@ export default function Profile() {
         }
 
         const data = await response.json();
-        console.log(data)
+        
         setProfile(data);
         setImageError(false);
       } catch (err) {

@@ -48,7 +48,7 @@ export default function App() {
           element={<Valoracion />}
         />
         <Route
-          path="/dashboard/:id/valoracion/:valoradoId"
+          path="/dashboard/:id/valoracion/:valoradoId/:ofertaId"
           element={<Valoracion />}
         />
         <Route path="/profile/:id" element={<Profile />} />

@@ -124,7 +124,6 @@ export default function EditProfile() {
           }
         } else if (currentUser.userType === "empleadorParticular") {
           setValue("nombre", data.nombre || "");
-          // Asegurarse de que descripcion siempre tenga un valor, incluso si es una cadena vacía
           setValue("descripcion", data.descripcion || "");
           setValue("correo", data.correo || "");
           setValue("telefono", data.telefono || "");
@@ -171,19 +170,13 @@ export default function EditProfile() {
     setApiError("");
     setSuccessMessage("");
 
-    // Para depurar
-    console.log("Datos del formulario a enviar:", data);
-
-    // Crear el objeto FormData
     const formData = new FormData();
 
-    // Agregar campos básicos
     formData.append("nombre", data.nombre);
     formData.append("correo", data.correo);
     formData.append("telefono", data.telefono);
     formData.append("fechaNacimiento", data.fechaNacimiento);
 
-    // Adjuntar la foto de perfil si se seleccionó
     if (selectedFile) {
       formData.append("fotoPerfil", selectedFile);
       console.log(
@@ -195,7 +188,6 @@ export default function EditProfile() {
     }
 
     if (currentUser.userType === "candidato") {
-      // Información general del curriculum
       if (data.curriculum) {
         formData.append(
           "curriculum[informacionPersonal]",
@@ -210,20 +202,17 @@ export default function EditProfile() {
           data.curriculum.formacionAcademica || ""
         );
 
-        // Convertir idiomas a array y luego a string para el backend
         if (data.curriculum.idiomas) {
           const idiomasArray = data.curriculum.idiomas
             .split(",")
             .map((idioma) => idioma.trim())
             .filter((idioma) => idioma !== "");
 
-          // Añadir cada idioma como un elemento del array
           idiomasArray.forEach((idioma, index) => {
             formData.append(`curriculum[idiomas][${index}]`, idioma);
           });
         }
 
-        // Experiencia previa
         if (data.curriculum.experienciaPrevia) {
           for (let i = 0; i < 3; i++) {
             const exp = data.curriculum.experienciaPrevia[i];
@@ -253,7 +242,6 @@ export default function EditProfile() {
         }
       }
     } else if (currentUser.userType === "empleadorParticular") {
-      // Siempre incluir la descripción, incluso si está vacía
       formData.append("descripcion", data.descripcion || "");
       console.log(
         "Descripcion enviada para empleadorParticular:",
@@ -269,8 +257,6 @@ export default function EditProfile() {
       formData.append("descripcion", data.descripcion || "");
     }
 
-    // Log de los datos del FormData para depuración
-    console.log("FormData contents:");
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -285,8 +271,6 @@ export default function EditProfile() {
         body: formData,
       });
 
-      console.log("Respuesta recibida:", response.status);
-
       if (!response.ok) {
         const errorData = await response.json();
         setApiError(
@@ -298,7 +282,6 @@ export default function EditProfile() {
       }
 
       const updatedData = await response.json();
-      console.log("Updated data received:", updatedData);
       setProfileData(updatedData);
       setSuccessMessage("Perfil actualizado correctamente");
 
