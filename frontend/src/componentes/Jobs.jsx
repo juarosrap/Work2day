@@ -9,9 +9,8 @@ export default function Jobs() {
   const [loading, setLoading] = useState(true);
   const { filters, setFilters } = useContext(FiltersContext);
 
-  // Añadimos estados para la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobsPerPage] = useState(4); // Número de trabajos por página
+  const [jobsPerPage, setJobsPerPage] = useState(4); 
 
   const hasActiveFilters =
     filters.titulo ||
@@ -38,7 +37,7 @@ export default function Jobs() {
       });
       const data = await response.json();
       setJobs(data);
-      setCurrentPage(1); // Volver a la primera página cuando se aplican filtros
+      setCurrentPage(1);
     } catch (error) {
       console.error("Error al obtener trabajos:", error);
     } finally {
@@ -66,7 +65,7 @@ export default function Jobs() {
       };
       fetchJobs();
     }
-  }, []);
+  }, []); 
 
   const handleSalarioChange = (e) => {
     const value = Number(e.target.value);
@@ -92,27 +91,27 @@ export default function Jobs() {
     fetchJobsWithFilters();
   };
 
-  // Lógica para la paginación
+  const handleJobsPerPageChange = (event) => {
+    setJobsPerPage(Number(event.target.value));
+    setCurrentPage(1); 
+  };
+
   const activeJobs = jobs.filter((job) => job.estado === "Activa");
   const totalActiveJobs = activeJobs.length;
   const totalPages = Math.ceil(totalActiveJobs / jobsPerPage);
 
-  // Obtener los trabajos actuales para la página actual
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
   const currentJobs = activeJobs.slice(indexOfFirstJob, indexOfLastJob);
 
-  // Cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Ir a la página anterior
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // Ir a la página siguiente
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -159,7 +158,6 @@ export default function Jobs() {
             <option value="Otro">Otro</option>
           </select>
         </div>
-
         <div className="title">
           <h1>Search for Jobs</h1>
         </div>
@@ -182,20 +180,35 @@ export default function Jobs() {
           Search
         </button>
       </div>
+
+      <div className="jobs-controls">
+        <label htmlFor="jobs-per-page-select">Mostrar por página: </label>
+        <select
+          id="jobs-per-page-select"
+          value={jobsPerPage}
+          onChange={handleJobsPerPageChange}
+          className="jobs-per-page-selector"
+        >
+          <option value="4">4</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+          <option value="16">16</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+
       <div className="cards">
         {loading ? (
           <p>Cargando trabajos...</p>
         ) : currentJobs.length === 0 ? (
-          <p>No hay trabajos activos.</p>
+          <p>No hay trabajos activos que coincidan con tu búsqueda.</p>
         ) : (
           currentJobs.map((job) => <JobCard key={job.id} job={job} />)
         )}
       </div>
 
-      {/* Componente de paginación */}
       {!loading && totalActiveJobs > 0 && (
         <div className="pagination">
-          {/* Botón anterior - aseguramos que SIEMPRE use pagination-button */}
           <button
             type="button"
             onClick={goToPreviousPage}
@@ -209,9 +222,9 @@ export default function Jobs() {
 
           <div className="pagination-numbers">
             {Array.from({ length: totalPages }, (_, i) => {
-              // Mostrar siempre la primera página, la última, la actual y una página antes y después de la actual
               const pageNumber = i + 1;
               if (
+                totalPages <= 5 || 
                 pageNumber === 1 ||
                 pageNumber === totalPages ||
                 (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
@@ -221,7 +234,6 @@ export default function Jobs() {
                     type="button"
                     key={pageNumber}
                     onClick={() => paginate(pageNumber)}
-                    // Aseguramos de usar solo pagination-number para los números
                     className={`pagination-number ${
                       currentPage === pageNumber ? "active" : ""
                     }`}
@@ -230,32 +242,40 @@ export default function Jobs() {
                   </button>
                 );
               } else if (
-                (pageNumber === 2 && currentPage > 3) ||
-                (pageNumber === totalPages - 1 && currentPage < totalPages - 2)
+                (pageNumber === currentPage - 2 && currentPage > 3) || 
+                (pageNumber === currentPage + 2 && currentPage < totalPages - 2) 
               ) {
-                return (
-                  <span key={pageNumber} className="pagination-ellipsis">
-                    ...
-                  </span>
-                );
+                if (
+                  (pageNumber === 2 && currentPage > 3) ||
+                  (pageNumber === totalPages - 1 &&
+                    currentPage < totalPages - 2)
+                )
+                  return (
+                    <span key={pageNumber} className="pagination-ellipsis">
+                      ...
+                    </span>
+                  );
               }
               return null;
             })}
           </div>
-          
+
           <button
             type="button"
             onClick={goToNextPage}
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || totalPages === 0} 
             className={`pagination-button ${
-              currentPage === totalPages ? "disabled" : ""
+              currentPage === totalPages || totalPages === 0 ? "disabled" : ""
             }`}
           >
             Siguiente &raquo;
           </button>
 
           <div className="pagination-info">
-            Página {currentPage} de {totalPages} ({totalActiveJobs} trabajos)
+            {totalPages > 0
+              ? `Página ${currentPage} de ${totalPages}`
+              : "Página 0 de 0"}{" "}
+            ({totalActiveJobs} trabajos)
           </div>
         </div>
       )}
