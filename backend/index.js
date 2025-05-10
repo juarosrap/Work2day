@@ -78,10 +78,7 @@ app.get('/api/busqueda/ofertas', async (req, res) => {
       titulo,
       ubicacion,
       salario,
-      tipoContrato,
-      jornada,
       sector,
-      experienciaMinima,
       estado,
     } = req.query;
 
