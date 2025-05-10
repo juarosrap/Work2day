@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "../styles/Modal.css";
 import { useParams, Link } from "react-router-dom";
-import CurriculumModal from "./CurriculumModal";
-import { useAuth } from "../contexts/AuthContext";
+import CurriculumModal from "../job/CurriculumModal";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function ListaCandidatos() {
   const [oferta, setOferta] = useState(null);

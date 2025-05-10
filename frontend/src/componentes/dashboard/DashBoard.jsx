@@ -1,9 +1,9 @@
 import "../styles/DashBoard.css";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import DashBoardRow from "./DashboardRow";
+import DashBoardRow from "../DashboardRow";
 import { motion } from "framer-motion";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function DashBoard() {
   const { id } = useParams();

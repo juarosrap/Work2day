@@ -1,7 +1,4 @@
 import "../styles/FeaturesSection.css";
-import job from "../assets/job.svg"
-import work from "../assets/work.svg";
-import chart from "../assets/chart.svg";
 import { BriefcaseBusiness, ChartNoAxesColumnIncreasing, Search } from "lucide-react";
 
 export default function FeaturesSection() {

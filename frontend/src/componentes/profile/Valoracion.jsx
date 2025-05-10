@@ -2,7 +2,7 @@ import "../styles/forgetModal.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Valoracion() {
   const { id, valoradoId } = useParams();

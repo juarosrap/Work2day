@@ -3,7 +3,7 @@ import calendar from "../assets/calendar-icon.svg";
 import location from "../assets/location-icon.svg";
 import office from "../assets/office-icon.svg";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function JobCard({ job }) {
   const { currentUser } = useAuth();

@@ -1,7 +1,7 @@
 import "../styles/ModalForm.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
 
 export default function DeleteJob() {

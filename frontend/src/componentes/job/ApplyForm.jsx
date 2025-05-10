@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/ModalForm.css";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 

@@ -3,7 +3,7 @@ import "../styles/ModalForm.css";
 import "../styles/Modal.css";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; 
+import { useAuth } from "../../contexts/AuthContext"; 
 
 export default function LoginModal() {
   const {

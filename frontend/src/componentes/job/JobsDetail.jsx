@@ -1,7 +1,7 @@
 import "../styles/JobsDetails.css";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import dayjs from "dayjs";
 
 export default function JobsDetail() {

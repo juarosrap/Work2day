@@ -1,7 +1,7 @@
 import "../styles/ModalForm.css";
 import { useEffect, useState } from "react";
 import { useForm,useWatch } from "react-hook-form";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function JobForm() {
