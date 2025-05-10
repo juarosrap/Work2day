@@ -198,6 +198,10 @@ img {
   margin: 0 0 0.5rem 0;
 }
 
+.delete-account {
+  background-color: red !important;
+}
+
 .stars {
   display: flex;
   gap: 2px;

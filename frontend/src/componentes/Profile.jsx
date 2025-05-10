@@ -155,6 +155,9 @@ export default function Profile() {
                 <button>
                   <Link to="/change-password">Cambiar contraseña</Link>
                 </button>
+                <button className="delete-account">
+                  <Link to="/delete-account">Eliminar cuenta</Link>
+                </button>
               </div>
             ) : (
               <div></div>
@@ -225,6 +228,9 @@ export default function Profile() {
                 </button>
                 <button>
                   <Link to="/change-password">Cambiar contraseña</Link>
+                </button>
+                <button className="delete-account">
+                  <Link to="/delete-account">Eliminar cuenta</Link>
                 </button>
               </div>
             ) : (
