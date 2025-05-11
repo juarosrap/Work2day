@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import "../styles/jobs.css";
+import "../../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
 import { FiltersContext } from "../../contexts/FiltersContext.jsx";
 import { motion } from "framer-motion";

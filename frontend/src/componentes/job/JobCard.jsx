@@ -1,7 +1,5 @@
-import "../styles/JobCard.css";
-import calendar from "../assets/calendar-icon.svg";
-import location from "../assets/location-icon.svg";
-import office from "../assets/office-icon.svg";
+import "../../styles/JobCard.css";
+import location from "../../assets/location-icon.svg";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 

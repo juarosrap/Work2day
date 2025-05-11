@@ -1,4 +1,4 @@
-import "../styles/FeaturesSection.css";
+import "../../styles/FeaturesSection.css";
 import { BriefcaseBusiness, ChartNoAxesColumnIncreasing, Search } from "lucide-react";
 
 export default function FeaturesSection() {

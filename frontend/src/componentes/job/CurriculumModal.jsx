@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "../styles/Modal.css";
+import "../../styles/Modal.css";
 
 export default function CurriculumModal({ isOpen, onClose, candidato }) {
   useEffect(() => {

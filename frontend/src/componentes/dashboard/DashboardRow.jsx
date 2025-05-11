@@ -1,6 +1,6 @@
-import "../styles/DashBoard.css";
+import "../../styles/DashBoard.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 

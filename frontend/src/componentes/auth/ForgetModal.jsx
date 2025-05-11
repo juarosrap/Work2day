@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import "../styles/forgetModal.css";
+import "../../styles/forgetModal.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import "../styles/JobsDetails.css";
+import "../../styles/JobsDetails.css";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";

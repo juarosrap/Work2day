@@ -1,25 +1,25 @@
 import "./styles/App.css";
-import Header from "./componentes/Header.jsx";
-import Footer from "./componentes/Footer.jsx";
-import Home from "./componentes/Home.jsx";
+import Header from "./componentes/shared/Header.jsx";
+import Footer from "./componentes/shared/Footer.jsx";
+import Home from "./componentes/info/Home.jsx";
 import { Route,Routes } from "react-router-dom";
-import Jobs from "./componentes/Jobs.jsx";
-import JobsDetail from "./componentes/JobsDetail.jsx";
-import DashBoard from "./componentes/DashBoard.jsx";
-import Profile from "./componentes/Profile.jsx";
-import ModalForm from "./componentes/registerModal.jsx";
-import LoginModal from "./componentes/loginModal.jsx";
-import ApplyForm from "./componentes/ApplyForm.jsx";
-import JobForm from "./componentes/JobForm.jsx";
-import DeleteJob from "./componentes/DeleteJob.jsx";
-import EditProfile from "./componentes/EditProfile.jsx";
-import ListaCandidatos from "./componentes/ListaCandidatos.jsx";
-import AboutUs from "./componentes/AboutUs.jsx";
-import ForgetModal from "./componentes/ForgetModal.jsx";
-import ResetPassword from "./componentes/ResetPassword.jsx";
-import ChangePassword from "./componentes/ChangePassword.jsx";
-import Valoracion from "./componentes/Valoracion.jsx";
-import DeleteAccount from "./componentes/DeleteAccount.jsx";
+import Jobs from "./componentes/job/Jobs.jsx";
+import JobsDetail from "./componentes/job/JobsDetail.jsx";
+import DashBoard from "./componentes/dashboard/DashBoard.jsx";
+import Profile from "./componentes/profile/Profile.jsx";
+import ModalForm from "./componentes/auth/registerModal.jsx";
+import LoginModal from "./componentes/auth/loginModal.jsx";
+import ApplyForm from "./componentes/job/ApplyForm.jsx";
+import JobForm from "./componentes/job/JobForm.jsx";
+import DeleteJob from "./componentes/job/DeleteJob.jsx";
+import EditProfile from "./componentes/profile/EditProfile.jsx";
+import ListaCandidatos from "./componentes/dashboard/ListaCandidatos.jsx";
+import AboutUs from "./componentes/info/AboutUs.jsx";
+import ForgetModal from "./componentes/auth/ForgetModal.jsx";
+import ResetPassword from "./componentes/auth/ResetPassword.jsx";
+import ChangePassword from "./componentes/auth/ChangePassword.jsx";
+import Valoracion from "./componentes/profile/Valoracion.jsx";
+import DeleteAccount from "./componentes/profile/DeleteAccount.jsx";
 
 export default function App() {
   return (

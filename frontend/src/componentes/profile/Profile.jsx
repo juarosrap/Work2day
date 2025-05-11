@@ -1,12 +1,12 @@
-import "../styles/Profile.css";
+import "../../styles/Profile.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext.jsx";
-import Review from "../Review.jsx";
+import Review from "./Review.jsx";
 import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
 import { motion } from "framer-motion";
 import dayjs from "dayjs";
-import defaultAvatar from "../assets/default-avatar.jpg";
+import defaultAvatar from "../../assets/default-avatar.jpg";
 
 
 const API_URL = "http://localhost:5000";

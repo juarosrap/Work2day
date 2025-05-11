@@ -1,7 +1,7 @@
 import React from "react";
 import { User, Briefcase, Star } from "lucide-react";
 import { motion } from "framer-motion";
-import "../styles/AboutUs.css";
+import "../../styles/AboutUs.css";
 
 const AboutUs = () => {
   return (

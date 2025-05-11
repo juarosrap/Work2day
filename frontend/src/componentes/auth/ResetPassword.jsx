@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "../styles/forgetModal.css"; 
+import "../../styles/forgetModal.css"; 
 
 export default function ResetPassword() {
   const { token } = useParams();

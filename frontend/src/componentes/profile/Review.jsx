@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "../styles/Profile.css"; 
-import { useAuth } from "../contexts/AuthContext";
-import defaultAvatar from "../assets/default-avatar.jpg"; 
+import "../../styles/Profile.css"; 
+import { useAuth } from "../../contexts/AuthContext";
+import defaultAvatar from "../../assets/default-avatar.jpg"; 
 
 
 const API_URL = "http://localhost:5000";

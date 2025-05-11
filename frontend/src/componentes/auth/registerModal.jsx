@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/ModalForm.css";
+import "../../styles/ModalForm.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 

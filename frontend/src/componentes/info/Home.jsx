@@ -1,4 +1,4 @@
-import "../styles/MainSection.css";
+import "../../styles/MainSection.css";
 import HeroSection from "./HeroSection.jsx";
 import FeaturesSection from "./FeaturesSection.jsx";
 import { motion } from "framer-motion";

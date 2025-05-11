@@ -1,4 +1,4 @@
-import "../styles/ModalForm.css";
+import "../../styles/ModalForm.css";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";

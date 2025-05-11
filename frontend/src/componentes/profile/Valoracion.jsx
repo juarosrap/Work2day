@@ -1,4 +1,4 @@
-import "../styles/forgetModal.css";
+import "../../styles/forgetModal.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";

@@ -1,9 +1,9 @@
-import logo from "../assets/logoWork2Day.png";
-import "../styles/Footer.css";
-import faceLogo from "../assets/icons8-facebook.svg"
-import insLogo from "../assets/icons8-instagram.svg"
-import linkLogo from "../assets/icons8-linkedin-circled.svg";
-import youtubeLogo from "../assets/icons8-youtube.svg";
+import logo from "../../assets/logoWork2Day.png";
+import "../../styles/Footer.css";
+import faceLogo from "../../assets/icons8-facebook.svg"
+import insLogo from "../../assets/icons8-instagram.svg";
+import linkLogo from "../../assets/icons8-linkedin-circled.svg";
+import youtubeLogo from "../../assets/icons8-youtube.svg";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
