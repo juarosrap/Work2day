@@ -7,12 +7,19 @@ export default function HeroSection() {
         <div className="hero-left-section">
           <h2>Do you want a Job?</h2>
           <p>
-            hola hola hola asihdauhfañof asdfgas
+            Kickstart your career with our easy-to-use platform.
+            <br/>
+            Discover new
+            opportunities, apply instantly,
+            <br/> 
+            and connect with employers that
+            value your skills.
             <br />
-            rgesdgsdafasdfsahgfd sadgargrg
           </p>
           <button className="btn-get">
-            <Link to="form" className="link">Get started</Link>
+            <Link to="form" className="link">
+              Get started
+            </Link>
             <span className="arrow">→</span>
           </button>
           <button className="btn-learn">Learn more</button>
@@ -41,7 +48,9 @@ export default function HeroSection() {
           </div>
           <div className="form-group">
             <button type="submit" className="btn-submit">
-              <Link to="form" className="link">Submit</Link>
+              <Link to="form" className="link">
+                Submit
+              </Link>
             </button>
           </div>
         </div>
