@@ -76,9 +76,10 @@ export default function ApplyForm() {
   }, [currentUser, setValue]);
 
   const onSubmit = async (data) => {
-    try {
-      const API = `http://localhost:5000/api/aplicaciones`;
-      const response = await fetch(API, {
+    
+  try {
+    const API = `http://localhost:5000/api/aplicaciones`;
+    const response = await fetch(API, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,23 +94,26 @@ export default function ApplyForm() {
       }),
     });
 
-      if(!response.ok) {
-        setApiError(response.json());
-        console.error(response.json());
+    const result = await response.json();
+
+    if (!response.ok) {
+      if (result?.error === "Ya has aplicado a esta oferta anteriormente.") {
+        setApiError(result.error);
+      } else {
+        setApiError("Error al enviar la aplicación");
       }
-
-      // const data = response.json()
-      // console.log("CV enviado:", data);
-
-      
-      setSuccessMessage("Aplicación enviada con éxito");
-      setTimeout(() => {
-        navigate("/jobs")
-      }, 2000);
-    } catch (error) {
-      setApiError("Error al enviar la aplicación");
+      return;
     }
-  };
+
+    setSuccessMessage("Aplicación enviada con éxito");
+    setTimeout(() => {
+      navigate("/jobs");
+    }, 2000);
+  } catch (error) {
+    setApiError("Error de conexión al enviar la aplicación");
+  }
+};
+
 
   if (isLoading) {
     return (
