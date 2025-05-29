@@ -246,7 +246,6 @@ export default function registerModal() {
         formData.append("fotoPerfil", data.fotoPerfil[0]);
       }
 
-      // Añadir datos según el tipo de usuario
       if (data.tipo === "candidato") {
         endpoint = "candidato/register";
 
@@ -265,7 +264,7 @@ export default function registerModal() {
             .filter((idioma) => idioma !== "");
         }
 
-        // Procesar experiencia previa si se proporcionó información
+        
         if (data.empresa && data.empresa.trim() !== "") {
           curriculum.experienciaPrevia = [
             {
@@ -299,7 +298,6 @@ export default function registerModal() {
           );
         }
 
-        // También añadir todo el curriculum como JSON para tener un respaldo
         formData.append("curriculumCompleto", JSON.stringify(curriculum));
 
         console.log("Curriculum enviado:", curriculum);
@@ -320,16 +318,12 @@ export default function registerModal() {
         }
       }
 
-      // Log del FormData para depurar
-      console.log("Tipo de usuario:", data.tipo);
-      console.log("Endpoint:", endpoint);
-
-      // Solo para depuración - mostrar los pares clave/valor del FormData
+      
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": " + pair[1]);
       }
 
-      // Enviar la solicitud
+      
       const response = await fetch(`${API}${endpoint}`, {
         method: "POST",
         body: formData,
