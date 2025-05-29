@@ -41,6 +41,16 @@ exports.obtenerAplicacionPorId = async (req, res) => {
 // Crear una nueva aplicación
 exports.crearAplicacion = async (req, res) => {
   try {
+    const { candidatoId, ofertaId } = req.body;
+
+    const aplicacionExistente = await Aplicacion.findOne({ candidatoId, ofertaId });
+
+    if (aplicacionExistente) {
+      return res.status(400).json({
+        error: "Ya has aplicado a esta oferta anteriormente."
+      });
+    }
+
     const nuevaAplicacion = new Aplicacion({
       ...req.body,
       fecha: req.body.fecha || new Date(),
@@ -49,22 +59,23 @@ exports.crearAplicacion = async (req, res) => {
 
     const aplicacionGuardada = await nuevaAplicacion.save();
 
-    // Actualizar la oferta y el candidato con esta aplicación
-    await Oferta.findByIdAndUpdate(aplicacionGuardada.ofertaId, {
+    await Oferta.findByIdAndUpdate(ofertaId, {
       $push: { aplicaciones: aplicacionGuardada._id },
     });
 
-    await Candidato.findByIdAndUpdate(aplicacionGuardada.candidatoId, {
+    await Candidato.findByIdAndUpdate(candidatoId, {
       $push: { aplicaciones: aplicacionGuardada._id },
     });
 
     res.status(201).json(aplicacionGuardada);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error al crear aplicación", detalle: error.message });
+    res.status(500).json({
+      error: "Error al crear aplicación",
+      detalle: error.message,
+    });
   }
 };
+
 
 // Actualizar una aplicación
 exports.actualizarAplicacion = async (req, res) => {

@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 
 exports.verifyToken = (req, res, next) => {
   try {
-    // Verifica que req.cookies exista
     if (!req.cookies) {
       console.log(
         "req.cookies es undefined - cookie-parser no está configurado correctamente"

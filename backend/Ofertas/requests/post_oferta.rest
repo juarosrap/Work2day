@@ -9,7 +9,7 @@ Content-Type: application/json
   "ubicacion": "Remoto",
   "salario": 2500,
   "imagen": "https://ejemplo.com/imagen.jpg",
-  "estado": "Pendiente",
+  "estado": "Activa",
   "aplicaciones": [],
   "empleadorId": null
 }

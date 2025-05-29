@@ -3,7 +3,9 @@ Content-Type: application/json
 
 {
     "fecha": "2023-10-05T12:34:56.789Z", 
-    "seleccionado": true, 
+    "seleccionado": false, 
     "fechaSeleccion": "2023-10-10T09:00:00.000Z", 
-    "fechaFinalizacion": "2023-11-15T18:00:00.000Z" 
+    "fechaFinalizacion": "2023-11-15T18:00:00.000Z",
+    "candidatoId": "68384dbb37fa284929a49b0a",
+    "ofertaId": "67fe30d4df95a95e31ec1f66"
 }

@@ -1,18 +1,30 @@
-POST http://localhost:5000/api/candidatos/register
+POST http://localhost:5000/api/candidato/register
 Content-Type: application/json
 
 {
-  "nombre" : "juan",
-  "correo": "juanana.com",
-  "telefono": "123456789",
-  "fechaNacimiento": "1990-05-15",
-  "fotoPerfil": "https://example.com/foto.jpg",
-  "contrasena": "2345672345",
+  "nombre": "Ana García Pérez",
+  "correo": "ana.garcia@email.com",
+  "telefono": "+34612345678",
+  "fotoPerfil": "",
+  "fechaNacimiento": "1990-05-15T00:00:00.000Z",
+  "contrasena": "123456",
   "curriculum": {
-    "informacionPersonal": "Ingeniero de software con 5 años de experiencia",
-    "ubicacion": "Madrid, España",
-    "formacionAcademica": "Grado en Ingeniería Informática",
-    "experienciaLaboral": "Desarrollador en XYZ Corp por 3 años",
-    "idiomas": ["Español", "Inglés"]
+    "informacionPersonal": "Profesional de marketing digital con 7 años de experiencia en desarrollo de estrategias, gestión de campañas y análisis de datos para optimizar el rendimiento. Orientada a resultados y con habilidades demostradas en liderazgo de equipos y comunicación.",
+    "ubicacion": "Sevilla, España",
+    "formacionAcademica": "Máster en Marketing Digital y E-commerce - ESIC Business & Marketing School (2014-2015)\nGrado en Publicidad y Relaciones Públicas - Universidad de Sevilla (2010-2014)",
+    "idiomas": [
+      "Español (nativo)",
+      "Inglés (fluido - C1)",
+      "Francés (básico - A2)"
+    ],
+    "experienciaPrevia": [
+      {
+        "empresa": "Marketing Innova SL",
+        "puesto": "Jefa de Marketing Digital",
+        "fechaInicio": "2020-03-01T00:00:00.000Z",
+        "fechaFin": null,
+        "descripcion": "Liderar equipo de marketing digital, diseñar e implementar estrategias de marketing para clientes clave, gestionar presupuestos de campañas y analizar KPIs para maximizar el ROI."
+      }
+    ]
   }
 }

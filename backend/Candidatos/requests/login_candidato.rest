@@ -1,7 +1,7 @@
-POST http://localhost:5000/api/candidatos/login
+POST http://localhost:5000/api/candidato/login
 Content-Type: application/json
 
 {
-  "correo": "juanana.com",
-  "contrasena": "2345672345"
+  "correo": "ana.garcia@email.com",
+  "contrasena": "1234567"
 }

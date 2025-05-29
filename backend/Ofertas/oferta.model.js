@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const { model,Schema } = mongoose;
 
 const OfertaSchema = new Schema({
-  titulo: String,
+  titulo: {
+    type: String,
+    required: true
+  },
   descripcion: String,
   requisitos: [String],
   duracion: String,
