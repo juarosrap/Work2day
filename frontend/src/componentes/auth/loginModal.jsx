@@ -49,8 +49,7 @@ export default function LoginModal() {
           <label>¿Qué eres?</label>
           <select
             {...register("tipo", { required: "Este campo es obligatorio" })}
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
+            
           >
             <option value="candidato">Candidato</option>
             <option value="empleadorParticular">Empleador Particular</option>
