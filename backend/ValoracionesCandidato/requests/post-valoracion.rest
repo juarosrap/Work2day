@@ -1,4 +1,4 @@
-POST http://localhost:5000/api/valoraciones-candidato/6801383d8d60a495da5ed9bd
+POST http://localhost:5000/api/valoraciones-candidato
 Content-Type: application/json
 
 {
