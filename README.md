@@ -32,6 +32,5 @@ Work2Day ha sido construido utilizando el poderoso **stack MERN**, lo que garant
     * **JSON Web Tokens (JWT):** Para la autenticación y autorización de usuarios.
     * **Bcrypt:** Para el hashing seguro de contraseñas.
 * **Herramientas Adicionales:**
-    * **Postman:** Utilizado para probar y desarrollar la API.
     * **Git & GitHub:** Para el control de versiones y colaboración.
 
