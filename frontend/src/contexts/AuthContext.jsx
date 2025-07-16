@@ -165,76 +165,39 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials, userType) => {
     setError(null);
     try {
-      let apiEndpoint;
+      let apiEndpoint = `/api/${userType}/login`;
 
-      switch (userType) {
-        case "candidato":
-          apiEndpoint = "http://localhost:5000/api/candidato/login";
-          break;
-        case "empleadorParticular":
-          apiEndpoint = "http://localhost:5000/api/empleadorParticular/login";
-          break;
-        case "empleadorEmpresa":
-          apiEndpoint = "http://localhost:5000/api/empleadorEmpresa/login";
-          break;
-        default:
-          throw new Error("Tipo de usuario no válido");
-      }
-
-      // console.log(
-      //   "Intentando login en:",
-      //   apiEndpoint,
-      //   "con credenciales:",
-      //   credentials
-      // );
-
-      const response = await apiFetch(
-        apiEndpoint.replace("http://localhost:5000", ""),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(credentials),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Error ${response.status}`);
-      }
-
-      const data = await response.json();
-      //console.log("Respuesta del login:", data);
-
-
-      localStorage.setItem("correo", data[userType]?.correo);
-      localStorage.setItem("userType", userType);
-      //console.log("userType guardado en localStorage:", userType);
-
-      
-      let userData;
-
-      switch (userType) {
-        case "candidato":
-          userData = data.candidato;
-          break;
-        case "empleadorParticular":
-          userData = data.empleadorParticular;
-          break;
-        case "empleadorEmpresa":
-          userData = data.empleadorEmpresa;
-          break;
-      }
-
-      
-      setCurrentUser({
-        ...userData,
-        userType,
+      const response = await apiFetch(apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(credentials),
       });
 
-      //console.log("Usuario establecido:", userData);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || `Error ${response.status}`);
+      }
+
+      // ✅ Intenta acceder al usuario desde cualquier posible propiedad
+      const user =
+        data.usuario ||
+        data.candidato ||
+        data.empleadorParticular ||
+        data.empleadorEmpresa;
+
+      if (!user) {
+        throw new Error("No se pudo obtener el usuario desde la respuesta");
+      }
+
+      localStorage.setItem("correo", user.correo);
+      localStorage.setItem("userType", userType);
+
+      setCurrentUser({ ...user, userType });
+
       return true;
     } catch (err) {
       console.error("Error en login:", err);
@@ -242,6 +205,7 @@ export const AuthProvider = ({ children }) => {
       return false;
     }
   };
+  
 
   
   const logout = async () => {

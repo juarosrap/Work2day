@@ -325,7 +325,7 @@ export default function registerModal() {
       }
 
       
-      const response = await apiFetch(`/${endpoint}`, {
+      const response = await apiFetch(`/api/${endpoint}`, {
         method: "POST",
         body: formData,
       });
