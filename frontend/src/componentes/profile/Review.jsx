@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../../styles/Profile.css"; 
 import { useAuth } from "../../contexts/AuthContext";
 import defaultAvatar from "../../assets/default-avatar.jpg"; 
-
+import { apiFetch } from "../../api";
 
 const API_URL = "http://localhost:5000";
 
@@ -15,8 +15,6 @@ export default function Review({ review }) {
   const [imageError, setImageError] = useState(false); 
 
   useEffect(() => {
-    const API = `${API_URL}/api`; 
-
     setEmpleador(null);
     setCandidato(null);
     setError(null);
@@ -33,14 +31,14 @@ export default function Review({ review }) {
       const empleadorId = review.empleadorId;
 
       try {
-        let response = await fetch(`${API}/empleadorEmpresa/${empleadorId}`);
+        let response = await apiFetch(`/api/empleadorEmpresa/${empleadorId}`);
         if (response.ok) {
           const dataEmpresa = await response.json();
           setEmpleador(dataEmpresa);
           return; 
         }
 
-        response = await fetch(`${API}/empleadorParticular/${empleadorId}`);
+        response = await apiFetch(`/api/empleadorParticular/${empleadorId}`);
         if (response.ok) {
           const dataParticular = await response.json();
           setEmpleador(dataParticular);
@@ -69,7 +67,7 @@ export default function Review({ review }) {
       const candidatoId = review.candidatoId;
 
       try {
-        const response = await fetch(`${API}/candidato/${candidatoId}`); 
+        const response = await apiFetch(`/api/candidato/${candidatoId}`);
         if (response.ok) {
           const data = await response.json();
           setCandidato(data);

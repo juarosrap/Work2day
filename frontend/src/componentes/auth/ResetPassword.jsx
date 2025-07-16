@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../../styles/forgetModal.css"; 
+import { apiFetch } from "../../api"; 
+
 
 export default function ResetPassword() {
   const { token } = useParams();
@@ -24,17 +26,14 @@ export default function ResetPassword() {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/api/reset-password/${token}`, {
+      const response = await apiFetch(`/api/reset-password/${token}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ newPassword: data.newPassword }),
       });
+      
 
       if (response.ok) {
         setSuccessMessage("Contraseña actualizada con éxito");
-        
         setTimeout(() => {
           navigate("/");
         }, 2000);

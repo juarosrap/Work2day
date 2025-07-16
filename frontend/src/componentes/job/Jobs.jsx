@@ -3,6 +3,7 @@ import "../../styles/jobs.css";
 import JobCard from "./JobCard.jsx";
 import { FiltersContext } from "../../contexts/FiltersContext.jsx";
 import { motion } from "framer-motion";
+import { apiFetch } from "../../api";
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -18,8 +19,6 @@ export default function Jobs() {
     filters.sector ||
     (filters.salario && filters.salario > 0);
 
-  let API = "http://localhost:5000/api/busqueda/ofertas";
-
   const fetchJobsWithFilters = async (filterParams = filters) => {
     setLoading(true);
     try {
@@ -32,9 +31,10 @@ export default function Jobs() {
       if (filterParams.salario && filterParams.salario > 0)
         params.append("salario", filterParams.salario);
 
-      const response = await fetch(`${API}?${params.toString()}`, {
-        credentials: "include",
-      });
+      const response = await apiFetch(
+        `/api/busqueda/ofertas?${params.toString()}`
+      );
+
       const data = await response.json();
       setJobs(data);
       setCurrentPage(1);
@@ -52,9 +52,7 @@ export default function Jobs() {
       const fetchJobs = async () => {
         setLoading(true);
         try {
-          const response = await fetch(API, {
-            credentials: "include",
-          });
+          const response = await apiFetch("/api/busqueda/ofertas");
           const data = await response.json();
           setJobs(data);
         } catch (error) {

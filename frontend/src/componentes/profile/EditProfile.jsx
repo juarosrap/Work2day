@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../api"; 
 
 export default function EditProfile() {
   const {
@@ -42,13 +43,13 @@ export default function EditProfile() {
     }
 
     setIsLoading(true);
-    const API = `http://localhost:5000/api/${currentUser.userType}/${currentUser.id}`;
 
     const getProfile = async () => {
       try {
-        const response = await fetch(API, {
-          credentials: "include",
-        });
+        const response = await apiFetch(
+          `/api/${currentUser.userType}/${currentUser.id}`
+        );
+
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -262,14 +263,14 @@ export default function EditProfile() {
     }
 
     try {
-      const API = `http://localhost:5000/api/${currentUser.userType}/${currentUser.id}`;
-      console.log("Sending update to:", API);
-
-      const response = await fetch(API, {
-        method: "PUT",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await apiFetch(
+        `/api/${currentUser.userType}/${currentUser.id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+      
 
       if (!response.ok) {
         const errorData = await response.json();

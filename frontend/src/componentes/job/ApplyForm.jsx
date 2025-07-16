@@ -3,6 +3,7 @@ import "../../styles/ModalForm.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../../api"; 
 
 export default function ApplyForm() {
   const { id } = useParams();
@@ -24,10 +25,10 @@ export default function ApplyForm() {
     if (currentUser && currentUser.id && currentUser.userType === "candidato") {
       async function getUser() {
         setIsLoading(true);
-        const API = `http://localhost:5000/api/candidato/${currentUser.id}`;
+        
 
         try {
-          const response = await fetch(API);
+          const response = await apiFetch(`/api/candidato/${currentUser.id}`);
 
           if (!response.ok) {
             if (response.status === 404) {
@@ -78,14 +79,10 @@ export default function ApplyForm() {
   const onSubmit = async (data) => {
     
   try {
-    const API = `http://localhost:5000/api/aplicaciones`;
-    const response = await fetch(API, {
+    const response = await apiFetch("/api/aplicaciones", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
-        fecha: "", 
+        fecha: "",
         seleccionado: false,
         fechaSeleccion: "",
         fechaFinalizacion: "",
@@ -93,6 +90,7 @@ export default function ApplyForm() {
         ofertaId: id,
       }),
     });
+    
 
     const result = await response.json();
 

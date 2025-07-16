@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-
+import { apiFetch } from "../api";
 
 const AuthContext = createContext(null);
 
@@ -46,10 +46,13 @@ export const AuthProvider = ({ children }) => {
             return;
         }
 
-        const response = await fetch(endpoint, {
-          method: "GET",
-          credentials: "include",
-        });
+        const response = await apiFetch(
+          endpoint.replace("http://localhost:5000", ""),
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
         if (response.ok) {
           const userData = await response.json();
@@ -110,14 +113,17 @@ export const AuthProvider = ({ children }) => {
 
       //console.log("Usando endpoint de refresh:", refreshEndpoint);
 
-      const response = await fetch(refreshEndpoint, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await apiFetch(
+        refreshEndpoint.replace("http://localhost:5000", ""),
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       //console.log("Respuesta de refresh:", response.status);
 
@@ -125,14 +131,17 @@ export const AuthProvider = ({ children }) => {
         const meEndpoint = refreshEndpoint.replace("/refresh", "/me");
         console.log("Obteniendo datos de usuario tras refresh:", meEndpoint);
 
-        const userResponse = await fetch(meEndpoint, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
+        const userResponse = await apiFetch(
+          meEndpoint.replace("http://localhost:5000", ""),
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         //console.log("Respuesta de /me tras refresh:", userResponse.status);
 
@@ -179,14 +188,17 @@ export const AuthProvider = ({ children }) => {
       //   credentials
       // );
 
-      const response = await fetch(apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(credentials),
-      });
+      const response = await apiFetch(
+        apiEndpoint.replace("http://localhost:5000", ""),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(credentials),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -244,10 +256,13 @@ export const AuthProvider = ({ children }) => {
         logoutEndpoint = "http://localhost:5000/api/empleadorEmpresa/logout";
       }
 
-      const response = await fetch(logoutEndpoint, {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await apiFetch(
+        logoutEndpoint.replace("http://localhost:5000", ""),
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       localStorage.removeItem("userType");
       localStorage.removeItem("correo");

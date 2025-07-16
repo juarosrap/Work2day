@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import "../../styles/forgetModal.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { apiFetch } from "../../api";
 
 export default function ForgetModal() {
   const {
@@ -15,14 +16,9 @@ export default function ForgetModal() {
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data) => {
-    let API = "http://localhost:5000/api/forgetPassword"
     try {
-      const response = await fetch(API, {
+      const response = await apiFetch("/api/forgetPassword", {
         method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ correo: data.correo }),
       });
 
@@ -30,7 +26,6 @@ export default function ForgetModal() {
         setSuccessMessage(
           "Se ha enviado un correo con instrucciones para restablecer su contraseña"
         );
-
         setTimeout(() => {
           navigate("/");
         }, 2000);

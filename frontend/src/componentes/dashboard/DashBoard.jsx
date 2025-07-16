@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import DashBoardRow from "./DashboardRow";
 import { motion } from "framer-motion";
 import { useAuth } from "../../contexts/AuthContext";
+import { apiFetch } from "../../api";
 
 export default function DashBoard() {
   const { id } = useParams();
@@ -28,8 +29,8 @@ export default function DashBoard() {
 
     const getEmpleadorData = async () => {
       try {
-        const API = `http://localhost:5000/api/ofertas/empleador/${id}`;
-        const response = await fetch(API);
+        const response = await apiFetch(`/api/ofertas/empleador/${id}`);
+
 
         if (response.status === 404) {
           setError("El empleador no fue encontrado.");
@@ -52,8 +53,8 @@ export default function DashBoard() {
 
     const getCandidatoData = async () => {
       try {
-        const API = `http://localhost:5000/api/candidato/${id}`;
-        const response = await fetch(API);
+        const response = await apiFetch(`/api/candidato/${id}`);
+
 
         if (response.status === 404) {
           setError("El candidato no fue encontrado.");

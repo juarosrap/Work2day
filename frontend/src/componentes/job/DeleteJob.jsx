@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
+import { apiFetch } from "../../api";
 
 export default function DeleteJob() {
     const { ofertaId,id } = useParams();
@@ -13,15 +14,12 @@ export default function DeleteJob() {
 
 
     const onSubmit = async () => {
-        let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
 
         try {
-            const response = await fetch(API,{
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+          const response = await apiFetch(`/api/ofertas/${ofertaId}`, {
+            method: "DELETE",
+          });
+          
 
             if (!response.ok) {
                 setError("Error eliminando la oferta");

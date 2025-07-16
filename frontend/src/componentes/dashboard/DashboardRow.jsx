@@ -2,6 +2,7 @@ import "../../styles/DashBoard.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import dayjs from "dayjs";
+import { apiFetch } from "../../api";
 import { useEffect, useState } from "react";
 
 export default function DashBoardRow({ data, type, onRemoved }) {
@@ -12,8 +13,7 @@ export default function DashBoardRow({ data, type, onRemoved }) {
   const getAplicacion = async () => {
     setLoading(true);
     try {
-      let API = "http://localhost:5000/api/ofertas/";
-      const response = await fetch(`${API}${data.ofertaId}`);
+      const response = await apiFetch(`/api/ofertas/${data.ofertaId}`);
 
       if (!response.ok) {
         throw new Error(`Error al obtener la oferta ${data.ofertaId}`);
@@ -55,13 +55,10 @@ export default function DashBoardRow({ data, type, onRemoved }) {
 
   const onDelete = async () => {
     try {
-      let API = "http://localhost:5000/api/aplicaciones/";
-      const response = await fetch(`${API}${data.id}`, {
+      const response = await apiFetch(`/api/aplicaciones/${data.id}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
+      
       if (!response.ok) {
         throw new Error(`Error al eliminar la aplicacion ${data.id}`);
       }

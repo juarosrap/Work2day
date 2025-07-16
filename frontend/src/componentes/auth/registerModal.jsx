@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../../styles/ModalForm.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../api";
 
 export default function registerModal() {
   const {
@@ -11,7 +12,7 @@ export default function registerModal() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  let API = "http://localhost:5000/api/";
+  
 
   const [apiError, setApiError] = useState("");
   const [tipo, setTipo] = useState("candidato");
@@ -324,10 +325,11 @@ export default function registerModal() {
       }
 
       
-      const response = await fetch(`${API}${endpoint}`, {
+      const response = await apiFetch(`/${endpoint}`, {
         method: "POST",
         body: formData,
       });
+      
 
       if (!response.ok) {
         const errorData = await response.json();

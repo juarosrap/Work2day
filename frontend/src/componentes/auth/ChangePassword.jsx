@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../../styles/forgetModal.css"; 
 import { useAuth } from "../../contexts/AuthContext";
+import { apiFetch } from "../../api";
 
 export default function ChangePassword() {
     const navigate = useNavigate();
@@ -32,9 +33,7 @@ export default function ChangePassword() {
     const password = watch("currentPassword");
 
 
-
     const onSubmit = async (data) => {
-        
       try {
         if (!currentUser) {
           navigate("/");
@@ -53,26 +52,17 @@ export default function ChangePassword() {
           return;
         }
 
-        let API = `http://localhost:5000/api/change-password`;
-
-        const response = await fetch(API,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ 
-                currentPassword: data.currentPassword,
-                newPassword: data.newPassword,
-                correo: currentUser.correo
-             }),
-          }
-        );
+        const response = await apiFetch("/api/change-password", {
+          method: "POST",
+          body: JSON.stringify({
+            currentPassword: data.currentPassword,
+            newPassword: data.newPassword,
+            correo: currentUser.correo,
+          }),
+        });
 
         if (response.ok) {
           setSuccessMessage("Contraseña actualizada con éxito");
-
           setTimeout(() => {
             window.history.back();
           }, 2000);
@@ -87,6 +77,7 @@ export default function ChangePassword() {
         setError("Error de conexión. Inténtelo de nuevo más tarde.");
       }
     };
+    
 
 
     return (

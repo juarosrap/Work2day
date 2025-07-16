@@ -3,17 +3,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
+import { apiFetch } from "../../api"; // ✅ Importa apiFetch
 
 export default function Valoracion() {
-  const { id, valoradoId } = useParams();
+  const { id, valoradoId, ofertaId } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [valoradoData, setValoradoData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
-  const { ofertaId } = useParams();
-  console.log(ofertaId)
 
   const {
     register,
@@ -28,65 +27,33 @@ export default function Valoracion() {
   useEffect(() => {
     const fetchValoradoData = async () => {
       if (!valoradoId) {
-        console.error("No hay ID de valorado para consultar");
         setError("Falta información del usuario a valorar");
         setLoading(false);
         return;
       }
 
       if (!currentUser) {
-        console.error("No hay usuario logueado");
         setError("Debes iniciar sesión para valorar");
         setLoading(false);
         return;
       }
 
-      console.log(
-        "Obteniendo datos para:",
-        valoradoId,
-        "como",
-        isEmpleador ? "empleador" : "candidato"
-      );
-
       try {
-        let endpoint;
+        let data;
 
         if (isEmpleador) {
-          endpoint = `http://localhost:5000/api/candidato/${valoradoId}`;
+          data = await apiFetch(`/api/candidato/${valoradoId}`);
         } else {
-          const responseParticular = await fetch(
-            `http://localhost:5000/api/empleadorParticular/${valoradoId}`
-          );
-
-          if (responseParticular.ok) {
-            const data = await responseParticular.json();
-            console.log("Datos recibidos de empleador particular:", data);
-            setValoradoData(data);
-            setLoading(false);
-            return;
+          try {
+            data = await apiFetch(`/api/empleadorParticular/${valoradoId}`);
+          } catch {
+            data = await apiFetch(`/api/empleadorEmpresa/${valoradoId}`);
           }
-
-          endpoint = `http://localhost:5000/api/empleadorEmpresa/${valoradoId}`;
         }
-
-        console.log("Consultando endpoint:", endpoint);
-
-        const response = await fetch(endpoint);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Error respuesta:", errorText);
-          throw new Error(
-            `Error al obtener datos del usuario a valorar: ${response.status}`
-          );
-        }
-
-        const data = await response.json();
-        console.log("Datos recibidos:", data);
 
         setValoradoData(data);
       } catch (err) {
-        console.error("Error completo:", err);
+        console.error("Error al cargar información del usuario a valorar", err);
         setError("Error al cargar información del usuario a valorar");
       } finally {
         setLoading(false);
@@ -113,8 +80,7 @@ export default function Valoracion() {
       let valoracionData;
 
       if (isEmpleador) {
-        // Empleador valorando a un candidato
-        API = `http://localhost:5000/api/valoraciones-candidato/${valoradoId}`;
+        API = `/api/valoraciones-candidato/${valoradoId}`;
         valoracionData = {
           empleadorId: currentUser.id,
           candidatoId: valoradoId,
@@ -123,9 +89,7 @@ export default function Valoracion() {
           fecha: new Date(),
         };
       } else {
-        // Candidato valorando a un empleador
-        API = `http://localhost:5000/api/valoraciones-empleador/${valoradoId}`;
-
+        API = `/api/valoraciones-empleador/${valoradoId}`;
         valoracionData = {
           candidatoId: currentUser.id,
           empleadorId: valoradoId,
@@ -135,51 +99,27 @@ export default function Valoracion() {
         };
       }
 
-      console.log("Enviando valoración a:", API);
-      console.log("Datos:", valoracionData);
-
-      const response = await fetch(API, {
+      const response = await apiFetch(API, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(valoracionData),
+        body: valoracionData,
       });
 
-      let APIV = `http://localhost:5000/api/ofertas/${ofertaId}`;
+      const setValorada = await apiFetch(`/api/ofertas/${ofertaId}`, {
+        method: "PUT",
+        body: {
+          valorada: true,
+          estado: "Expirada",
+        },
+      });
 
-      const valorada = {
-        valorada: true,
-        estado: "Expirada"
-      }
-
-      const setValorada = await fetch(APIV,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(valorada),
-        }
-      )
-
-      if (response.ok && setValorada.ok) {
+      if (response && setValorada) {
         setSuccessMessage("Valoración enviada con éxito");
-
         setTimeout(() => {
           navigate(`/dashboard/${currentUser.id}`);
         }, 2000);
-      } else {
-        const errorData = await response.json();
-        const errorOferta = await setValorada.json();
-        setError(
-          errorData.message || errorOferta.message || "Ha ocurrido un error al enviar la valoración"
-        );
       }
     } catch (err) {
-      console.error("Error completo al enviar:", err);
+      console.error("Error al enviar valoración:", err);
       setError("Error de conexión. Inténtelo de nuevo más tarde.");
     }
   };
@@ -256,14 +196,8 @@ export default function Valoracion() {
               max="10"
               {...register("puntuacion", {
                 required: "La puntuación es obligatoria",
-                min: {
-                  value: 1,
-                  message: "La puntuación mínima es 1",
-                },
-                max: {
-                  value: 10,
-                  message: "La puntuación máxima es 10",
-                },
+                min: { value: 1, message: "La puntuación mínima es 1" },
+                max: { value: 10, message: "La puntuación máxima es 10" },
               })}
             />
             {errors.puntuacion && (

@@ -3,6 +3,7 @@ import "../../styles/Modal.css";
 import { useParams, Link } from "react-router-dom";
 import CurriculumModal from "../job/CurriculumModal";
 import { useAuth } from "../../contexts/AuthContext";
+import { apiFetch } from "../../api";
 
 export default function ListaCandidatos() {
   const [oferta, setOferta] = useState(null);
@@ -14,7 +15,6 @@ export default function ListaCandidatos() {
   const { ofertaId } = useParams();
   const { currentUser } = useAuth(); 
 
-  let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
 
   useEffect(() => {
     fetchOferta();
@@ -24,7 +24,7 @@ export default function ListaCandidatos() {
     try {
       setLoading(true);
 
-      const response = await fetch(API);
+      const response = await apiFetch(`/api/ofertas/${ofertaId}`);
 
       if (!response.ok) {
         throw new Error("Error al cargar la oferta");
@@ -54,13 +54,11 @@ export default function ListaCandidatos() {
       const datosActualizados = {
         estado: "Pausada",
       };
-      const response = await fetch(API, {
+      const response = await apiFetch(`/api/ofertas/${ofertaId}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(datosActualizados),
       });
+      
 
       if (!response.ok) {
         throw new Error("Error al actualizar oferta");
@@ -83,13 +81,11 @@ export default function ListaCandidatos() {
         fechaSeleccion: fechaActual,
       };
 
-      const response = await fetch(seleccionarURL, {
+      const response = await apiFetch(`/api/aplicaciones/${aplicacionId}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(datosActualizados),
       });
+      
 
       if (!response.ok) {
         throw new Error("Error al seleccionar candidato");

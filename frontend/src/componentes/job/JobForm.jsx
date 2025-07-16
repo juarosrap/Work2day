@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm,useWatch } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../../api";
 
 export default function JobForm() {
   const {
@@ -49,8 +50,7 @@ export default function JobForm() {
 
     const fetchOferta = async () => {
       try {
-        let API = `http://localhost:5000/api/ofertas/${ofertaId}`;
-        const res = await fetch(API);
+        const res = await apiFetch(`/api/ofertas/${ofertaId}`);
         
         if (!res.ok) throw new Error("No se pudo obtener la oferta");
         const data = await res.json();
@@ -96,16 +96,13 @@ export default function JobForm() {
         .filter((r) => r),
     };
 
-    const API = isEditMode
-      ? `http://localhost:5000/api/ofertas/${ofertaId}`
-      : "http://localhost:5000/api/ofertas";
+    const endpoint = isEditMode ? `/api/ofertas/${ofertaId}` : "/api/ofertas";
 
-    const method = isEditMode ? "PUT" : "POST";
+    
 
     try {
-      const response = await fetch(API, {
-        method,
-        headers: { "Content-Type": "application/json" },
+      const response = await apiFetch(endpoint, {
+        method: isEditMode ? "PUT" : "POST",
         body: JSON.stringify(job),
       });
 

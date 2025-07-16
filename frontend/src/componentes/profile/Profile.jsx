@@ -7,9 +7,9 @@ import ExperienciaDestacada from "./ExperienciaDestacada.jsx";
 import { motion } from "framer-motion";
 import dayjs from "dayjs";
 import defaultAvatar from "../../assets/default-avatar.jpg";
+import { apiFetch } from "../../api"; 
 
-
-const API_URL = "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Profile() {
   const { id } = useParams();
@@ -32,11 +32,7 @@ export default function Profile() {
 
     const fetchProfile = async () => {
       try {
-        const API = `${API_URL}/api/usuarios/${id}`;
-
-        const response = await fetch(API, {
-          credentials: "include",
-        });
+        const response = await apiFetch(`/api/usuarios/${id}`);
 
         if (response.status === 404) {
           setError("La persona no existe");

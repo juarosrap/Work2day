@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
+import { apiFetch } from "../../api";
 
 export default function DeleteJob() {
   const navigate = useNavigate();
@@ -11,15 +12,13 @@ export default function DeleteJob() {
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async () => {
-    let API = `http://localhost:5000/api/${currentUser.userType}/${currentUser.id}`;
-
     try {
-      const response = await fetch(API, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await apiFetch(
+        `/api/${currentUser.userType}/${currentUser.id}`,
+        {
+          method: "DELETE",
+        }
+      );      
 
       if (!response.ok) {
         setError("Error eliminando la cuenta");

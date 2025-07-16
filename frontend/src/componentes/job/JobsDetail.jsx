@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import dayjs from "dayjs";
+import { apiFetch } from "../../api";
 
 export default function JobsDetail() {
   const { id } = useParams();
@@ -12,11 +13,9 @@ export default function JobsDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const API = `http://localhost:5000/api/ofertas/${id}`;
-
     async function getJobs() {
       try {
-        const response = await fetch(API);
+        const response = await apiFetch(`/api/ofertas/${id}`);
 
         if (response.status === 404) {
           setError("El trabajo no fue encontrado.");
