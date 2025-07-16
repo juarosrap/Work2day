@@ -339,7 +339,7 @@ export default function registerModal() {
       }
 
       const responseData = await response.json();
-      console.log("Respuesta exitosa:", responseData);
+      
 
       setApiError("");
       setSuccessMessage("Registro exitoso. ¡Bienvenido!");
